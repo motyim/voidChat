@@ -4,7 +4,7 @@ package controller;
 import java.util.ArrayList;
 
 
-public interface SeverControllerInt {
+public interface ServerControllerInt {
     
     void notify(String SenderName , String reciverName);
 
@@ -27,4 +27,6 @@ public interface SeverControllerInt {
      */
     //TODO : handle when user left group
     void groupMsg(String msg , ArrayList<String> groupChatUsers);
+    
+    
 }

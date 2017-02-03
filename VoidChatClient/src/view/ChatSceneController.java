@@ -53,9 +53,7 @@ public class ChatSceneController implements Initializable {
     @FXML
     private Image clips;
     @FXML
-    private Button homeBtn;
-    @FXML
-    private Button btnTransferFile;
+
 
 
 

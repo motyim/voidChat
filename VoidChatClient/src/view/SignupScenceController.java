@@ -120,10 +120,7 @@ public class SignupScenceController implements Initializable {
 
     }
 
-    @FXML
-    private void btnSignupAction(ActionEvent event) {
-
-    }
+  
 
     @FXML
     private void btnBackAction(MouseEvent event) {

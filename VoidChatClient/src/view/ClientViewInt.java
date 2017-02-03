@@ -2,6 +2,7 @@
 package view;
 
 import java.util.ArrayList;
+import model.User;
 
 /**
  * 
@@ -9,7 +10,7 @@ import java.util.ArrayList;
  */
 public interface ClientViewInt {
     
-    boolean signup();
+    boolean signup(User user);
     
     void loadHomePage();
     

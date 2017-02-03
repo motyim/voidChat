@@ -11,7 +11,7 @@ public interface ClientControllerInt {
      * send to server Model
      * @return 
      */
-    boolean signup();
+    boolean signup(User user);
     
     /**
      * validate -> false call show Error in CV 

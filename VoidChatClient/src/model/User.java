@@ -1,10 +1,10 @@
 
 package model;
 
+import java.io.Serializable;
 
-public class User {
+public class User implements Serializable{
 
-    private int id;
     private String username;
     private String email;
     private String fname;
@@ -12,7 +12,7 @@ public class User {
     private String password;
     private String gender;
     private String country;
-    private String status_id;
+    private String status;
 
     public User(String username, String email, String fname, String lname, String password, String gender, String country) {
         this.username = username;
@@ -31,8 +31,8 @@ public class User {
     
     
 
-    public User(int id, String username, String email, String fname, String lname, String password, String gender, String country, String status_id) {
-        this.id = id;
+    public User(String username, String email, String fname, String lname, String password, String gender, String country, String status) {
+        
         this.username = username;
         this.email = email;
         this.fname = fname;
@@ -40,16 +40,10 @@ public class User {
         this.password = password;
         this.gender = gender;
         this.country = country;
-        this.status_id = status_id;
+        this.status = status;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
+   
 
     public String getUsername() {
         return username;
@@ -107,12 +101,12 @@ public class User {
         this.country = country;
     }
 
-    public String getStatus_id() {
-        return status_id;
+    public String getStatus() {
+        return status;
     }
 
-    public void setStatus_id(String status_id) {
-        this.status_id = status_id;
+    public void setStatus(String status) {
+        this.status = status;
     }
     
 }

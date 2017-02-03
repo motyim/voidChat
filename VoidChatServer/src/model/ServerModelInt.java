@@ -40,19 +40,19 @@ public interface ServerModelInt extends Remote {
     
     /**
      * 
-     * @param id user 
+     * @param userName user 
      * @return array list of friends
      * @throws java.rmi.RemoteException
      */
-    ArrayList<User> getContacts(int id) throws RemoteException;
+    ArrayList<User> getContacts(String userName) throws RemoteException;
     
-    /**
+   /**
      * send friend request to other user
-     * @param id ana  
-     * @param reciverName  
+     * @param senderName ana
+     * @param reciverName bt3o  
      * @throws java.rmi.RemoteException  
      */
-    void sendRequest(int id , String reciverName) throws RemoteException;
+    void sendRequest(String senderName, String reciverName) throws RemoteException;
     
     /**
      * 

@@ -18,6 +18,7 @@ public class ClientController implements ClientControllerInt{
 
     private ClientView view ; 
     private ClientModel model ;
+    private ServerModelInt serverModelInt;
      
     public ClientController(ClientView view){
 
@@ -31,7 +32,7 @@ public class ClientController implements ClientControllerInt{
             
             Registry reg = LocateRegistry.getRegistry("localhost");
             
-            ServerModelInt serverModelInt = (ServerModelInt) reg.lookup("voidChatServer");
+            serverModelInt = (ServerModelInt) reg.lookup("voidChatServer");
             System.out.println("Conncet to Server");
             serverModelInt.displayStatus();
         } catch (RemoteException | NotBoundException ex) {
@@ -44,8 +45,13 @@ public class ClientController implements ClientControllerInt{
     }
 
     @Override
-    public boolean signup() {
+    public boolean signup(User user) {
         System.out.println("Controller");
+        try {
+            System.out.println(serverModelInt.signup(user));
+        } catch (RemoteException ex) {
+            ex.printStackTrace();
+        }
         return true ; 
     }
 

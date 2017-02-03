@@ -8,6 +8,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import model.User;
 
 /**
  *
@@ -46,9 +47,9 @@ public class ClientView extends Application  implements ClientViewInt{
 
 
     @Override
-    public boolean signup() {
-        System.out.println("haha");
-        controller.signup();
+    public boolean signup(User user) {
+       
+        controller.signup(user);
         return true ;
     }
 

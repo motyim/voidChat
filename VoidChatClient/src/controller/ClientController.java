@@ -11,16 +11,16 @@ import javafx.application.Application;
 import model.ClientModelInt;
 import model.ServerModelInt;
 import model.User;
-import view.MainClass;
+import view.ClientView;
 
 
 public class ClientController implements ClientControllerInt{
     
     public static void main(String[] args) {
-        Application.launch(MainClass.class, args);
+        Application.launch(ClientView.class, args);
     }
-    MainClass view ; 
-    public ClientController(MainClass main){
+    ClientView view ; 
+    public ClientController(ClientView main){
         try {
             view = main ;
             Registry reg = LocateRegistry.getRegistry("localhost");

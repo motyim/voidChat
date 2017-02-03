@@ -16,10 +16,10 @@ import javafx.stage.Stage;
  *
  * @author Merna
  */
-public class MainClass extends Application {
+public class ClientView extends Application {
     
     ClientController controller ;
-    public MainClass(){
+    public ClientView(){
         controller = new ClientController(this);
     }
 
@@ -33,6 +33,8 @@ public class MainClass extends Application {
         stage.show();
     }
 
-    
+     public static void main(String[] args) {
+        launch(args);
+    }
 
 }

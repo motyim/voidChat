@@ -5,17 +5,24 @@
  */
 package view;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
 
 /**
  * FXML Controller class
@@ -53,10 +60,10 @@ public class SignupScenceController implements Initializable {
     private ComboBox<String> comboboxGender;
 
     ObservableList<String> genderList = FXCollections.observableArrayList("Female", "Male");
-    
+
     @FXML
     private ComboBox<String> comboboxCountry;
-    
+
     ObservableList<String> counrtyList = FXCollections.observableArrayList("Afghanistan", "Albania", "Algeria", "American Samoa", "Andorra", "Angola", "Anguilla", "Antarctica",
             "Antigua and Barbuda", "Argentina", "Armenia", "Aruba", "Australia", "Austria", "Azerbaijan", "Bahamas", "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium",
             "Belize", "Benin", "Bermuda", "Bhutan", "Bolivia", "Bosnia and Herzegowina", "Botswana", "Bouvet Island", "Brazil", "British Indian Ocean Territory", "Brunei Darussalam",
@@ -81,6 +88,7 @@ public class SignupScenceController implements Initializable {
 
     @FXML
     private Button btnSignup;
+
 
     @FXML
     private void btnSignupAction(ActionEvent event) {
@@ -109,8 +117,27 @@ public class SignupScenceController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         comboboxGender.setItems(genderList);
         comboboxCountry.setItems(counrtyList);
-        
-        
+
+    }
+
+    @FXML
+    private void btnSignupAction(ActionEvent event) {
+
+    }
+
+    @FXML
+    private void btnBackAction(MouseEvent event) {
+        try {
+            ((Node) (event.getSource())).getScene().getWindow().hide(); 
+            Parent parent = FXMLLoader.load(getClass().getResource("LoginScene.fxml"));
+            Stage stage = new Stage();
+            Scene scene = new Scene(parent);
+            stage.setScene(scene);
+            stage.setTitle(" ");
+            stage.show();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }
 
 }

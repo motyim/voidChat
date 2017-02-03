@@ -2,6 +2,7 @@ package view;
 
 import controller.ClientController;
 import java.util.ArrayList;
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -12,6 +13,7 @@ import javafx.stage.Stage;
  *
  * @author Merna
  */
+
 public class ClientView extends Application  implements ClientViewInt{
     
     ClientController controller ;
@@ -41,6 +43,7 @@ public class ClientView extends Application  implements ClientViewInt{
         stage.setScene(scene);
         stage.show();
     }
+
 
     @Override
     public boolean signup() {

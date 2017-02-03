@@ -15,10 +15,12 @@ import view.ClientView;
 
 public class ClientController implements ClientControllerInt{
     
+
     private ClientView view ; 
     private ClientModel model ;
      
     public ClientController(ClientView view){
+
         try {
             
             //connect with view

@@ -14,13 +14,17 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
+
+import javafx.scene.layout.VBox;
 
 /**
  * FXML Controller class
@@ -29,32 +33,32 @@ import javafx.scene.layout.Pane;
  */
 public class ChatSceneController implements Initializable {
 
-    @FXML
-    private ListView<String> listview;
-
-    @FXML
-    private ImageView logout;
-
-    @FXML
-    private Label homeLabel;
 
     @FXML
     private BorderPane chatBorderPane;
-
     @FXML
-    private Button homeBtn;
-
+    private ImageView imgHome;
+    @FXML
+    private Label homeLabel;
+    @FXML
+    private ImageView logout;
+    @FXML
+    private ListView<String> listview;
     @FXML
     private Pane content;
-
+    @FXML
+    private VBox chatBox;
+    @FXML
+    private Label friendName;
+    @FXML
+    private Image clips;
+    @FXML
+    private Button homeBtn;
     @FXML
     private Button btnTransferFile;
 
-    @FXML
-    private ImageView imgHome;
 
-    @FXML
-    private Label labelFriendName;
+
 
     private ClientView clinetView;
 
@@ -64,29 +68,49 @@ public class ChatSceneController implements Initializable {
         System.out.println("chat connect Client view");
     }
 
-    @FXML
-    private void homeAction(MouseEvent event) {
-        try {
-            content.getChildren().clear();
-            content.getChildren().add(FXMLLoader.load(getClass().getResource("HomeBox.fxml")));
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-    }
+ 
 
-    /**
-     * Initializes the controller class.
-     *
-     * @param url
-     * @param rb
-     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+
         ObservableList<String> data = FXCollections.observableArrayList(
                 "Roma attia", "Mustafa Ismail", "Roma attia", "Mustafa Ismail"
         );
-
         listview.setItems(data);
+        listview.setCellFactory(listView -> new ListCell<String>() {
+            private final ImageView imageView = new ImageView();
+            private final ImageView imageViewStatus = new ImageView();
+
+            @Override
+            public void updateItem(String friend, boolean empty) {
+                super.updateItem(friend, empty);
+                if (friend != null) {
+
+                    FlowPane flow = new FlowPane();
+                    flow.setHgap(4);
+
+                    Label friendName = new Label();
+                    friendName.setText(friend);
+
+                    Image image = new Image("/resouces/user.png", true);
+                    Image statusImg = new Image("/resouces/circle.png", true);
+
+                    imageView.setImage(image);
+                    imageView.setFitWidth(35);
+                    imageView.setFitHeight(35);
+
+                    imageViewStatus.setImage(statusImg);
+                    imageViewStatus.setFitWidth(6);
+                    imageViewStatus.setFitHeight(6);
+
+                    flow.getChildren().addAll(imageView, friendName, imageViewStatus);
+
+                    setGraphic(flow);
+
+                }
+            }
+        });
+
         listview.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -100,6 +124,17 @@ public class ChatSceneController implements Initializable {
                 }
             }
         });
+    }
+
+
+    @FXML
+    private void homeAction(MouseEvent event) {
+        try {
+            content.getChildren().clear();
+            content.getChildren().add(FXMLLoader.load(getClass().getResource("HomeBox.fxml")));
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }
 
 }

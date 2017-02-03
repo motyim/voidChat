@@ -51,6 +51,7 @@ public class LoginSceneController implements Initializable {
     @FXML
     private void btnLoginAction(ActionEvent event) {
         try {
+          
             ((Node) (event.getSource())).getScene().getWindow().hide(); //this line to hide login window ..
             Parent parent = FXMLLoader.load(getClass().getResource("ChatScene.fxml"));
             Stage stage = new Stage();

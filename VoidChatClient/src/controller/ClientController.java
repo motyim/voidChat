@@ -19,6 +19,7 @@ public class ClientController implements ClientControllerInt{
     private ClientView view ; 
     private ClientModel model ;
     private ServerModelInt serverModelInt;
+    private User loginUser ; 
      
     public ClientController(ClientView view){
 
@@ -45,21 +46,33 @@ public class ClientController implements ClientControllerInt{
     }
 
     @Override
-    public boolean signup(User user) {
-        System.out.println("Controller");
+    public boolean signup(User user) throws Exception {
+         
         try {
-            System.out.println(serverModelInt.signup(user));
+            return serverModelInt.signup(user);
         } catch (RemoteException ex) {
             ex.printStackTrace();
+            throw new Exception("Server not working now");
         }
-        return true ; 
+        
+    }
+    
+     @Override
+    public User signin(String username, String password) throws Exception{
+        
+        try {
+            //assigne data return to loginUser 
+            loginUser =  serverModelInt.signin(username, password);
+        } catch (RemoteException ex) {
+            ex.printStackTrace();
+            throw new Exception("Server not working now");
+        }finally{
+            return loginUser; // return null if faild 
+        }
+        
     }
 
-    @Override
-    public User signin() throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); 
-    }
-
+   
     @Override
     public void loadHomePage(User client) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -129,5 +142,7 @@ public class ClientController implements ClientControllerInt{
     public void reciveMsgGroup(String msg, ArrayList<String> groupChatUsers) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+   
     
 }

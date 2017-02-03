@@ -14,6 +14,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
+import utilitez.SHA;
 
 /**
  *
@@ -72,7 +73,7 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
                 return false;
             } else {
                 query = "insert into UserTable (username,email,fname,lname,password,gender,country) values('" + user.getUsername()
-                        + "','" + user.getEmail() + "','" + user.getFname() + "','" + user.getLname() + "','" + user.getPassword() + "','"
+                        + "','" + user.getEmail() + "','" + user.getFname() + "','" + user.getLname() + "','" + SHA.encrypt(user.getPassword()) + "','"
                         + user.getGender() + "','" + user.getCountry() + "')";
                 statement.executeUpdate(query);
                 System.out.println("Done");
@@ -90,7 +91,7 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
         User user = null;
         try {
             getConnection();
-            query = "select * from UserTable where username = '" + username + "'and password='" + password + "'";
+            query = "select * from UserTable where username = '" + username + "'and password='" + SHA.encrypt(password) + "'";
             statement = connection.createStatement();
             resultSet = statement.executeQuery(query);
             if (resultSet.next()) {
@@ -98,11 +99,12 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
                 String email = resultSet.getString("email");
                 String fname = resultSet.getString("fname");
                 String lname = resultSet.getString("lname");
-                String pw = resultSet.getString("password");
+                String pw = "";
                 String gender = resultSet.getString("gender");
                 String status = resultSet.getString("status");
                 String country = resultSet.getString("country");
                 user = new User(name, email, fname, lname, pw, gender, country, status);
+                
             }
         } catch (SQLException ex) {
             ex.printStackTrace();

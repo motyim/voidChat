@@ -9,9 +9,10 @@ public interface ClientControllerInt {
     /**
      * validate & create user obj 
      * send to server Model
+     * @param user
      * @return 
      */
-    boolean signup(User user);
+    boolean signup(User user) throws Exception;
     
     /**
      * validate -> false call show Error in CV 
@@ -22,10 +23,12 @@ public interface ClientControllerInt {
      * 2- register to server 
      * 3- getContact
      * 4- check friend requests . 
-     * @return 
+     * @param username
+     * @param password
+     * @return User Object 
      * @thows Exception 
      */
-    User signin() throws Exception;
+    User signin(String username , String password) throws Exception;
     
     /**
      * call loadhomepage in client view 

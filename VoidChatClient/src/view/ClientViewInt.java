@@ -10,7 +10,9 @@ import model.User;
  */
 public interface ClientViewInt {
     
-    boolean signup(User user);
+    boolean signup(User user) throws Exception;
+    
+    User signin(String username , String password) throws Exception;
     
     void loadHomePage();
     

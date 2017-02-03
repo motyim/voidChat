@@ -47,7 +47,7 @@ public class ChatSceneController implements Initializable {
     @FXML
     private VBox chatBox;
     @FXML
-    private Label labelFriendName;
+    private Label friendName;
     @FXML
     private Image clips;
 
@@ -73,8 +73,8 @@ public class ChatSceneController implements Initializable {
                     FlowPane flow = new FlowPane();
                     flow.setHgap(4);
 
-                    Label labelFriendName = new Label();
-                    labelFriendName.setText(friend);
+                    Label friendName = new Label();
+                    friendName.setText(friend);
 
                     Image image = new Image("/resouces/user.png", true);
                     Image statusImg = new Image("/resouces/circle.png", true);
@@ -87,7 +87,7 @@ public class ChatSceneController implements Initializable {
                     imageViewStatus.setFitWidth(6);
                     imageViewStatus.setFitHeight(6);
 
-                    flow.getChildren().addAll(imageView, labelFriendName, imageViewStatus);
+                    flow.getChildren().addAll(imageView, friendName, imageViewStatus);
 
                     setGraphic(flow);
 

@@ -5,44 +5,51 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.application.Application;
+import model.ClientModel;
 import model.ClientModelInt;
 import model.ServerModelInt;
 import model.User;
-import view.MainClass;
+import view.ClientView;
 
 
 public class ClientController implements ClientControllerInt{
     
-    public static void main(String[] args) {
-        Application.launch(MainClass.class, args);
-    }
-    MainClass view ; 
-    public ClientController(MainClass main){
+    private ClientView view ; 
+    private ClientModel model ;
+     
+    public ClientController(ClientView view){
         try {
-            view = main ;
+            
+            //connect with view
+            this.view = view ;
+            
+            //connect with model 
+            model = new ClientModel(this);
+            
             Registry reg = LocateRegistry.getRegistry("localhost");
             
             ServerModelInt serverModelInt = (ServerModelInt) reg.lookup("voidChatServer");
-            System.out.println("DOne");
+            System.out.println("Conncet to Server");
             serverModelInt.displayStatus();
-        } catch (RemoteException ex) {
-            Logger.getLogger(ClientController.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (NotBoundException ex) {
-            Logger.getLogger(ClientController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (RemoteException | NotBoundException ex) {
+            ex.printStackTrace();
         }
+    }
+    
+    public static void main(String[] args) {
+        Application.launch(ClientView.class, args);
     }
 
     @Override
     public boolean signup() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        System.out.println("Controller");
+        return true ; 
     }
 
     @Override
     public User signin() throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("Not supported yet."); 
     }
 
     @Override

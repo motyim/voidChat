@@ -38,6 +38,15 @@ public class LoginSceneController implements Initializable {
 
     @FXML
     private Hyperlink linkCreateAccount;
+    
+    private ClientView clinetView ;
+    
+    
+    public LoginSceneController() {
+        //get instance form view
+        clinetView = ClientView.getInstance();
+        System.out.println("Login connect Client view");
+    }
 
     @FXML
     private void btnLoginAction(ActionEvent event) {

@@ -3,6 +3,7 @@ package view;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -12,13 +13,17 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import model.User;
+import utilitez.Checks;
 
 /**
  * FXML Controller class
@@ -26,9 +31,8 @@ import model.User;
  * @author Merna
  */
 public class SignupScenceController implements Initializable {
-    
-    private ClientView clinetView ;
-    
+
+    private ClientView clinetView;
 
     @FXML
     private TextField txtFName;
@@ -78,29 +82,73 @@ public class SignupScenceController implements Initializable {
     @FXML
     private Button btnSignup;
 
-
-    
-    public SignupScenceController(){
+    public SignupScenceController() {
         //get instance form view
         clinetView = ClientView.getInstance();
         System.out.println("singup connect Client view");
     }
-    
+
     @FXML
     private void btnSignupAction(ActionEvent event) {
-        
-        //TODO : validate this fields in view 
-        String fName    = txtFName.getText();
-        String lName    = txtLName.getText();
+
+        String errorMsg = "";
+
+        //getting data 
+        String fName = txtFName.getText();
+        String lName = txtLName.getText();
         String username = txtUserName.getText();
-        String email    = txtEmail.getText();
+        String email = txtEmail.getText();
         String password = txtPassword.getText();
-        String gender   = comboboxGender.getValue();
-        String country  = comboboxCountry.getValue();
+        String gender = comboboxGender.getValue();
+        String country = comboboxCountry.getValue();
+
+        //validate data
+        if (!Checks.checkName(fName)) {
+            errorMsg += "> Invalid First Name Must be alphabtic only min 3 at max 10\n";
+        }
+
+        if (!Checks.checkName(lName)) {
+            errorMsg += "> Invalid Last Name Must be alphabtic only min 3 at max 10\n";
+        }
+
+        if (!Checks.checkUserName(username)) {
+            errorMsg += "> Invalid Username Must Start by char \nand can containe _. (3,20)char\n";
+        }
+
+        if (!Checks.checkEmail(email)) {
+            errorMsg += "> Invalid Email Address\n";
+        }
+
+        if (!Checks.checkStringLength(password, 6, 50)) {
+            errorMsg += "> Password must be at least 6 Character\n";
+        }
+
+        if (!errorMsg.equals("")) {
+            clinetView.showError("Signup Error", "Signup Error", errorMsg);
+            return ;
+        }
+
         
         User user = new User(username, email, fName, lName, password, gender, country);
-        clinetView.signup(user);
+        boolean flag = false;
         
+        try {
+            flag = clinetView.signup(user);
+        } catch (Exception ex) {
+            clinetView.showError("Signup Error", "Signup Error", "Can't Signup right now ..\n"+ex.getMessage());
+            return ;
+        }
+        
+        if(!flag){
+            clinetView.showError("Signup Error", "Signup Error", "Can't Signup right now ..\nplease try again later");
+        }else{
+            Alert alertSuccess = new Alert(AlertType.INFORMATION);
+            alertSuccess.setTitle("Signup Successfully");
+            alertSuccess.setHeaderText("Signup Successfully");
+            alertSuccess.setContentText("Welcome to Our Community\nplease back and login");
+            alertSuccess.showAndWait();
+        }
+
     }
 
     /**
@@ -116,18 +164,21 @@ public class SignupScenceController implements Initializable {
 
     }
 
-  
-
     @FXML
     private void btnBackAction(MouseEvent event) {
         try {
-            ((Node) (event.getSource())).getScene().getWindow().hide(); 
+            ((Node) (event.getSource())).getScene().getWindow().hide();
             Parent parent = FXMLLoader.load(getClass().getResource("LoginScene.fxml"));
             Stage stage = new Stage();
             Scene scene = new Scene(parent);
             stage.setScene(scene);
             stage.setTitle(" ");
             stage.show();
+            stage.setOnCloseRequest((WindowEvent ew) -> {
+                Platform.exit();
+                //TODO : why not close
+                System.exit(0);
+            });
         } catch (IOException ex) {
             ex.printStackTrace();
         }

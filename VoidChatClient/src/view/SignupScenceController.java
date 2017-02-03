@@ -30,6 +30,16 @@ import javafx.stage.Stage;
  * @author Merna
  */
 public class SignupScenceController implements Initializable {
+    
+    private ClientView clinetView ;
+    
+    
+    public SignupScenceController(){
+        //get instance form view
+        clinetView = ClientView.getInstance();
+        System.out.println("singup connect Client view");
+        
+    }
 
     @FXML
     private TextField txtFName;
@@ -78,6 +88,24 @@ public class SignupScenceController implements Initializable {
 
     @FXML
     private Button btnSignup;
+
+
+    @FXML
+    private void btnSignupAction(ActionEvent event) {
+        
+        //TODO : validate this fields in view 
+        
+        String fName    = txtFName.getText();
+        String lName    = txtLName.getText();
+        String username = txtUserName.getText();
+        String email    = txtEmail.getText();
+        String password = txtPassword.getText();
+        String gender   = comboboxGender.getValue();
+        String country  = comboboxCountry.getValue();
+        
+        clinetView.signup();
+        
+    }
 
     /**
      * Initializes the controller class.

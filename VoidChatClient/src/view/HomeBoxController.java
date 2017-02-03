@@ -48,6 +48,18 @@ public class HomeBoxController implements Initializable {
     @FXML
     private TextFlow txtFlowServerMsg;
 
+    private ClientView clinetView ;
+    
+    
+    public HomeBoxController() {
+        //get instance form view
+        clinetView = ClientView.getInstance();
+        System.out.println("home connect Client view");
+    }
+
+    
+    
+    
     /**
      * Initializes the controller class.
      *

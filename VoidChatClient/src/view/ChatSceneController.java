@@ -23,6 +23,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
+
 import javafx.scene.layout.VBox;
 
 /**
@@ -31,6 +32,7 @@ import javafx.scene.layout.VBox;
  * @author Merna
  */
 public class ChatSceneController implements Initializable {
+
 
     @FXML
     private BorderPane chatBorderPane;
@@ -50,10 +52,24 @@ public class ChatSceneController implements Initializable {
     private Label friendName;
     @FXML
     private Image clips;
+    @FXML
+    private Button homeBtn;
+    @FXML
+    private Button btnTransferFile;
 
-    /**
-     * Initializes the controller class.
-     */
+
+
+
+    private ClientView clinetView;
+
+    public ChatSceneController() {
+        //get instance form view
+        clinetView = ClientView.getInstance();
+        System.out.println("chat connect Client view");
+    }
+
+ 
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
@@ -94,6 +110,7 @@ public class ChatSceneController implements Initializable {
                 }
             }
         });
+
         listview.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -108,6 +125,7 @@ public class ChatSceneController implements Initializable {
             }
         });
     }
+
 
     @FXML
     private void homeAction(MouseEvent event) {

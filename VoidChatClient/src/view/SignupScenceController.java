@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package view;
 
 import java.io.IOException;
@@ -23,6 +18,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import model.User;
 
 /**
  * FXML Controller class
@@ -33,13 +29,6 @@ public class SignupScenceController implements Initializable {
     
     private ClientView clinetView ;
     
-    
-    public SignupScenceController(){
-        //get instance form view
-        clinetView = ClientView.getInstance();
-        System.out.println("singup connect Client view");
-        
-    }
 
     @FXML
     private TextField txtFName;
@@ -90,11 +79,17 @@ public class SignupScenceController implements Initializable {
     private Button btnSignup;
 
 
+    
+    public SignupScenceController(){
+        //get instance form view
+        clinetView = ClientView.getInstance();
+        System.out.println("singup connect Client view");
+    }
+    
     @FXML
     private void btnSignupAction(ActionEvent event) {
         
         //TODO : validate this fields in view 
-        
         String fName    = txtFName.getText();
         String lName    = txtLName.getText();
         String username = txtUserName.getText();
@@ -103,7 +98,8 @@ public class SignupScenceController implements Initializable {
         String gender   = comboboxGender.getValue();
         String country  = comboboxCountry.getValue();
         
-        clinetView.signup();
+        User user = new User(username, email, fName, lName, password, gender, country);
+        clinetView.signup(user);
         
     }
 

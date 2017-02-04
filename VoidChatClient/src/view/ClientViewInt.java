@@ -35,4 +35,8 @@ public interface ClientViewInt {
     void groupMsg();
     
     void reciveMsgGroup(String msg ,ArrayList<String> groupChatUsers);
+    
+    ArrayList<User> getContacts();
+    
+    ArrayList<String> checkRequest();
 }

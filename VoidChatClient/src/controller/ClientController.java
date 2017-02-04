@@ -5,6 +5,8 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Application;
 import model.ClientModel;
 import model.ClientModelInt;
@@ -50,7 +52,7 @@ public class ClientController implements ClientControllerInt{
          
         try {
             return serverModelInt.signup(user);
-        } catch (RemoteException ex) {
+        } catch (RemoteException | NullPointerException ex) {
             ex.printStackTrace();
             throw new Exception("Server not working now");
         }
@@ -63,13 +65,14 @@ public class ClientController implements ClientControllerInt{
         try {
             //assigne data return to loginUser 
             loginUser =  serverModelInt.signin(username, password);
-        } catch (RemoteException ex) {
+            //register client to server
+            registerToServer(loginUser.getUsername(), model);
+        } catch (RemoteException | NullPointerException ex) {
             ex.printStackTrace();
             throw new Exception("Server not working now");
-        }finally{
-            return loginUser; // return null if faild 
         }
-        
+            return loginUser; // return null if faild 
+       
     }
 
    
@@ -80,17 +83,32 @@ public class ClientController implements ClientControllerInt{
 
     @Override
     public void registerToServer(String username, ClientModelInt obj) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        try {
+            serverModelInt.register(username, obj);
+        } catch (RemoteException ex) {
+            ex.printStackTrace();
+        }
     }
 
     @Override
-    public void getContacts() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public ArrayList<User> getContacts() {
+        try {
+            return serverModelInt.getContacts(loginUser.getUsername());
+        } catch (RemoteException ex) {
+             ex.printStackTrace();
+             return null;
+        }
+        
     }
 
     @Override
-    public void checkRequest() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public ArrayList<String> checkRequest() {
+        try {
+            return serverModelInt.checkRequest(loginUser.getUsername());
+        } catch (RemoteException ex) {
+            ex.printStackTrace();
+            return null;
+        }
     }
 
     @Override

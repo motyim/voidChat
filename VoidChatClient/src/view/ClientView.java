@@ -19,7 +19,7 @@ import model.User;
  */
 public class ClientView extends Application implements ClientViewInt {
 
-    ClientController controller;
+    private ClientController controller;
     static ClientView instance;
 
     public ClientView() {
@@ -134,5 +134,15 @@ public class ClientView extends Application implements ClientViewInt {
         alert.setContentText(content);
         alert.showAndWait();
 
+    }
+
+    @Override
+    public ArrayList<User> getContacts() {
+        return controller.getContacts();
+    }
+
+    @Override
+    public ArrayList<String> checkRequest() {
+        return controller.checkRequest();
     }
 }

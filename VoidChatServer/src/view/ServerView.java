@@ -15,7 +15,7 @@ import javafx.stage.Stage;
  *
  * @author Mostafa
  */
-public class ServerScene extends Application {
+public class ServerView extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {

@@ -7,14 +7,14 @@ import java.rmi.registry.Registry;
 import java.util.ArrayList;
 import javafx.application.Application;
 import model.ServerModel;
-import view.ServerScene;
+import view.ServerView;
 
 
 public class Server implements ServerControllerInt {
     
     public static void main(String[] args) {
         new Server();
-        Application.launch(ServerScene.class, args);
+        Application.launch(ServerView.class, args);
     
     }
     

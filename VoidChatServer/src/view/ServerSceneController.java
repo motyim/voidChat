@@ -17,7 +17,7 @@ import javafx.scene.control.Tab;
  *
  * @author Mostafa
  */
-public class ServerController implements Initializable {
+public class ServerSceneController implements Initializable {
 
     @FXML
     private Tab WelcomTap;

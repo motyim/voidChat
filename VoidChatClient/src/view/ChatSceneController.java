@@ -33,7 +33,6 @@ import javafx.scene.layout.VBox;
  */
 public class ChatSceneController implements Initializable {
 
-
     @FXML
     private BorderPane chatBorderPane;
     @FXML
@@ -41,7 +40,7 @@ public class ChatSceneController implements Initializable {
     @FXML
     private Label homeLabel;
     @FXML
-    private ImageView logout;
+    private ImageView iconLogout;
     @FXML
     private ListView<String> listview;
     @FXML
@@ -54,10 +53,6 @@ public class ChatSceneController implements Initializable {
     private Image clips;
     @FXML
 
-
-
-
-
     private ClientView clinetView;
 
     public ChatSceneController() {
@@ -65,8 +60,6 @@ public class ChatSceneController implements Initializable {
         clinetView = ClientView.getInstance();
         System.out.println("chat connect Client view");
     }
-
- 
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -124,7 +117,6 @@ public class ChatSceneController implements Initializable {
         });
     }
 
-
     @FXML
     private void homeAction(MouseEvent event) {
         try {
@@ -133,6 +125,11 @@ public class ChatSceneController implements Initializable {
         } catch (IOException ex) {
             ex.printStackTrace();
         }
+    }
+
+    @FXML
+    private void iconLogoutAction(MouseEvent event) {
+        System.out.println("logout");
     }
 
 }

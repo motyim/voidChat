@@ -21,7 +21,7 @@
    <top>
       <BorderPane prefHeight="54.0" prefWidth="600.0" BorderPane.alignment="CENTER">
          <right>
-            <ImageView fx:id="logout" fitHeight="29.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+            <ImageView fx:id="iconLogout" fitHeight="29.0" fitWidth="28.0" onMouseClicked="#iconLogoutAction" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
                <image>
                   <Image url="@../resouces/logout.png" />
                </image>

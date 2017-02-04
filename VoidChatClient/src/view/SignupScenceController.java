@@ -125,23 +125,22 @@ public class SignupScenceController implements Initializable {
 
         if (!errorMsg.equals("")) {
             clinetView.showError("Signup Error", "Signup Error", errorMsg);
-            return ;
+            return;
         }
 
-        
         User user = new User(username, email, fName, lName, password, gender, country);
         boolean flag = false;
-        
+
         try {
             flag = clinetView.signup(user);
         } catch (Exception ex) {
-            clinetView.showError("Signup Error", "Signup Error", "Can't Signup right now ..\n"+ex.getMessage());
-            return ;
+            clinetView.showError("Signup Error", "Signup Error", "Can't Signup right now ..\n" + ex.getMessage());
+            return;
         }
-        
-        if(!flag){
+
+        if (!flag) {
             clinetView.showError("Signup Error", "Signup Error", "Can't Signup right now ..\nplease try again later");
-        }else{
+        } else {
             Alert alertSuccess = new Alert(AlertType.INFORMATION);
             alertSuccess.setTitle("Signup Successfully");
             alertSuccess.setHeaderText("Signup Successfully");
@@ -172,6 +171,7 @@ public class SignupScenceController implements Initializable {
             Stage stage = new Stage();
             Scene scene = new Scene(parent);
             stage.setScene(scene);
+            stage.setResizable(false);
             stage.setTitle(" ");
             stage.show();
             stage.setOnCloseRequest((WindowEvent ew) -> {

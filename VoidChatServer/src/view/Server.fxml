@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+  <children>
+    <TabPane prefHeight="400.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <tabs>
+        <Tab text="Analysis">
+          <content>
+            <AnchorPane id="Content" blendMode="MULTIPLY" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <ImageView fitHeight="377.0" fitWidth="419.0" layoutX="128.0" layoutY="-5.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../resources/soon.jpeg" />
+                           </image>
+                        </ImageView>
+                     </children>
+            </AnchorPane>
+          </content>
+        </Tab>
+        <Tab text="Control">
+          <content>
+            <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+              <children>
+                <Label layoutX="55.0" layoutY="38.0" prefHeight="31.0" prefWidth="120.0" text="Send to All Clients" textFill="#797878" />
+                <TextArea layoutX="55.0" layoutY="69.0" prefHeight="189.0" prefWidth="493.0" promptText="Message ..." wrapText="true" />
+                <Button layoutX="487.0" layoutY="270.0" mnemonicParsing="false" prefWidth="61.0" text="Send" />
+                <ToolBar layoutX="0.0" layoutY="324.0" prefHeight="45.0" prefWidth="600.0">
+                  <items>
+                    <ToggleButton mnemonicParsing="false" prefWidth="69.0" text="Start" />
+                  </items>
+                </ToolBar>
+                <Button layoutX="443.0" layoutY="271.0" mnemonicParsing="false">
+                    <graphic>
+                        <ImageView fitHeight="14.0" fitWidth="15.0" layoutX="-2.0">
+                            <image>
+                                <Image fx:id="clips" url="@../resources/clips.png" />
+                            </image>
+                        </ImageView>
+                    </graphic>
+                </Button>
+              </children>
+            </AnchorPane>
+          </content>
+        </Tab>
+      </tabs>
+    </TabPane>
+  </children>
+</AnchorPane>

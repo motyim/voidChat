@@ -48,11 +48,12 @@ public class ClientView extends Application implements ClientViewInt {
             System.exit(0);
         });
         stage.setScene(scene);
+        stage.setResizable(false);
         stage.show();
     }
 
     @Override
-    public boolean signup(User user) throws Exception{
+    public boolean signup(User user) throws Exception {
 
         return controller.signup(user);
 
@@ -117,20 +118,21 @@ public class ClientView extends Application implements ClientViewInt {
     public void reciveMsgGroup(String msg, ArrayList<String> groupChatUsers) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     /**
-     * show error alert 
+     * show error alert
+     *
      * @param title
      * @param header
-     * @param content 
+     * @param content
      */
-    public void showError(String title , String header , String content){
-        
+    public void showError(String title, String header, String content) {
+
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);
         alert.setHeaderText(header);
         alert.setContentText(content);
         alert.showAndWait();
-            
+
     }
 }

@@ -2,14 +2,17 @@
 package view;
 
 import java.util.ArrayList;
+import model.User;
 
 /**
  * 
- * @author 
+ * @author MotYim
  */
 public interface ClientViewInt {
     
-    boolean signup();
+    boolean signup(User user) throws Exception;
+    
+    User signin(String username , String password) throws Exception;
     
     void loadHomePage();
     

@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane fx:id="chatBorderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.ChatSceneController">
+   <top>
+      <BorderPane prefHeight="54.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+         <right>
+            <ImageView fx:id="logout" fitHeight="29.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+               <image>
+                  <Image url="@../resouces/logout.png" />
+               </image>
+               <BorderPane.margin>
+                  <Insets right="15.0" />
+               </BorderPane.margin>
+            </ImageView>
+         </right>
+         <left>
+             <HBox>
+               <ImageView fx:id="imgHome" fitHeight="27.0" fitWidth="28.0" onMouseClicked="#homeAction" pickOnBounds="true" preserveRatio="true">
+                  <HBox.margin>
+                     <Insets left="10.0" top="16.0" />
+                  </HBox.margin>
+                  <image>
+                     <Image url="@../resouces/home.png" />
+                  </image>
+               </ImageView>
+               <ImageView fitHeight="41.0" fitWidth="53.0" pickOnBounds="true" preserveRatio="true">
+                  <HBox.margin>
+                     <Insets left="7.0" top="10.0" />
+                  </HBox.margin>
+                  <image>
+                     <Image url="@../resouces/user.png" />
+                  </image>
+               </ImageView>
+                  <VBox prefHeight="62.0" prefWidth="135.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Label fx:id="homeLabel" contentDisplay="TOP" prefHeight="17.0" prefWidth="107.0" text="User Name">
+                     <VBox.margin>
+                        <Insets bottom="5.0" left="10.0" top="10.0" />
+                     </VBox.margin>
+                  </Label>
+                  <MenuButton mnemonicParsing="false" prefHeight="22.0" prefWidth="69.0" text="status">
+                    <items>
+                      <MenuItem mnemonicParsing="false" text="online" />
+                           <MenuItem mnemonicParsing="false" text="offline" />
+                      <MenuItem mnemonicParsing="false" text="busy" />
+                    </items>
+                     <VBox.margin>
+                        <Insets bottom="8.0" left="10.0" />
+                     </VBox.margin>
+                     <font>
+                        <Font size="11.0" />
+                     </font>
+                  </MenuButton>
+               </children>
+            </VBox>
+             </HBox>
+           
+         </left>
+      </BorderPane>
+   </top>
+   <left>
+      <VBox prefHeight="338.0" prefWidth="198.0" BorderPane.alignment="CENTER">
+         <children>
+            <ListView fx:id="listview" prefHeight="337.0" prefWidth="198.0" />
+         </children>
+      </VBox>
+   </left>
+   <center>
+<!--        <fx:include source="ChatBox.fxml" />-->
+       <Pane fx:id="content" prefHeight="352.0" prefWidth="401.0" BorderPane.alignment="CENTER">
+         <children>
+          <VBox fx:id="chatBox" prefHeight="352.0" prefWidth="400.0" BorderPane.alignment="CENTER" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+               <children>
+                  <Pane prefHeight="51.0" prefWidth="400.0">
+                     <children>
+                        <VBox prefHeight="39.0" prefWidth="397.0">
+                           <children>
+                              <Line endX="296.0" startX="-100.0" stroke="#d7d7d7" />
+                              <HBox prefHeight="100.0" prefWidth="200.0">
+                                 <children>
+                                    <VBox prefHeight="38.0" prefWidth="138.0">
+                                       <children>
+                                          <Label fx:id="labelFriendName" prefHeight="17.0" prefWidth="104.0" text="Friend Name" textAlignment="CENTER" textFill="#807d7d">
+                                             <VBox.margin>
+                                                <Insets left="10.0" top="4.0" />
+                                             </VBox.margin>
+                                          </Label>
+                                          <HBox prefHeight="100.0" prefWidth="200.0">
+                                             <children>
+                                                <ImageView fitHeight="9.0" fitWidth="10.0" pickOnBounds="true" preserveRatio="true">
+                                                   <HBox.margin>
+                                                      <Insets left="20.0" right="10.0" top="4.0" />
+                                                   </HBox.margin>
+                                                   <image>
+                                                      <Image url="@../resouces/circle.png" />
+                                                   </image>
+                                                </ImageView>
+                                                <Label text="offline" textFill="#868585" />
+                                             </children>
+                                          </HBox>
+                                       </children>
+                                    </VBox>
+                                    <ImageView fitHeight="20.0" fitWidth="23.0" pickOnBounds="true" preserveRatio="true">
+                                       <HBox.margin>
+                                          <Insets left="225.0" top="10.0" />
+                                       </HBox.margin>
+                                       <image>
+                                          <Image url="@../resouces/close.png" />
+                                       </image>
+                                    </ImageView>
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
+                     </children>
+                  </Pane>
+                  <TextArea prefHeight="259.0" prefWidth="394.0">
+                     <VBox.margin>
+                        <Insets left="3.0" right="3.0" />
+                     </VBox.margin>
+                  </TextArea>
+                  <HBox prefHeight="59.0" prefWidth="400.0">
+                     <children>
+                        <TextField prefHeight="27.0" prefWidth="293.0">
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                           <HBox.margin>
+                              <Insets left="5.0" top="5.0" />
+                           </HBox.margin></TextField>
+                        <Button mnemonicParsing="false" prefHeight="27.0" prefWidth="35.0">
+                            <graphic>
+                                <ImageView fitHeight="14.0" fitWidth="15.0" layoutX="-2.0">
+                                    <image>
+                                         <Image fx:id="clips" url="@../resouces/clips.png" />
+                                    </image>
+                                </ImageView>
+                            </graphic>
+                           <HBox.margin>
+                              <Insets left="5.0" top="5.0" />
+                           </HBox.margin>
+                        </Button>
+                        <Button mnemonicParsing="false" prefHeight="27.0" prefWidth="50.0" text="Send">
+                           <HBox.margin>
+                              <Insets left="5.0" right="5.0" top="5.0" />
+                           </HBox.margin></Button>
+                     </children>
+                  </HBox>
+               </children>
+          </VBox>
+         </children>
+       </Pane>
+   </center>
+</BorderPane>

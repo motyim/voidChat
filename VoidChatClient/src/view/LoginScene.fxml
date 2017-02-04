@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="394.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.LoginSceneController">
+   <children>
+      <Text layoutX="94.0" layoutY="92.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Void Chat" textAlignment="CENTER" wrappingWidth="192.2138671875">
+         <font>
+            <Font name="System Bold" size="34.0" />
+         </font>
+      </Text>
+      <PasswordField fx:id="txtPassword" layoutX="108.0" layoutY="192.0" prefHeight="27.0" prefWidth="179.0" promptText="********" />
+      <Button fx:id="btnLogin" layoutX="111.0" layoutY="249.0" mnemonicParsing="false" onAction="#btnLoginAction" prefHeight="27.0" prefWidth="173.0" text="Login" />
+      <Hyperlink fx:id="linkCreateAccount" layoutX="136.0" layoutY="292.0" onAction="#linkCreatAccountAction" prefHeight="25.0" prefWidth="131.0" text="Create an account " textAlignment="CENTER" />
+      <TextField fx:id="txtUserName" layoutX="107.0" layoutY="143.0" prefHeight="27.0" prefWidth="179.0" promptText="username" />
+   </children>
+</AnchorPane>

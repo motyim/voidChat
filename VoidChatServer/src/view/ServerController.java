@@ -5,7 +5,6 @@ package view;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 import java.awt.Button;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -19,7 +18,8 @@ import javafx.scene.control.Tab;
  * @author Mostafa
  */
 public class ServerController implements Initializable {
-    @FXML 
+
+    @FXML
     private Tab WelcomTap;
     @FXML
     private Tab SendTab;
@@ -34,6 +34,6 @@ public class ServerController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-    }    
-    
+    }
+
 }

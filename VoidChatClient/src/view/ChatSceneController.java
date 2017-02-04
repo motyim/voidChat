@@ -129,7 +129,7 @@ public class ChatSceneController implements Initializable {
 
     @FXML
     private void iconLogoutAction(MouseEvent event) {
-
+        System.out.println("logout");
     }
 
 }

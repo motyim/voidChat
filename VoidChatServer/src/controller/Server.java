@@ -5,13 +5,17 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.ArrayList;
+import javafx.application.Application;
 import model.ServerModel;
+import view.ServerView;
 
 
 public class Server implements ServerControllerInt {
     
     public static void main(String[] args) {
-		new Server();
+        new Server();
+        Application.launch(ServerView.class, args);
+    
     }
     
     public Server(){

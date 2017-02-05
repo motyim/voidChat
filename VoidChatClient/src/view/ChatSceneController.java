@@ -14,6 +14,9 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
@@ -25,6 +28,7 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
 
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 /**
  * FXML Controller class
@@ -128,8 +132,17 @@ public class ChatSceneController implements Initializable {
     }
 
     @FXML
-    private void iconLogoutAction(MouseEvent event) {
-        System.out.println("logout");
+    private void iconLogoutAction(MouseEvent event) throws IOException {
+        ((Node) (event.getSource())).getScene().getWindow().hide();
+        Parent parent = FXMLLoader.load(getClass().getResource("LoginScene.fxml"));
+        Stage stage = new Stage();
+        Scene scene = new Scene(parent);
+        stage.setScene(scene);
+        stage.setTitle(" Sin_in Page");
+        stage.show();
+       // String username = "zas";
+        clinetView.logout();
+
     }
 
 }

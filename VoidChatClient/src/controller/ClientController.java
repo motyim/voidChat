@@ -5,6 +5,8 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Application;
 import model.ClientModel;
 import model.ClientModelInt;
@@ -12,27 +14,25 @@ import model.ServerModelInt;
 import model.User;
 import view.ClientView;
 
+public class ClientController implements ClientControllerInt {
 
-public class ClientController implements ClientControllerInt{
-    
-
-    private ClientView view ; 
-    private ClientModel model ;
+    private ClientView view;
+    private ClientModel model;
     private ServerModelInt serverModelInt;
-    private User loginUser ; 
-     
-    public ClientController(ClientView view){
+    private User loginUser;
+
+    public ClientController(ClientView view) {
 
         try {
-            
+
             //connect with view
-            this.view = view ;
-            
+            this.view = view;
+
             //connect with model 
             model = new ClientModel(this);
-            
+
             Registry reg = LocateRegistry.getRegistry("localhost");
-            
+
             serverModelInt = (ServerModelInt) reg.lookup("voidChatServer");
             System.out.println("Conncet to Server");
             serverModelInt.displayStatus();
@@ -40,39 +40,39 @@ public class ClientController implements ClientControllerInt{
             ex.printStackTrace();
         }
     }
-    
+
     public static void main(String[] args) {
         Application.launch(ClientView.class, args);
+
     }
 
     @Override
     public boolean signup(User user) throws Exception {
-         
+
         try {
             return serverModelInt.signup(user);
         } catch (RemoteException ex) {
             ex.printStackTrace();
             throw new Exception("Server not working now");
         }
-        
+
     }
-    
-     @Override
-    public User signin(String username, String password) throws Exception{
-        
+
+    @Override
+    public User signin(String username, String password) throws Exception {
+
         try {
             //assigne data return to loginUser 
-            loginUser =  serverModelInt.signin(username, password);
+            loginUser = serverModelInt.signin(username, password);
         } catch (RemoteException ex) {
             ex.printStackTrace();
             throw new Exception("Server not working now");
-        }finally{
+        } finally {
             return loginUser; // return null if faild 
         }
-        
+
     }
 
-   
     @Override
     public void loadHomePage(User client) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -100,7 +100,12 @@ public class ClientController implements ClientControllerInt{
 
     @Override
     public void logout() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        try {
+            //System.out.println(userName);
+            serverModelInt.unregister(loginUser.getUsername());
+        } catch (RemoteException ex) {
+            Logger.getLogger(ClientController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @Override
@@ -143,6 +148,4 @@ public class ClientController implements ClientControllerInt{
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-   
-    
 }

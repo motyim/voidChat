@@ -32,15 +32,11 @@ public interface ClientViewInt {
     void reciveMsg(String msg);
 
     void groupMsg();
-<<<<<<< HEAD
     
     void reciveMsgGroup(String msg ,ArrayList<String> groupChatUsers);
     
     ArrayList<User> getContacts();
     
     ArrayList<String> checkRequest();
-=======
 
-    void reciveMsgGroup(String msg, ArrayList<String> groupChatUsers);
->>>>>>> 3e0c40bae104758bc65a2673b3af553f7bb302b6
 }

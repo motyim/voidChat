@@ -19,7 +19,9 @@ public interface ClientViewInt {
 
     void logout();
 
-    void sendRequest();
+    
+    int sendRequest(String friend,String category);
+    
 
     void notify(String senderName);
 

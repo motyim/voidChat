@@ -63,7 +63,6 @@ public class ChatSceneController implements Initializable {
     private Label friendName;
     @FXML
     private Image clips;
-    @FXML
 
     private ClientView clinetView;
 
@@ -75,6 +74,13 @@ public class ChatSceneController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+
+        try {
+            content.getChildren().clear();
+            content.getChildren().add(FXMLLoader.load(getClass().getResource("HomeBox.fxml")));
+        } catch (IOException ex) {
+            Logger.getLogger(ChatSceneController.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
         ArrayList<User> contacts = clinetView.getContacts();
 

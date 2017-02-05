@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Line?>
 
-<VBox fx:id="chatBox" prefHeight="352.0" prefWidth="400.0" BorderPane.alignment="CENTER" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+<VBox fx:id="chatBox" prefHeight="352.0" prefWidth="400.0" BorderPane.alignment="CENTER" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.ChatBoxController">
     <children>
         <Pane prefHeight="51.0" prefWidth="400.0">
             <children>
@@ -31,7 +31,7 @@
                                         </Label>
                                         <HBox prefHeight="100.0" prefWidth="200.0">
                                             <children>
-                                                <ImageView fitHeight="9.0" fitWidth="10.0" pickOnBounds="true" preserveRatio="true">
+                                                <ImageView fx:id="imgFriendStatus" fitHeight="9.0" fitWidth="10.0" pickOnBounds="true" preserveRatio="true">
                                                     <HBox.margin>
                                                         <Insets left="20.0" right="10.0" top="4.0" />
                                                     </HBox.margin>
@@ -39,12 +39,12 @@
                                                         <Image url="@../resouces/circle.png" />
                                                     </image>
                                                 </ImageView>
-                                                <Label text="offline" textFill="#868585" />
+                                                <Label fx:id="labelFriendStatus" text="offline" textFill="#868585" />
                                             </children>
                                         </HBox>
                                     </children>
                                 </VBox>
-                                <ImageView fitHeight="20.0" fitWidth="23.0" pickOnBounds="true" preserveRatio="true">
+                                <ImageView fx:id="iconCloseChat" fitHeight="20.0" fitWidth="23.0" onMouseClicked="#iconCloseChatAction" pickOnBounds="true" preserveRatio="true">
                                     <HBox.margin>
                                         <Insets left="225.0" top="10.0" />
                                     </HBox.margin>
@@ -58,14 +58,14 @@
                 </VBox>
             </children>
         </Pane>
-        <TextArea prefHeight="259.0" prefWidth="394.0">
+        <TextArea fx:id="txtAreaChatBox" prefHeight="259.0" prefWidth="394.0">
             <VBox.margin>
                 <Insets left="3.0" right="3.0" />
             </VBox.margin>
         </TextArea>
         <HBox prefHeight="59.0" prefWidth="400.0">
             <children>
-                <TextField prefHeight="27.0" prefWidth="293.0">
+                <TextField fx:id="txtFieldMsg" prefHeight="27.0" prefWidth="293.0">
                     <opaqueInsets>
                         <Insets />
                     </opaqueInsets>
@@ -73,7 +73,7 @@
                         <Insets left="5.0" top="5.0" />
                     </HBox.margin>
                 </TextField>
-                <Button mnemonicParsing="false" prefHeight="27.0" prefWidth="35.0">
+                <Button fx:id="btnSendAttach" mnemonicParsing="false" onAction="#btnSendAttachAction" prefHeight="27.0" prefWidth="35.0">
                     <graphic>
                         <ImageView fitHeight="14.0" fitWidth="15.0" layoutX="-2.0">
                             <image>
@@ -85,7 +85,7 @@
                         <Insets left="5.0" top="5.0" />
                     </HBox.margin>
                 </Button>
-                <Button mnemonicParsing="false" prefHeight="27.0" prefWidth="50.0" text="Send">
+                <Button fx:id="btnSendMsg" mnemonicParsing="false" onAction="#btnSendMsgAction" prefHeight="27.0" prefWidth="50.0" text="Send">
                     <HBox.margin>
                         <Insets left="5.0" right="5.0" top="5.0" />
                     </HBox.margin>

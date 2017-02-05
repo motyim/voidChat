@@ -8,8 +8,9 @@ package view;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -58,7 +59,6 @@ public class ChatSceneController implements Initializable {
     private Label friendName;
     @FXML
     private Image clips;
-    @FXML
 
     private ClientView clinetView;
 
@@ -71,6 +71,13 @@ public class ChatSceneController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
+        try {
+            content.getChildren().clear();
+            content.getChildren().add(FXMLLoader.load(getClass().getResource("HomeBox.fxml")));
+        } catch (IOException ex) {
+            Logger.getLogger(ChatSceneController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
         ArrayList<User> contacts = clinetView.getContacts();
 
         //check not empty contact list
@@ -80,10 +87,10 @@ public class ChatSceneController implements Initializable {
                 contactsName.add(contact.getUsername());
             }
             ObservableList<String> data = FXCollections.observableArrayList(contactsName);
-            listview.setItems(data);
+            friendsListview.setItems(data);
         }
 
-        listview.setCellFactory(listView -> new ListCell<String>() {
+        friendsListview.setCellFactory(listView -> new ListCell<String>() {
 
             private final ImageView imageView = new ImageView();
             private final ImageView imageViewStatus = new ImageView();

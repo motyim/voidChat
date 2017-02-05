@@ -21,6 +21,7 @@ public class ClientView extends Application implements ClientViewInt {
 
     private ClientController controller;
     static ClientView instance;
+    private Stage mainStage;
 
     public ClientView() {
         controller = new ClientController(this);
@@ -38,10 +39,9 @@ public class ClientView extends Application implements ClientViewInt {
 
     @Override
     public void start(Stage stage) throws Exception {
+        mainStage=stage;
         Parent root = FXMLLoader.load(getClass().getResource("LoginScene.fxml"));
-
         Scene scene = new Scene(root);
-
         stage.setOnCloseRequest((WindowEvent ew) -> {
             Platform.exit();
             //TODO : why not close
@@ -144,5 +144,9 @@ public class ClientView extends Application implements ClientViewInt {
     @Override
     public ArrayList<String> checkRequest() {
         return controller.checkRequest();
+    }
+    
+    public Stage getMainStage(){
+        return this.mainStage;
     }
 }

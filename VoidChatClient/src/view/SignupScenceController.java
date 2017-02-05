@@ -166,19 +166,10 @@ public class SignupScenceController implements Initializable {
     @FXML
     private void btnBackAction(MouseEvent event) {
         try {
-            ((Node) (event.getSource())).getScene().getWindow().hide();
             Parent parent = FXMLLoader.load(getClass().getResource("LoginScene.fxml"));
-            Stage stage = new Stage();
+            Stage stage = clinetView.getMainStage();
             Scene scene = new Scene(parent);
             stage.setScene(scene);
-            stage.setResizable(false);
-            stage.setTitle(" ");
-            stage.show();
-            stage.setOnCloseRequest((WindowEvent ew) -> {
-                Platform.exit();
-                //TODO : why not close
-                System.exit(0);
-            });
         } catch (IOException ex) {
             ex.printStackTrace();
         }

@@ -79,8 +79,10 @@ public class ClientView extends Application implements ClientViewInt {
     }
 
     @Override
-    public void sendRequest() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public int sendRequest(String friend,String category) {
+        System.out.println(friend+" "+category);
+        return controller.sendRequest(friend, category);
+       
     }
 
     @Override

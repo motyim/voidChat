@@ -65,7 +65,8 @@ public interface ClientControllerInt {
      */
     void logout();
     
-    void sendRequest(String reciverName);
+    //zwadt 2l category
+    int sendRequest(String reciverName,String category);
     
     void notify(String senderName);
     

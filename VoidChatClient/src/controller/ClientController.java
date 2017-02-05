@@ -5,6 +5,8 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Application;
 import model.ClientModel;
 import model.ClientModelInt;
@@ -104,8 +106,16 @@ public class ClientController implements ClientControllerInt{
     }
 
     @Override
-    public void sendRequest(String reciverName) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public int sendRequest(String reciverName,String category) {
+        System.out.println("in client Controller "+ reciverName+" "+category);
+        try {
+            return serverModelInt.sendRequest(loginUser.getUsername(), reciverName, category);
+        } catch (RemoteException ex) {
+            System.out.println("Exception in client controller");
+            ex.printStackTrace();
+            return 0;
+        }
+        
     }
 
     @Override

@@ -116,9 +116,11 @@ public class HomeBoxController implements Initializable {
             return null;
         });
 
+        //Hna H3mal Insert LL Code Bta3e (Send Request)
         Optional<Pair<String, String>> result = dialog.showAndWait();
         result.ifPresent(emailCategory -> {
             System.out.println("user=" + emailCategory.getKey() + ", category=" + emailCategory.getValue());
+            System.out.println(clinetView.sendRequest(emailCategory.getKey(),emailCategory.getValue()));  
         });
 
     }

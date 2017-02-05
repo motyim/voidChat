@@ -5,3 +5,5 @@
 /VoidChatClient/dist/
 /VoidChatServer/dist/
 /VoidChatClient/nbproject/private/
+VoidChatServer/nbproject/private/private.xml
+VoidChatServer/voidChat

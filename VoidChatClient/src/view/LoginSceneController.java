@@ -60,30 +60,26 @@ public class LoginSceneController implements Initializable {
             String username = txtUserName.getText();
             String password = txtPassword.getText();
 
-     
-
             if (!Checks.checkUserName(username)) {
                 errorMsg += "> Invalid Username\n";
             }
-            
+
             if (!Checks.checkStringLength(password, 6, 50)) {
                 errorMsg += "> Invalid Password\n";
             }
 
             if (!errorMsg.equals("")) {
-                 clinetView.showError("Login Error", "Login Error", errorMsg);
-             
+                clinetView.showError("Login Error", "Login Error", errorMsg);
+
                 return;
             }
-            
+
             //login to server .. 
-            
-            if (clinetView.signin(username, password) ==null){
-                 clinetView.showError("Login Error", "Login Error", "Can't Login right now ..\n"
+            if (clinetView.signin(username, password) == null) {
+                clinetView.showError("Login Error", "Login Error", "Can't Login right now ..\n"
                         + "maybe wrong username or password..\n"
                         + "please try again later");
-                
-                
+
                 return;
             }
 
@@ -93,6 +89,7 @@ public class LoginSceneController implements Initializable {
             Stage stage = new Stage();
             Scene scene = new Scene(parent);
             stage.setScene(scene);
+            stage.setResizable(false);
             stage.setTitle(" ");
             stage.show();
             stage.setOnCloseRequest((WindowEvent ew) -> {
@@ -104,25 +101,18 @@ public class LoginSceneController implements Initializable {
             ex.printStackTrace();
         } catch (Exception ex) {
             ex.printStackTrace();
-            clinetView.showError("Login Error", "Login Error", "Can't Login right now ..\n"+ex.getMessage());
+            clinetView.showError("Login Error", "Login Error", "Can't Login right now ..\n" + ex.getMessage());
         }
     }
 
     @FXML
     private void linkCreatAccountAction(ActionEvent event) {
         try {
-            ((Node) (event.getSource())).getScene().getWindow().hide(); //this line to hide login window ..
             Parent parent = FXMLLoader.load(getClass().getResource("SignupScence.fxml"));
-            Stage stage = new Stage();
+            Stage stage = clinetView.getMainStage();
             Scene scene = new Scene(parent);
             stage.setScene(scene);
             stage.setTitle("Create an account");
-            stage.show();
-            stage.setOnCloseRequest((WindowEvent ew) -> {
-                Platform.exit();
-                //TODO : why not close
-                System.exit(0);
-            });
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -130,7 +120,8 @@ public class LoginSceneController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-
+        // Request focus on the txtUserName field by default.
+        Platform.runLater(() -> txtUserName.requestFocus());
     }
 
 }

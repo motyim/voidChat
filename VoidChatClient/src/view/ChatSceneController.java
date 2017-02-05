@@ -7,13 +7,21 @@ package view;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
@@ -22,9 +30,11 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+import model.User;
 
 /**
  * FXML Controller class
@@ -33,7 +43,6 @@ import javafx.scene.layout.VBox;
  */
 public class ChatSceneController implements Initializable {
 
-
     @FXML
     private BorderPane chatBorderPane;
     @FXML
@@ -41,9 +50,11 @@ public class ChatSceneController implements Initializable {
     @FXML
     private Label homeLabel;
     @FXML
-    private ImageView logout;
+    private ImageView iconLogout;
     @FXML
-    private ListView<String> listview;
+    private ListView<String> friendsListview;
+    @FXML
+    private ListView<String> requestsListview;
     @FXML
     private Pane content;
     @FXML
@@ -52,11 +63,6 @@ public class ChatSceneController implements Initializable {
     private Label friendName;
     @FXML
     private Image clips;
-    @FXML
-
-
-
-
 
     private ClientView clinetView;
 
@@ -66,16 +72,30 @@ public class ChatSceneController implements Initializable {
         System.out.println("chat connect Client view");
     }
 
- 
-
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
-        ObservableList<String> data = FXCollections.observableArrayList(
-                "Roma attia", "Mustafa Ismail", "Roma attia", "Mustafa Ismail"
-        );
-        listview.setItems(data);
-        listview.setCellFactory(listView -> new ListCell<String>() {
+        try {
+            content.getChildren().clear();
+            content.getChildren().add(FXMLLoader.load(getClass().getResource("HomeBox.fxml")));
+        } catch (IOException ex) {
+            Logger.getLogger(ChatSceneController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        ArrayList<User> contacts = clinetView.getContacts();
+
+        //check not empty contact list
+        if (contacts != null) {
+            ArrayList<String> contactsName = new ArrayList<>();
+            for (User contact : contacts) {
+                contactsName.add(contact.getUsername());
+            }
+            ObservableList<String> data = FXCollections.observableArrayList(contactsName);
+            friendsListview.setItems(data);
+        }
+
+        friendsListview.setCellFactory(listView -> new ListCell<String>() {
+
             private final ImageView imageView = new ImageView();
             private final ImageView imageViewStatus = new ImageView();
 
@@ -86,6 +106,7 @@ public class ChatSceneController implements Initializable {
 
                     FlowPane flow = new FlowPane();
                     flow.setHgap(4);
+                    flow.setPrefWidth(1);
 
                     Label friendName = new Label();
                     friendName.setText(friend);
@@ -108,12 +129,11 @@ public class ChatSceneController implements Initializable {
                 }
             }
         });
-
-        listview.setOnMouseClicked(new EventHandler<MouseEvent>() {
+        friendsListview.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 try {
-                    System.out.println("clicked on " + listview.getSelectionModel().getSelectedItem());
+                    System.out.println("clicked on " + friendsListview.getSelectionModel().getSelectedItem());
                     content.getChildren().clear();
                     content.getChildren().add(FXMLLoader.load(getClass().getResource("ChatBox.fxml")));
                     //labelFriendName.setText(listview.getSelectionModel().getSelectedItem());
@@ -122,14 +142,76 @@ public class ChatSceneController implements Initializable {
                 }
             }
         });
-    }
 
+        ObservableList<String> requestsList = FXCollections.observableArrayList(
+                "Sarah Ahmed", "Bosy Ismail"
+        );
+        requestsListview.setItems(requestsList);
+        requestsListview.setCellFactory(listView -> new ListCell<String>() {
+
+            Button btnAccept = new Button();
+            Button btnIgnore = new Button();
+
+            @Override
+            public void updateItem(String name, boolean empty) {
+                super.updateItem(name, empty);
+                if (name != null) {
+
+                    BorderPane pane = new BorderPane();
+
+                    Label labelRequestFrom = new Label();
+                    labelRequestFrom.setText(name);
+
+                    btnAccept.setGraphic(new ImageView(new Image("/resouces/accept.png", 9, 9, false, false)));
+                    btnAccept.setOnAction(new EventHandler<ActionEvent>() {
+                        @Override
+                        public void handle(ActionEvent event) {
+                            System.out.println("Accept :" + getItem());
+                        }
+                    });
+                    btnIgnore.setGraphic(new ImageView(new Image("/resouces/ignore.png", 9, 9, false, false)));
+                    btnIgnore.setOnAction(new EventHandler<ActionEvent>() {
+                        @Override
+                        public void handle(ActionEvent event) {
+                            System.out.println("Ignore :" + getItem());
+                        }
+                    });
+
+                    HBox btnHbox = new HBox();
+
+                    btnHbox.getChildren().addAll(btnIgnore, btnAccept);
+                    btnHbox.setSpacing(3);
+                    pane.setRight(btnHbox);
+                    pane.setLeft(labelRequestFrom);
+                    setGraphic(pane);
+
+                }
+            }
+        });
+
+    }
 
     @FXML
     private void homeAction(MouseEvent event) {
         try {
             content.getChildren().clear();
             content.getChildren().add(FXMLLoader.load(getClass().getResource("HomeBox.fxml")));
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void iconLogoutAction(MouseEvent event) {
+        try {
+            ((Node) (event.getSource())).getScene().getWindow().hide();
+            Parent parent = FXMLLoader.load(getClass().getResource("LoginScene.fxml"));
+            Stage stage = new Stage();
+            Scene scene = new Scene(parent);
+            stage.setScene(scene);
+            stage.setTitle(" Sin_in Page");
+            stage.show();
+            clinetView.logout();
         } catch (IOException ex) {
             ex.printStackTrace();
         }

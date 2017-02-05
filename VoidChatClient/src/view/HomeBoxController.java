@@ -5,10 +5,7 @@
  */
 package view;
 
-import java.awt.Insets;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.application.Platform;
@@ -17,14 +14,12 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonBar.ButtonData;
+import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
-import javafx.scene.control.MenuButton;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
@@ -48,18 +43,14 @@ public class HomeBoxController implements Initializable {
     @FXML
     private TextFlow txtFlowServerMsg;
 
-    private ClientView clinetView ;
-    
-    
+    private ClientView clinetView;
+
     public HomeBoxController() {
         //get instance form view
         clinetView = ClientView.getInstance();
         System.out.println("home connect Client view");
     }
 
-    
-    
-    
     /**
      * Initializes the controller class.
      *
@@ -83,7 +74,7 @@ public class HomeBoxController implements Initializable {
         Dialog<Pair<String, String>> dialog = new Dialog<>();
         dialog.setTitle("Add New Friend");
 
-        ButtonType addButtonType = new ButtonType("Add", ButtonData.OK_DONE);
+        ButtonType addButtonType = new ButtonType("Add", ButtonBar.ButtonData.OK_DONE);
         dialog.getDialogPane().getButtonTypes().addAll(addButtonType, ButtonType.CANCEL);
 
         GridPane grid = new GridPane();
@@ -96,13 +87,12 @@ public class HomeBoxController implements Initializable {
 
         ComboBox comboBox = new ComboBox(options);
         comboBox.getSelectionModel().selectFirst();
-        
+
         grid.add(new Label("User Name :"), 0, 0);
         grid.add(txtFieldUserName, 1, 0);
 
         grid.add(new Label("Category:"), 0, 1);
         grid.add(comboBox, 1, 1);
-
 
         dialog.getDialogPane().setContent(grid);
 
@@ -124,5 +114,4 @@ public class HomeBoxController implements Initializable {
         });
 
     }
-
 }

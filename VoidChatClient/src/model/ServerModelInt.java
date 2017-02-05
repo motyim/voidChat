@@ -51,7 +51,9 @@ public interface ServerModelInt extends Remote {
      * @param reciverName bt3o  
      * @throws java.rmi.RemoteException  
      */
+
     int sendRequest(String senderName, String reciverName,String type) throws RemoteException;
+
     
     /**
      * 

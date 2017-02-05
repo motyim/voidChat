@@ -2,9 +2,18 @@
 package controller;
 
 import java.util.ArrayList;
+import model.ClientModelInt;
 
 
 public interface ServerControllerInt {
+    
+    /**
+     * save object on hash table in server
+     * @param username
+     * @param obj 
+     * @throws java.rmi.RemoteException 
+     */
+    void register(String username , ClientModelInt obj);
     
     void notify(String SenderName , String reciverName);
 

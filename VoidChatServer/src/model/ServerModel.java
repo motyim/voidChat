@@ -1,10 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package model;
 
+import controller.ServerController;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.sql.Connection;
@@ -13,27 +9,25 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.HashMap;
 import utilitez.SHA;
 import utilitez.Constant;
 
 /**
  *
- * @author MY-PC
+ * @author Roma
  */
 public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
 
-    private HashMap<String, ClientModelInt> onlineUsers = new HashMap<>();
 
     private Connection connection;
     private Statement statement;
     private ResultSet resultSet;
     private String query;
-    String property = System.getProperty("user.dir");
+    private String property = System.getProperty("user.dir");
+    private ServerController controller;
 
-    //TODO : edit this one
-    public ServerModel() throws RemoteException {
-
+    public ServerModel(ServerController controller)throws RemoteException  {
+        this.controller = controller;
     }
 
     /**
@@ -115,12 +109,13 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
 
     @Override
     public void register(String username, ClientModelInt obj) throws RemoteException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
     }
 
     @Override
     public void unregister(String username) throws RemoteException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        //System.out.println(username);
+        
     }
 
     @Override

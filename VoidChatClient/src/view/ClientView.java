@@ -19,7 +19,7 @@ import model.User;
  */
 public class ClientView extends Application implements ClientViewInt {
 
-    ClientController controller;
+    private ClientController controller;
     static ClientView instance;
 
     public ClientView() {
@@ -48,11 +48,12 @@ public class ClientView extends Application implements ClientViewInt {
             System.exit(0);
         });
         stage.setScene(scene);
+        stage.setResizable(false);
         stage.show();
     }
 
     @Override
-    public boolean signup(User user) throws Exception{
+    public boolean signup(User user) throws Exception {
 
         return controller.signup(user);
 
@@ -75,7 +76,7 @@ public class ClientView extends Application implements ClientViewInt {
 
     @Override
     public void logout() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+       controller.logout(); 
     }
 
     @Override
@@ -119,20 +120,31 @@ public class ClientView extends Application implements ClientViewInt {
     public void reciveMsgGroup(String msg, ArrayList<String> groupChatUsers) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     /**
-     * show error alert 
+     * show error alert
+     *
      * @param title
      * @param header
-     * @param content 
+     * @param content
      */
-    public void showError(String title , String header , String content){
-        
+    public void showError(String title, String header, String content) {
+
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);
         alert.setHeaderText(header);
         alert.setContentText(content);
         alert.showAndWait();
-            
+
+    }
+
+    @Override
+    public ArrayList<User> getContacts() {
+        return controller.getContacts();
+    }
+
+    @Override
+    public ArrayList<String> checkRequest() {
+        return controller.checkRequest();
     }
 }

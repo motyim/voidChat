@@ -12,10 +12,12 @@ import java.util.LinkedList;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
@@ -24,8 +26,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-
 import javafx.scene.layout.VBox;
 import model.User;
 
@@ -45,7 +47,9 @@ public class ChatSceneController implements Initializable {
     @FXML
     private ImageView iconLogout;
     @FXML
-    private ListView<String> listview;
+    private ListView<String> friendsListview;
+    @FXML
+    private ListView<String> requestsListview;
     @FXML
     private Pane content;
     @FXML
@@ -80,6 +84,7 @@ public class ChatSceneController implements Initializable {
         }
 
         listview.setCellFactory(listView -> new ListCell<String>() {
+
             private final ImageView imageView = new ImageView();
             private final ImageView imageViewStatus = new ImageView();
 
@@ -90,6 +95,7 @@ public class ChatSceneController implements Initializable {
 
                     FlowPane flow = new FlowPane();
                     flow.setHgap(4);
+                    flow.setPrefWidth(1);
 
                     Label friendName = new Label();
                     friendName.setText(friend);
@@ -112,12 +118,11 @@ public class ChatSceneController implements Initializable {
                 }
             }
         });
-
-        listview.setOnMouseClicked(new EventHandler<MouseEvent>() {
+        friendsListview.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 try {
-                    System.out.println("clicked on " + listview.getSelectionModel().getSelectedItem());
+                    System.out.println("clicked on " + friendsListview.getSelectionModel().getSelectedItem());
                     content.getChildren().clear();
                     content.getChildren().add(FXMLLoader.load(getClass().getResource("ChatBox.fxml")));
                     //labelFriendName.setText(listview.getSelectionModel().getSelectedItem());
@@ -126,6 +131,53 @@ public class ChatSceneController implements Initializable {
                 }
             }
         });
+
+        ObservableList<String> requestsList = FXCollections.observableArrayList(
+                "Sarah Ahmed", "Bosy Ismail"
+        );
+        requestsListview.setItems(requestsList);
+        requestsListview.setCellFactory(listView -> new ListCell<String>() {
+
+            Button btnAccept = new Button();
+            Button btnIgnore = new Button();
+
+            @Override
+            public void updateItem(String name, boolean empty) {
+                super.updateItem(name, empty);
+                if (name != null) {
+
+                    BorderPane pane = new BorderPane();
+
+                    Label labelRequestFrom = new Label();
+                    labelRequestFrom.setText(name);
+
+                    btnAccept.setGraphic(new ImageView(new Image("/resouces/accept.png", 9, 9, false, false)));
+                    btnAccept.setOnAction(new EventHandler<ActionEvent>() {
+                        @Override
+                        public void handle(ActionEvent event) {
+                            System.out.println("Accept :" + getItem());
+                        }
+                    });
+                    btnIgnore.setGraphic(new ImageView(new Image("/resouces/ignore.png", 9, 9, false, false)));
+                    btnIgnore.setOnAction(new EventHandler<ActionEvent>() {
+                        @Override
+                        public void handle(ActionEvent event) {
+                            System.out.println("Ignore :" + getItem());
+                        }
+                    });
+
+                    HBox btnHbox = new HBox();
+
+                    btnHbox.getChildren().addAll(btnIgnore, btnAccept);
+                    btnHbox.setSpacing(3);
+                    pane.setRight(btnHbox);
+                    pane.setLeft(labelRequestFrom);
+                    setGraphic(pane);
+
+                }
+            }
+        });
+
     }
 
     @FXML

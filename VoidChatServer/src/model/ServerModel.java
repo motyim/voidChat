@@ -240,6 +240,8 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
 
     @Override
     public int sendRequest(String senderName, String reciverName, String type) throws RemoteException {
+         if(senderName.equals(reciverName))
+            return Constant.SAME_NAME;
         try {
             getConnection();
             query = "select * from UserTable where username='" + reciverName + "'";

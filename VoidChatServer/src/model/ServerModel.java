@@ -10,6 +10,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import utilitez.SHA;
+import utilitez.Constant;
 
 /**
  *
@@ -63,7 +64,6 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
             resultSet = statement.executeQuery(query);
             if (resultSet.next()) {
                 closeResources();
-                System.out.println("errorrrrrrrrr");
                 return false;
             } else {
                 query = "insert into UserTable (username,email,fname,lname,password,gender,country) values('" + user.getUsername()
@@ -98,7 +98,7 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
                 String status = resultSet.getString("status");
                 String country = resultSet.getString("country");
                 user = new User(name, email, fname, lname, pw, gender, country, status);
-                
+
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -114,7 +114,8 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
 
     @Override
     public void unregister(String username) throws RemoteException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        //System.out.println(username);
+        
     }
 
     @Override
@@ -142,9 +143,15 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
     @Override
     public void acceptRequest(String senderName, String reciverName) throws RemoteException {
         try {
+            String type = null;
             getConnection();
-            query = "insert into Relationship (user,friend)values ('" + reciverName + "','" + senderName + "')";
+            query = "select type from Requests where receiver='" + reciverName + "and sender='" + senderName + "'";
             statement = connection.createStatement();
+            resultSet = statement.executeQuery(query);
+            while (resultSet.next()) {
+                type = resultSet.getString("type");
+            }
+            query = "insert into Relationship (user,friend,type)values ('" + reciverName + "','" + senderName + "','" + type + "')";
             statement.executeUpdate(query);
             query = "delete from Requests where sender='" + senderName + "' and receiver='" + reciverName + "'";
             statement.executeUpdate(query);
@@ -231,19 +238,43 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
     }
 
     @Override
-    public void sendRequest(String senderName, String reciverName) throws RemoteException {
+    public int sendRequest(String senderName, String reciverName, String type) throws RemoteException {
         try {
             getConnection();
             query = "select * from UserTable where username='" + reciverName + "'";
             statement = connection.createStatement();
             resultSet = statement.executeQuery(query);
-            if (resultSet.next()) {
-                query = "insert into Requests (sender,receiver)values ('" + senderName + "','" + reciverName + "')";
-                statement.executeUpdate(query);
+            if (!(resultSet.next())) {
+                closeResources();
+                return Constant.USER_NOT_EXIST;
             }
+
+            query = "select * from Relationship where (user='" + senderName + "' and friend='" + reciverName + "') or "
+                    + "(user='" + reciverName + "' and friend='" + senderName + "')";
+            resultSet = statement.executeQuery(query);
+            if (resultSet.next()) {
+                closeResources();
+                return Constant.ALREADY_FRIENDS;
+            }
+
+            query = "select * from Requests where (sender='" + senderName + "' and receiver='" + reciverName + "')or"
+                    + "(sender='" + reciverName + "' and receiver='" + senderName + "')";
+            resultSet = statement.executeQuery(query);
+            if (resultSet.next()) {
+                closeResources();
+                return Constant.REQUEST_ALREADY_EXIST;
+            }
+
+            query = "insert into Requests (sender,receiver,type)values ('" + senderName + "','" + reciverName + "','" + type + "')";
+            statement.executeUpdate(query);
+            closeResources();
+            return Constant.SENDED;
+
         } catch (SQLException ex) {
             ex.printStackTrace();
+            return Constant.EXCEPTION;
         }
-        closeResources();
+
     }
+
 }

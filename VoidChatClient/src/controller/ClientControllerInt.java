@@ -65,8 +65,10 @@ public interface ClientControllerInt {
      * call unregister from SM handle out form chat mn error w kda
      */
     void logout();
-
-    void sendRequest(String reciverName);
+    
+    //zwadt 2l category
+    int sendRequest(String reciverName,String category);
+    
 
     void notify(String senderName);
 

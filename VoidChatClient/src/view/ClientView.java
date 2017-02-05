@@ -76,7 +76,7 @@ public class ClientView extends Application implements ClientViewInt {
 
     @Override
     public void logout() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+       controller.logout(); 
     }
 
     @Override

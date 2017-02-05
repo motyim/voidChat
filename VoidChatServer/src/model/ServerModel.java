@@ -114,7 +114,8 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
 
     @Override
     public void unregister(String username) throws RemoteException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        //System.out.println(username);
+        
     }
 
     @Override

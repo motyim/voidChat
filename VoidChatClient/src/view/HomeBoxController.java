@@ -15,7 +15,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonBar.ButtonData;
+import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Dialog;
@@ -74,7 +74,7 @@ public class HomeBoxController implements Initializable {
         Dialog<Pair<String, String>> dialog = new Dialog<>();
         dialog.setTitle("Add New Friend");
 
-        ButtonType addButtonType = new ButtonType("Add", ButtonData.OK_DONE);
+        ButtonType addButtonType = new ButtonType("Add", ButtonBar.ButtonData.OK_DONE);
         dialog.getDialogPane().getButtonTypes().addAll(addButtonType, ButtonType.CANCEL);
 
         GridPane grid = new GridPane();
@@ -112,5 +112,4 @@ public class HomeBoxController implements Initializable {
         });
 
     }
-
 }

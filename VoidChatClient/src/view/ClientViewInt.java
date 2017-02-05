@@ -39,6 +39,10 @@ public interface ClientViewInt {
     
     ArrayList<User> getContacts();
     
+    public void showError(String title, String header, String content) ;
+    
+    public void showSuccess(String title, String header, String content); 
+    
     ArrayList<String> checkRequest();
 
 }

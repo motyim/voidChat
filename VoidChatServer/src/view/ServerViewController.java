@@ -1,3 +1,4 @@
+
 package view;
 
 /*
@@ -37,3 +38,4 @@ public class ServerViewController implements Initializable {
     }
 
 }
+

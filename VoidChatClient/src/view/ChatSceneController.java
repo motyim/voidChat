@@ -7,6 +7,8 @@ package view;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -27,6 +29,7 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import model.User;
 
 /**
  * FXML Controller class
@@ -68,11 +71,20 @@ public class ChatSceneController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
-        ObservableList<String> data = FXCollections.observableArrayList(
-                "Roma attia", "Mustafa Ismail", "Roma attia", "Mustafa Ismail"
-        );
-        friendsListview.setItems(data);
-        friendsListview.setCellFactory(listView -> new ListCell<String>() {
+        ArrayList<User> contacts = clinetView.getContacts();
+
+        //check not empty contact list
+        if (contacts != null) {
+            ArrayList<String> contactsName = new ArrayList<>();
+            for (User contact : contacts) {
+                contactsName.add(contact.getUsername());
+            }
+            ObservableList<String> data = FXCollections.observableArrayList(contactsName);
+            listview.setItems(data);
+        }
+
+        listview.setCellFactory(listView -> new ListCell<String>() {
+
             private final ImageView imageView = new ImageView();
             private final ImageView imageViewStatus = new ImageView();
 

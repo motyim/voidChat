@@ -40,5 +40,6 @@ public interface ClientViewInt {
     ArrayList<User> getContacts();
     
     ArrayList<String> checkRequest();
-
+    
+    User getUserInformation();
 }

@@ -38,7 +38,7 @@
                         <Font name="System Bold" size="24.0" />
                     </font>
                 </Label>
-                <Label text="User Name">
+                <Label fx:id="labelUserName" text="User Name">
                     <font>
                         <Font size="18.0" />
                     </font>

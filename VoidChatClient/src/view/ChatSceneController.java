@@ -80,10 +80,10 @@ public class ChatSceneController implements Initializable {
                 contactsName.add(contact.getUsername());
             }
             ObservableList<String> data = FXCollections.observableArrayList(contactsName);
-            listview.setItems(data);
+            friendsListview.setItems(data);
         }
 
-        listview.setCellFactory(listView -> new ListCell<String>() {
+        friendsListview.setCellFactory(listView -> new ListCell<String>() {
 
             private final ImageView imageView = new ImageView();
             private final ImageView imageViewStatus = new ImageView();

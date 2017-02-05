@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package view;
 
 import java.io.IOException;
@@ -143,10 +138,47 @@ public class ChatSceneController implements Initializable {
             }
         });
 
-        ObservableList<String> requestsList = FXCollections.observableArrayList(
-                "Sarah Ahmed", "Bosy Ismail"
-        );
-        requestsListview.setItems(requestsList);
+        updateContactsList();
+
+    }
+
+    @FXML
+    private void homeAction(MouseEvent event) {
+        try {
+            content.getChildren().clear();
+            content.getChildren().add(FXMLLoader.load(getClass().getResource("HomeBox.fxml")));
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void iconLogoutAction(MouseEvent event) {
+        try {
+            ((Node) (event.getSource())).getScene().getWindow().hide();
+            Parent parent = FXMLLoader.load(getClass().getResource("LoginScene.fxml"));
+            Stage stage = new Stage();
+            Scene scene = new Scene(parent);
+            stage.setScene(scene);
+            stage.setTitle(" Sin_in Page");
+            stage.show();
+            clinetView.logout();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    private void updateContactsList() {
+     //get requests form database
+        ArrayList<String> requests = clinetView.checkRequest();
+        
+        if (requests != null) {
+            ObservableList<String> requestsList = FXCollections.observableArrayList(requests);
+            requestsListview.setItems(requestsList);
+        }
+
+        
+        
         requestsListview.setCellFactory(listView -> new ListCell<String>() {
 
             Button btnAccept = new Button();
@@ -187,34 +219,7 @@ public class ChatSceneController implements Initializable {
 
                 }
             }
-        });
-
-    }
-
-    @FXML
-    private void homeAction(MouseEvent event) {
-        try {
-            content.getChildren().clear();
-            content.getChildren().add(FXMLLoader.load(getClass().getResource("HomeBox.fxml")));
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-    }
-
-    @FXML
-    private void iconLogoutAction(MouseEvent event) {
-        try {
-            ((Node) (event.getSource())).getScene().getWindow().hide();
-            Parent parent = FXMLLoader.load(getClass().getResource("LoginScene.fxml"));
-            Stage stage = new Stage();
-            Scene scene = new Scene(parent);
-            stage.setScene(scene);
-            stage.setTitle(" Sin_in Page");
-            stage.show();
-            clinetView.logout();
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
+        });   
     }
 
 }

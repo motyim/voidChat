@@ -134,6 +134,7 @@ public class ClientView extends Application implements ClientViewInt {
      * @param header
      * @param content
      */
+    @Override
     public void showError(String title, String header, String content) {
 
         Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -142,6 +143,21 @@ public class ClientView extends Application implements ClientViewInt {
         alert.setContentText(content);
         alert.showAndWait();
 
+    }
+    
+    /**
+     * alert success operation
+     * @param title
+     * @param header
+     * @param content 
+     */
+    @Override
+     public void showSuccess(String title, String header, String content) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(header);
+        alert.setContentText(content);
+        alert.showAndWait();
     }
 
     @Override

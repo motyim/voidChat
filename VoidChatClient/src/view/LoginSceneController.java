@@ -108,19 +108,11 @@ public class LoginSceneController implements Initializable {
     @FXML
     private void linkCreatAccountAction(ActionEvent event) {
         try {
-            ((Node) (event.getSource())).getScene().getWindow().hide(); //this line to hide login window ..
             Parent parent = FXMLLoader.load(getClass().getResource("SignupScence.fxml"));
-            Stage stage = new Stage();
+            Stage stage = clinetView.getMainStage();
             Scene scene = new Scene(parent);
             stage.setScene(scene);
-            stage.setResizable(false);
             stage.setTitle("Create an account");
-            stage.show();
-            stage.setOnCloseRequest((WindowEvent ew) -> {
-                Platform.exit();
-                //TODO : why not close
-                System.exit(0);
-            });
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -128,7 +120,8 @@ public class LoginSceneController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-
+        // Request focus on the txtUserName field by default.
+        Platform.runLater(() -> txtUserName.requestFocus());
     }
 
 }

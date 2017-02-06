@@ -19,8 +19,11 @@ public class ClientModel extends UnicastRemoteObject implements ClientModelInt {
     }
     
     @Override
+    //////////////////////////3adlt hna//////////////////////////////////////////////////
     public void notify(String senderName) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        System.out.println("client Model Notify");
+        controller.notify(senderName);
+       
     }
 
     @Override

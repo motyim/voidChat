@@ -1,7 +1,10 @@
 package view;
 
 import controller.ClientController;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -9,9 +12,12 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import model.User;
+import tray.notification.NotificationType;
+import tray.notification.TrayNotification;
 
 /**
  *
@@ -25,9 +31,9 @@ public class ClientView extends Application implements ClientViewInt {
 
     public ClientView() {
         controller = new ClientController(this);
-        instance = this;
+        instance = this;       
     }
-
+    
     /**
      * get static instance form client view
      *
@@ -88,7 +94,7 @@ public class ClientView extends Application implements ClientViewInt {
 
     @Override
     public void notify(String senderName) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        showTrayNotification("New Request", "New Request From "+senderName, NotificationType.INFORMATION);
     }
 
     @Override
@@ -151,4 +157,16 @@ public class ClientView extends Application implements ClientViewInt {
     public Stage getMainStage(){
         return this.mainStage;
     }
+     /**
+     * show Desktop Notification
+     *  example:
+     *  showTrayNotification("title","Message",NotificationType.SUCCESS);
+     * @param title
+     * @param Message
+     * @param notificationType  types: INFORMATION,NOTICE, SUCCESS, WARNING, ERROR, CUSTOM
+     */
+    public void showTrayNotification(String title,String Message,NotificationType notificationType){
+        System.out.println(">> "+Message);
+    }
+    
 }

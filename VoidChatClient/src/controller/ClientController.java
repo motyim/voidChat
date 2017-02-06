@@ -35,7 +35,6 @@ public class ClientController implements ClientControllerInt {
 
             serverModelInt = (ServerModelInt) reg.lookup("voidChatServer");
             System.out.println("Conncet to Server");
-            serverModelInt.displayStatus();
         } catch (RemoteException | NotBoundException ex) {
             ex.printStackTrace();
         }

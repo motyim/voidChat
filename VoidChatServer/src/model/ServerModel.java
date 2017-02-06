@@ -126,7 +126,7 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
             statement = connection.createStatement();
             resultSet = statement.executeQuery(query);
             if (resultSet.next()) {
-                friendsNames = new ArrayList<String>();
+                friendsNames = new ArrayList<>();
                 friendsNames.add(resultSet.getString("sender"));
                 while (resultSet.next()) {
                     friendsNames.add(resultSet.getString("sender"));
@@ -192,10 +192,6 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    @Override
-    public void displayStatus() throws RemoteException {
-        System.out.println("this method is called by client");
-    }
 
     @Override
     public ArrayList<User> getContacts(String userName) throws RemoteException {
@@ -285,5 +281,17 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
         }
 
     }
-
+    
+    @Override
+    public void ignoreRequest(String senderName,String reciverName){
+         try {
+            getConnection();
+            query = "delete from Requests where sender='" + senderName + "' and receiver='" + reciverName + "'";
+            statement = connection.createStatement();
+            statement.executeUpdate(query);
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        closeResources();
+    }
 }

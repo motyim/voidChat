@@ -104,6 +104,11 @@ public interface ServerModelInt extends Remote {
     
     void groupMsg(String msg , ArrayList<String> groupChatUsers) throws RemoteException;
     
-    //TODO : remove this method 
-    void displayStatus() throws RemoteException;
+    /**
+     * refuser friend request
+     * @param senderName
+     * @param reciverName
+     * @throws RemoteException 
+     */
+    public void ignoreRequest(String senderName,String reciverName) throws RemoteException;
 }

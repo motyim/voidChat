@@ -5,6 +5,7 @@ import java.rmi.*;
 import java.util.ArrayList;
 
 public interface ServerModelInt extends Remote {
+    
     /**
      * 
      * @param user
@@ -51,9 +52,7 @@ public interface ServerModelInt extends Remote {
      * @param reciverName bt3o  
      * @throws java.rmi.RemoteException  
      */
-
     int sendRequest(String senderName, String reciverName,String type) throws RemoteException;
-
     
     /**
      * 
@@ -105,7 +104,11 @@ public interface ServerModelInt extends Remote {
     
     void groupMsg(String msg , ArrayList<String> groupChatUsers) throws RemoteException;
     
-    //TODO : remove this method 
-    void displayStatus() throws RemoteException;
-void ignoreRequest(String senderName,String reciverName)throws RemoteException;
+    /**
+     * refuser friend request
+     * @param senderName
+     * @param reciverName
+     * @throws RemoteException 
+     */
+    public void ignoreRequest(String senderName,String reciverName) throws RemoteException;
 }

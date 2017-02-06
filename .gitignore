@@ -8,3 +8,6 @@
 /VoidChatServer/nbproject/
 /VoidChatServer/voidChat
 *.properties
+nbproject
+build
+dist

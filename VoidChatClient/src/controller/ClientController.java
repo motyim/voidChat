@@ -65,7 +65,8 @@ public class ClientController implements ClientControllerInt {
             //assigne data return to loginUser 
             loginUser =  serverModelInt.signin(username, password);
             //register client to server
-            registerToServer(loginUser.getUsername(), model);
+            if(loginUser !=null)
+                registerToServer(loginUser.getUsername(), model);
         } catch (RemoteException | NullPointerException ex) {
             ex.printStackTrace();
             throw new Exception("Server not working now");

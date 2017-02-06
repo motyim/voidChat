@@ -1,8 +1,8 @@
 package view;
 
+
 import controller.ClientController;
 import java.util.ArrayList;
-
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -13,6 +13,8 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import model.User;
 import tray.notification.NotificationType;
+
+
 
 /**
  *
@@ -26,9 +28,9 @@ public class ClientView extends Application implements ClientViewInt {
 
     public ClientView() {
         controller = new ClientController(this);
-        instance = this;
+        instance = this;       
     }
-
+    
     /**
      * get static instance form client view
      *
@@ -51,6 +53,8 @@ public class ClientView extends Application implements ClientViewInt {
         stage.setScene(scene);
         stage.setResizable(false);
         stage.show();
+        
+        showTrayNotification("test", "test", NotificationType.SUCCESS);
     }
 
     @Override
@@ -168,7 +172,9 @@ public class ClientView extends Application implements ClientViewInt {
     public Stage getMainStage(){
         return this.mainStage;
     }
-/**
+
+
+     /**
      * show Desktop Notification
      *  example:
      *  showTrayNotification("title","Message",NotificationType.SUCCESS);
@@ -177,6 +183,14 @@ public class ClientView extends Application implements ClientViewInt {
      * @param notificationType  types: INFORMATION,NOTICE, SUCCESS, WARNING, ERROR, CUSTOM
      */
     public void showTrayNotification(String title,String Message,NotificationType notificationType){
-        System.out.println(">> "+Message);
+
+      System.out.println(">> "+Message);
     }
+
+    @Override
+    public User getUserInformation() {
+        return controller.getUserInformation();
+    }
+
+
 }

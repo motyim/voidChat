@@ -44,5 +44,6 @@ public interface ClientViewInt {
     public void showSuccess(String title, String header, String content); 
     
     ArrayList<String> checkRequest();
-
+    
+    User getUserInformation();
 }

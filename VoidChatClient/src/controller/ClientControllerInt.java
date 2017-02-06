@@ -83,4 +83,6 @@ public interface ClientControllerInt {
     void groupMsg(String msg, ArrayList<String> groupChatUsers);
 
     void reciveMsgGroup(String msg, ArrayList<String> groupChatUsers);
+    
+    User getUserInformation();
 }

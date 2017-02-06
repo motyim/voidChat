@@ -13,20 +13,26 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.control.MenuButton;
+import javafx.scene.control.Tab;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import model.User;
@@ -43,6 +49,8 @@ public class ChatSceneController implements Initializable {
     @FXML
     private ImageView imgHome;
     @FXML
+    private ImageView imgUser;
+    @FXML
     private Label homeLabel;
     @FXML
     private ImageView iconLogout;
@@ -58,6 +66,16 @@ public class ChatSceneController implements Initializable {
     private Label friendName;
     @FXML
     private Image clips;
+    @FXML
+    private Tab requestsTab;
+    @FXML
+    private MenuButton menuBntStatus;
+    @FXML
+    private ComboBox comboBoxStatus;
+    @FXML
+    private AnchorPane friendsPane;
+
+    ObservableList<String> statusList = FXCollections.observableArrayList("online", "offline", "busy");
 
     private ClientView clinetView;
 
@@ -69,12 +87,15 @@ public class ChatSceneController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        updatePageInfo();
+
+        comboBoxStatus.setItems(statusList);
 
         try {
             content.getChildren().clear();
             content.getChildren().add(FXMLLoader.load(getClass().getResource("HomeBox.fxml")));
         } catch (IOException ex) {
-            Logger.getLogger(ChatSceneController.class.getName()).log(Level.SEVERE, null, ex);
+            ex.printStackTrace();
         }
 
         ArrayList<User> contacts = clinetView.getContacts();
@@ -87,6 +108,16 @@ public class ChatSceneController implements Initializable {
             }
             ObservableList<String> data = FXCollections.observableArrayList(contactsName);
             friendsListview.setItems(data);
+        } else {
+//            VBox hbox= new VBox();
+//            hbox.setPrefHeight(200);
+//            hbox.setPrefWidth(200);
+//            friendsPane.getChildren().clear();
+//            Label label=new Label("Add New Friends");
+//            ImageView imgView=new ImageView(new Image("resouces/circle.png",20,20,false,false));
+//            hbox.getChildren().addAll(label,imgView);
+//            hbox.setAlignment(Pos.CENTER);
+//            friendsPane.getChildren().add(hbox);
         }
 
         friendsListview.setCellFactory(listView -> new ListCell<String>() {
@@ -138,8 +169,57 @@ public class ChatSceneController implements Initializable {
             }
         });
 
-        updateContactsList();
 
+        ArrayList<String> requestsArrayList = clinetView.checkRequest();
+
+        if (requestsArrayList != null) {
+            requestsTab.setDisable(false);
+            ObservableList<String> requestsList = FXCollections.observableArrayList(requestsArrayList);
+            requestsListview.setItems(requestsList);
+            requestsListview.setCellFactory(listView -> new ListCell<String>() {
+
+                Button btnAccept = new Button();
+                Button btnIgnore = new Button();
+
+                @Override
+                public void updateItem(String name, boolean empty) {
+                    super.updateItem(name, empty);
+                    if (name != null) {
+
+                        BorderPane pane = new BorderPane();
+
+                        Label labelRequestFrom = new Label();
+                        labelRequestFrom.setText(name);
+
+                        btnAccept.setGraphic(new ImageView(new Image("/resouces/accept.png", 9, 9, false, false)));
+                        btnAccept.setOnAction(new EventHandler<ActionEvent>() {
+                            @Override
+                            public void handle(ActionEvent event) {
+                                System.out.println("Accept :" + getItem());
+                            }
+                        });
+                        btnIgnore.setGraphic(new ImageView(new Image("/resouces/ignore.png", 9, 9, false, false)));
+                        btnIgnore.setOnAction(new EventHandler<ActionEvent>() {
+                            @Override
+                            public void handle(ActionEvent event) {
+                                System.out.println("Ignore :" + getItem());
+                            }
+                        });
+
+                        HBox btnHbox = new HBox();
+
+                        btnHbox.getChildren().addAll(btnIgnore, btnAccept);
+                        btnHbox.setSpacing(3);
+                        pane.setRight(btnHbox);
+                        pane.setLeft(labelRequestFrom);
+                        setGraphic(pane);
+
+                    }
+                }
+            });
+        } else {
+            requestsTab.setDisable(true);
+        }
     }
 
     @FXML
@@ -166,9 +246,15 @@ public class ChatSceneController implements Initializable {
         } catch (IOException ex) {
             ex.printStackTrace();
         }
+
+        //updateContactsList();
+
     }
 
-    private void updateContactsList() {
+
+    
+
+   /* private void updateContactsList() {
      //get requests form database
         ArrayList<String> requests = clinetView.checkRequest();
         
@@ -220,6 +306,16 @@ public class ChatSceneController implements Initializable {
                 }
             }
         });   
+
+    }*/
+
+    public void updatePageInfo() {
+        User user = clinetView.getUserInformation();
+        homeLabel.setText(user.getUsername());
+        comboBoxStatus.setValue("online");
+        if (user.getGender().equals("Female")) {
+            imgUser.setImage(new Image("/resouces/female.png"));
+        }
     }
 
 }

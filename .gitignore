@@ -7,3 +7,4 @@
 /VoidChatClient/nbproject/
 /VoidChatServer/nbproject/
 /VoidChatServer/voidChat
+*.properties

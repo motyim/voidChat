@@ -2,7 +2,6 @@ package view;
 
 
 import controller.ClientController;
-import java.io.IOException;
 import java.util.ArrayList;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -10,12 +9,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import model.User;
 import tray.notification.NotificationType;
-import tray.notification.TrayNotification;
+
 
 
 /**
@@ -175,6 +173,7 @@ public class ClientView extends Application implements ClientViewInt {
         return this.mainStage;
     }
 
+
      /**
      * show Desktop Notification
      *  example:
@@ -192,5 +191,6 @@ public class ClientView extends Application implements ClientViewInt {
     public User getUserInformation() {
         return controller.getUserInformation();
     }
+
 
 }

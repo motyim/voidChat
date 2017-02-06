@@ -35,7 +35,6 @@ public class ClientController implements ClientControllerInt {
 
             serverModelInt = (ServerModelInt) reg.lookup("voidChatServer");
             System.out.println("Conncet to Server");
-            serverModelInt.displayStatus();
         } catch (RemoteException | NotBoundException ex) {
             ex.printStackTrace();
         }
@@ -65,7 +64,8 @@ public class ClientController implements ClientControllerInt {
             //assigne data return to loginUser 
             loginUser =  serverModelInt.signin(username, password);
             //register client to server
-            registerToServer(loginUser.getUsername(), model);
+            if(loginUser !=null)
+                registerToServer(loginUser.getUsername(), model);
         } catch (RemoteException | NullPointerException ex) {
             ex.printStackTrace();
             throw new Exception("Server not working now");

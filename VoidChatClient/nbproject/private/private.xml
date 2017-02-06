@@ -2,12 +2,11 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-
-
-            <file>file:/Users/Merna/Desktop/voidChat/VoidChatClient/src/view/LoginSceneController.java</file>
-            <file>file:/Users/Merna/Desktop/voidChat/VoidChatClient/src/view/ChatSceneController.java</file>
-            <file>file:/Users/Merna/Desktop/voidChat/VoidChatClient/src/view/SignupScenceController.java</file>
-
-
+        <file>file:/Users/Merna/Desktop/voidChat/VoidChatClient/src/view/LoginSceneController.java</file>
+        <file>file:/Users/Merna/Desktop/voidChat/VoidChatClient/src/view/ChatSceneController.java</file>
+        <file>file:/Users/Merna/Desktop/voidChat/VoidChatClient/src/view/SignupScenceController.java</file>
+        <group>
+            <file>file:/C:/Users/MY-PC/Desktop/voidChat/VoidChatClient/src/view/ClientView.java</file>
+        </group>
     </open-files>
 </project-private>

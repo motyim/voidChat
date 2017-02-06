@@ -12,6 +12,7 @@ import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import model.User;
+import tray.notification.NotificationType;
 
 /**
  *
@@ -88,7 +89,7 @@ public class ClientView extends Application implements ClientViewInt {
 
     @Override
     public void notify(String senderName) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        showTrayNotification("New Request", "New Request From "+senderName, NotificationType.INFORMATION);
     }
 
     @Override
@@ -166,5 +167,16 @@ public class ClientView extends Application implements ClientViewInt {
     
     public Stage getMainStage(){
         return this.mainStage;
+    }
+/**
+     * show Desktop Notification
+     *  example:
+     *  showTrayNotification("title","Message",NotificationType.SUCCESS);
+     * @param title
+     * @param Message
+     * @param notificationType  types: INFORMATION,NOTICE, SUCCESS, WARNING, ERROR, CUSTOM
+     */
+    public void showTrayNotification(String title,String Message,NotificationType notificationType){
+        System.out.println(">> "+Message);
     }
 }

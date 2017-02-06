@@ -107,4 +107,5 @@ public interface ServerModelInt extends Remote {
     
     //TODO : remove this method 
     void displayStatus() throws RemoteException;
+void ignoreRequest(String senderName,String reciverName)throws RemoteException;
 }

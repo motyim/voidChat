@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package view;
 
 import java.io.IOException;
@@ -174,6 +169,7 @@ public class ChatSceneController implements Initializable {
             }
         });
 
+
         ArrayList<String> requestsArrayList = clinetView.checkRequest();
 
         if (requestsArrayList != null) {
@@ -250,7 +246,68 @@ public class ChatSceneController implements Initializable {
         } catch (IOException ex) {
             ex.printStackTrace();
         }
+
+        //updateContactsList();
+
     }
+
+
+    
+
+   /* private void updateContactsList() {
+     //get requests form database
+        ArrayList<String> requests = clinetView.checkRequest();
+        
+        if (requests != null) {
+            ObservableList<String> requestsList = FXCollections.observableArrayList(requests);
+            requestsListview.setItems(requestsList);
+        }
+
+        
+        
+        requestsListview.setCellFactory(listView -> new ListCell<String>() {
+
+            Button btnAccept = new Button();
+            Button btnIgnore = new Button();
+
+            @Override
+            public void updateItem(String name, boolean empty) {
+                super.updateItem(name, empty);
+                if (name != null) {
+
+                    BorderPane pane = new BorderPane();
+
+                    Label labelRequestFrom = new Label();
+                    labelRequestFrom.setText(name);
+
+                    btnAccept.setGraphic(new ImageView(new Image("/resouces/accept.png", 9, 9, false, false)));
+                    btnAccept.setOnAction(new EventHandler<ActionEvent>() {
+                        @Override
+                        public void handle(ActionEvent event) {
+                            System.out.println("Accept :" + getItem());
+                        }
+                    });
+                    btnIgnore.setGraphic(new ImageView(new Image("/resouces/ignore.png", 9, 9, false, false)));
+                    btnIgnore.setOnAction(new EventHandler<ActionEvent>() {
+                        @Override
+                        public void handle(ActionEvent event) {
+                            System.out.println("Ignore :" + getItem());
+                        }
+                    });
+
+                    HBox btnHbox = new HBox();
+
+                    btnHbox.getChildren().addAll(btnIgnore, btnAccept);
+                    btnHbox.setSpacing(3);
+                    pane.setRight(btnHbox);
+                    pane.setLeft(labelRequestFrom);
+                    setGraphic(pane);
+
+                }
+            }
+        });   
+
+    }*/
 
     public void updatePageInfo() {
         User user = clinetView.getUserInformation();

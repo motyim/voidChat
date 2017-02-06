@@ -18,7 +18,6 @@ import utilitez.Constant;
  */
 public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
 
-
     private Connection connection;
     private Statement statement;
     private ResultSet resultSet;
@@ -26,7 +25,7 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
     private String property = System.getProperty("user.dir");
     private ServerController controller;
 
-    public ServerModel(ServerController controller)throws RemoteException  {
+    public ServerModel(ServerController controller) throws RemoteException {
         this.controller = controller;
     }
 
@@ -109,13 +108,13 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
 
     @Override
     public void register(String username, ClientModelInt obj) throws RemoteException {
-        
+        controller.register(username, obj);
     }
 
     @Override
     public void unregister(String username) throws RemoteException {
         //System.out.println(username);
-        
+
     }
 
     @Override
@@ -162,8 +161,10 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
     }
 
     @Override
+    //hna zawdt
     public void notify(String senderName, String reciverName) throws RemoteException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        System.out.println("notify in model controller");
+        controller.notify(senderName, reciverName);
     }
 
     @Override
@@ -239,13 +240,15 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
 
     @Override
     public int sendRequest(String senderName, String reciverName, String type) throws RemoteException {
+         if(senderName.equals(reciverName))
+            return Constant.SAME_NAME;
         try {
             getConnection();
             query = "select * from UserTable where username='" + reciverName + "'";
             statement = connection.createStatement();
             resultSet = statement.executeQuery(query);
             if (!(resultSet.next())) {
-                closeResources();
+
                 return Constant.USER_NOT_EXIST;
             }
 
@@ -253,7 +256,7 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
                     + "(user='" + reciverName + "' and friend='" + senderName + "')";
             resultSet = statement.executeQuery(query);
             if (resultSet.next()) {
-                closeResources();
+
                 return Constant.ALREADY_FRIENDS;
             }
 
@@ -261,18 +264,24 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
                     + "(sender='" + reciverName + "' and receiver='" + senderName + "')";
             resultSet = statement.executeQuery(query);
             if (resultSet.next()) {
-                closeResources();
+
                 return Constant.REQUEST_ALREADY_EXIST;
             }
 
             query = "insert into Requests (sender,receiver,type)values ('" + senderName + "','" + reciverName + "','" + type + "')";
             statement.executeUpdate(query);
-            closeResources();
+
+            //zwat hna
             return Constant.SENDED;
 
         } catch (SQLException ex) {
             ex.printStackTrace();
             return Constant.EXCEPTION;
+        } finally {
+            closeResources();
+            System.out.println("$_");
+            notify(senderName, reciverName);
+            System.out.println("!_");
         }
 
     }

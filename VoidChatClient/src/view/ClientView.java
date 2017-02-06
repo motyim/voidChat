@@ -2,6 +2,7 @@ package view;
 
 
 import controller.ClientController;
+import java.io.IOException;
 import java.util.ArrayList;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -9,6 +10,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import model.User;
@@ -28,9 +30,9 @@ public class ClientView extends Application implements ClientViewInt {
 
     public ClientView() {
         controller = new ClientController(this);
-        instance = this;
+        instance = this;       
     }
-
+    
     /**
      * get static instance form client view
      *
@@ -93,7 +95,7 @@ public class ClientView extends Application implements ClientViewInt {
 
     @Override
     public void notify(String senderName) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        showTrayNotification("New Request", "New Request From "+senderName, NotificationType.INFORMATION);
     }
 
     @Override
@@ -133,6 +135,7 @@ public class ClientView extends Application implements ClientViewInt {
      * @param header
      * @param content
      */
+    @Override
     public void showError(String title, String header, String content) {
 
         Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -141,6 +144,21 @@ public class ClientView extends Application implements ClientViewInt {
         alert.setContentText(content);
         alert.showAndWait();
 
+    }
+    
+    /**
+     * alert success operation
+     * @param title
+     * @param header
+     * @param content 
+     */
+    @Override
+     public void showSuccess(String title, String header, String content) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(header);
+        alert.setContentText(content);
+        alert.showAndWait();
     }
 
     @Override
@@ -156,22 +174,23 @@ public class ClientView extends Application implements ClientViewInt {
     public Stage getMainStage(){
         return this.mainStage;
     }
-    
-    /**
+
+     /**
      * show Desktop Notification
-     *  example: 
+     *  example:
      *  showTrayNotification("title","Message",NotificationType.SUCCESS);
      * @param title
      * @param Message
      * @param notificationType  types: INFORMATION,NOTICE, SUCCESS, WARNING, ERROR, CUSTOM
      */
     public void showTrayNotification(String title,String Message,NotificationType notificationType){
-      TrayNotification tray = new TrayNotification(title,Message,notificationType);
-      tray.showAndWait();
+
+      System.out.println(">> "+Message);
     }
 
     @Override
     public User getUserInformation() {
         return controller.getUserInformation();
     }
+
 }

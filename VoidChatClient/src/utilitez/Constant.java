@@ -16,5 +16,4 @@ public class Constant {
     public final static int REQUEST_ALREADY_EXIST = 3;
     public final static int SENDED = 4;
     public final static int EXCEPTION = 0;
-    public final static int SAME_NAME = 5;
 }

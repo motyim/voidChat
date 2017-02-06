@@ -82,7 +82,9 @@ public class ClientController implements ClientControllerInt {
     @Override
     public void registerToServer(String username, ClientModelInt obj) {
         try {
+            System.out.println("bl");
             serverModelInt.register(username, obj);
+            System.out.println("blabla");
         } catch (RemoteException ex) {
             ex.printStackTrace();
         }
@@ -138,8 +140,10 @@ public class ClientController implements ClientControllerInt {
     }
 
     @Override
-    public void notify(String senderName) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    ////////////////////////////////////////////////////////////////////////////
+    public void notify(String senderName) { 
+        System.out.println("client controller notify");
+        view.notify(senderName);
     }
 
     @Override

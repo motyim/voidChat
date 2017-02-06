@@ -21,6 +21,8 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.TextFlow;
 import javafx.util.Pair;
+
+import model.User;
 import tray.notification.NotificationType;
 import tray.notification.TrayNotification;
 import utilitez.Constant;
@@ -41,6 +43,8 @@ public class HomeBoxController implements Initializable {
     private Image clips;
     @FXML
     private TextFlow txtFlowServerMsg;
+    @FXML
+    private Label labelUserName;
 
     private ClientView clinetView;
 
@@ -58,7 +62,7 @@ public class HomeBoxController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        updatePageInfo();
     }
 
     @FXML
@@ -131,5 +135,9 @@ public class HomeBoxController implements Initializable {
               
         });
 
+    }
+     public void updatePageInfo(){
+       User user= clinetView.getUserInformation();
+       labelUserName.setText(user.getUsername());  
     }
 }

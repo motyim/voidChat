@@ -25,6 +25,9 @@ public class ClientView extends Application implements ClientViewInt {
     private ClientController controller;
     static ClientView instance;
     private Stage mainStage;
+    
+    //views Controlleres
+    ChatSceneController chatSceneController ;
 
     public ClientView() {
         controller = new ClientController(this);
@@ -40,6 +43,11 @@ public class ClientView extends Application implements ClientViewInt {
         return instance;
     }
 
+    
+    public void setChatSceneController(ChatSceneController chatSceneController){
+        this.chatSceneController = chatSceneController;
+    }
+    
     @Override
     public void start(Stage stage) throws Exception {
         mainStage=stage;
@@ -54,7 +62,7 @@ public class ClientView extends Application implements ClientViewInt {
         stage.setResizable(false);
         stage.show();
         
-        showTrayNotification("test", "test", NotificationType.SUCCESS);
+        
     }
 
     @Override
@@ -185,6 +193,7 @@ public class ClientView extends Application implements ClientViewInt {
     public void showTrayNotification(String title,String Message,NotificationType notificationType){
 
       System.out.println(">> "+Message);
+      chatSceneController.showTrayNotification(title, Message, notificationType);
     }
 
     @Override

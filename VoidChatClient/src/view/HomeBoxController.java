@@ -23,8 +23,6 @@ import javafx.scene.text.TextFlow;
 import javafx.util.Pair;
 
 import model.User;
-import tray.notification.NotificationType;
-import tray.notification.TrayNotification;
 import utilitez.Constant;
 
 

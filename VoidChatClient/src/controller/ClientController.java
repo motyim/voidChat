@@ -140,15 +140,19 @@ public class ClientController implements ClientControllerInt {
     }
 
     @Override
-    ////////////////////////////////////////////////////////////////////////////
     public void notify(String senderName) { 
         System.out.println("client controller notify");
         view.notify(senderName);
     }
 
     @Override
-    public void acceptRequest(String senderName, String reciverName) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public boolean acceptRequest(String friendName) {
+        try {
+            return serverModelInt.acceptRequest(friendName, loginUser.getUsername());
+        } catch (RemoteException ex) {
+            ex.printStackTrace();
+            return false;
+        }
     }
 
     @Override

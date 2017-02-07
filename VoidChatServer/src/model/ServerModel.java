@@ -140,11 +140,11 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
     }
 
     @Override
-    public void acceptRequest(String senderName, String reciverName) throws RemoteException {
+    public boolean acceptRequest(String senderName, String reciverName) throws RemoteException {
         try {
             String type = null;
             getConnection();
-            query = "select type from Requests where receiver='" + reciverName + "and sender='" + senderName + "'";
+            query = "select type from Requests where receiver='" + reciverName + "' and sender='" + senderName + "'";
             statement = connection.createStatement();
             resultSet = statement.executeQuery(query);
             while (resultSet.next()) {
@@ -154,10 +154,14 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
             statement.executeUpdate(query);
             query = "delete from Requests where sender='" + senderName + "' and receiver='" + reciverName + "'";
             statement.executeUpdate(query);
+            return true; 
         } catch (SQLException ex) {
             ex.printStackTrace();
+            return false ;
+        }finally{
+            closeResources();
         }
-        closeResources();
+        
     }
 
     @Override
@@ -191,7 +195,6 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
     public void groupMsg(String msg, ArrayList<String> groupChatUsers) throws RemoteException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
 
     @Override
     public ArrayList<User> getContacts(String userName) throws RemoteException {
@@ -236,8 +239,9 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
 
     @Override
     public int sendRequest(String senderName, String reciverName, String type) throws RemoteException {
-         if(senderName.equals(reciverName))
+        if (senderName.equals(reciverName)) {
             return Constant.SAME_NAME;
+        }
         try {
             getConnection();
             query = "select * from UserTable where username='" + reciverName + "'";
@@ -281,10 +285,10 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
         }
 
     }
-    
+
     @Override
-    public void ignoreRequest(String senderName,String reciverName){
-         try {
+    public void ignoreRequest(String senderName, String reciverName) {
+        try {
             getConnection();
             query = "delete from Requests where sender='" + senderName + "' and receiver='" + reciverName + "'";
             statement = connection.createStatement();

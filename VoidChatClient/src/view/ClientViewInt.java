@@ -25,7 +25,7 @@ public interface ClientViewInt {
 
     void notify(String senderName);
 
-    void acceptRequest();
+    boolean acceptRequest(String friend);
 
     void notifyStatus(String username, String status);
 

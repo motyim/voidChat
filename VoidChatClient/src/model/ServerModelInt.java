@@ -67,9 +67,11 @@ public interface ServerModelInt extends Remote {
      * and remove row from request table
      * @param senderName bta3o
      * @param reciverName bt3e  
+     * @return   -true if success <br>
+     *            - false if not 
      * @throws java.rmi.RemoteException  
      */
-    void acceptRequest(String senderName , String reciverName ) throws RemoteException;
+    boolean acceptRequest(String senderName , String reciverName ) throws RemoteException;
     
     /**
      * notify form friend request

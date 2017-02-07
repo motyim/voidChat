@@ -72,7 +72,7 @@ public interface ClientControllerInt {
 
     void notify(String senderName);
 
-    void acceptRequest(String senderName, String reciverName);
+    boolean acceptRequest(String friendName);
 
     void notifyStatus(String username, String status);
 

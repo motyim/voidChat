@@ -99,6 +99,43 @@ public class ChatSceneController implements Initializable {
             ex.printStackTrace();
         }
 
+        
+        updateContactsList();
+        updateFriendsRequests();
+    }
+
+    @FXML
+    private void homeAction(MouseEvent event) {
+        try {
+            content.getChildren().clear();
+            content.getChildren().add(FXMLLoader.load(getClass().getResource("HomeBox.fxml")));
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void iconLogoutAction(MouseEvent event) {
+        try {
+            ((Node) (event.getSource())).getScene().getWindow().hide();
+            Parent parent = FXMLLoader.load(getClass().getResource("LoginScene.fxml"));
+            Stage stage = new Stage();
+            Scene scene = new Scene(parent);
+            stage.setScene(scene);
+            stage.setTitle("Signin Page");
+            stage.show();
+            clinetView.logout();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+
+    }
+    
+    /**
+     * update friends contact list
+     */
+     private void updateContactsList() {
+     //get requests form database
         ArrayList<User> contacts = clinetView.getContacts();
 
         //check not empty contact list
@@ -170,90 +207,8 @@ public class ChatSceneController implements Initializable {
             }
         });
 
-        updateFriendsRequests();
     }
-
-    @FXML
-    private void homeAction(MouseEvent event) {
-        try {
-            content.getChildren().clear();
-            content.getChildren().add(FXMLLoader.load(getClass().getResource("HomeBox.fxml")));
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-    }
-
-    @FXML
-    private void iconLogoutAction(MouseEvent event) {
-        try {
-            ((Node) (event.getSource())).getScene().getWindow().hide();
-            Parent parent = FXMLLoader.load(getClass().getResource("LoginScene.fxml"));
-            Stage stage = new Stage();
-            Scene scene = new Scene(parent);
-            stage.setScene(scene);
-            stage.setTitle(" Sin_in Page");
-            stage.show();
-            clinetView.logout();
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-
-    }
-
-    /* private void updateContactsList() {
-     //get requests form database
-        ArrayList<String> requests = clinetView.checkRequest();
-        
-        if (requests != null) {
-            ObservableList<String> requestsList = FXCollections.observableArrayList(requests);
-            requestsListview.setItems(requestsList);
-        }
-
-        
-        
-        requestsListview.setCellFactory(listView -> new ListCell<String>() {
-
-            Button btnAccept = new Button();
-            Button btnIgnore = new Button();
-
-            @Override
-            public void updateItem(String name, boolean empty) {
-                super.updateItem(name, empty);
-                if (name != null) {
-
-                    BorderPane pane = new BorderPane();
-
-                    Label labelRequestFrom = new Label();
-                    labelRequestFrom.setText(name);
-
-                    btnAccept.setGraphic(new ImageView(new Image("/resouces/accept.png", 9, 9, false, false)));
-                    btnAccept.setOnAction(new EventHandler<ActionEvent>() {
-                        @Override
-                        public void handle(ActionEvent event) {
-                            System.out.println("Accept :" + getItem());
-                        }
-                    });
-                    btnIgnore.setGraphic(new ImageView(new Image("/resouces/ignore.png", 9, 9, false, false)));
-                    btnIgnore.setOnAction(new EventHandler<ActionEvent>() {
-                        @Override
-                        public void handle(ActionEvent event) {
-                            System.out.println("Ignore :" + getItem());
-                        }
-                    });
-
-                    HBox btnHbox = new HBox();
-
-                    btnHbox.getChildren().addAll(btnIgnore, btnAccept);
-                    btnHbox.setSpacing(3);
-                    pane.setRight(btnHbox);
-                    pane.setLeft(labelRequestFrom);
-                    setGraphic(pane);
-
-                }
-            }
-        });   
-
-    }*/
+     
     public void updatePageInfo() {
         User user = clinetView.getUserInformation();
         homeLabel.setText(user.getUsername());
@@ -291,8 +246,23 @@ public class ChatSceneController implements Initializable {
                         btnAccept.setGraphic(new ImageView(new Image("/resouces/accept.png", 9, 9, false, false)));
                         btnAccept.setOnAction(new EventHandler<ActionEvent>() {
                             @Override
+                            //accept friend request
                             public void handle(ActionEvent event) {
                                 System.out.println("Accept :" + getItem());
+                                if(clinetView.acceptRequest(getItem())){
+                                    clinetView.showSuccess("Operation Sccuess"
+                                            , "Friend Added Successfuly"
+                                            , "you now become friend with "+ getItem());
+                                    
+                                    //update requests
+                                    updateFriendsRequests();
+                                    
+                                    //update list of friends
+                                    updateContactsList();
+                                }else{
+                                    clinetView.showError("Error", "you can't add friend right now \n"
+                                            + "please try again later ..", "");
+                                }
                             }
                         });
                         btnIgnore.setGraphic(new ImageView(new Image("/resouces/ignore.png", 9, 9, false, false)));

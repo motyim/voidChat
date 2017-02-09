@@ -157,13 +157,18 @@ public class ClientController implements ClientControllerInt {
     }
 
     @Override
-    public void sendMsg(String reciver, String Msg) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void sendMsg(String friendName,String message) {
+        try {
+            System.out.println("send Message in client controller "+friendName+" "+message);
+            serverModelInt.sendMsg(friendName, message);
+        } catch (RemoteException ex) {
+           ex.printStackTrace();
+        }
     }
 
     @Override
     public void reciveMsg(String msg) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+         view.reciveMsg(msg);
     }
 
     @Override

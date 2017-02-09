@@ -36,6 +36,7 @@ public interface ServerControllerInt {
      */
     //TODO : handle when user left group
     void groupMsg(String msg , ArrayList<String> groupChatUsers);
-    
+    void startServer();
+    void stopServer();
     
 }

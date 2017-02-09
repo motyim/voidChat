@@ -15,10 +15,29 @@ import javafx.stage.WindowEvent;
 public class ServerView extends Application implements ServerViewInt{
 
     private ServerController controller ; 
+    private static ServerView instance;
+    
+     private ServerViewController serverViewController ;
     public ServerView(){
         //connect to Controller
         controller = new ServerController(this);
+        instance = this; 
     }
+    
+    /**
+     * get static instance form client view
+     *
+     * @return ClientView instance
+     */
+    public static ServerView getInstance() {
+        return instance;
+    }
+    
+    public void setServerViewController(ServerViewController serverViewController){
+        this.serverViewController = serverViewController;
+    }
+    
+    
     @Override
     public void start(Stage stage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("Server.fxml"));
@@ -31,6 +50,16 @@ public class ServerView extends Application implements ServerViewInt{
                 //TODO : why not close
                 System.exit(0);
             });
+    }
+    
+    public void startServer(){
+        System.out.println("ServerView");
+        controller.startServer();
+    }
+    
+    public void stopServer(){
+        System.out.println("ServerView closeServer");
+        controller.stopServer();
     }
 
 }

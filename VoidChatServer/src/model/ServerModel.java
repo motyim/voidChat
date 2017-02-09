@@ -11,6 +11,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import utilitez.SHA;
 import utilitez.Constant;
+import utilitez.Pair;
 
 /**
  *
@@ -82,6 +83,7 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
     @Override
     public User signin(String username, String password) throws RemoteException {
         User user = null;
+        System.out.println("sign in");
         try {
             getConnection();
             query = "select * from UserTable where username = '" + username + "'and password='" + SHA.encrypt(password) + "'";
@@ -97,12 +99,19 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
                 String status = resultSet.getString("status");
                 String country = resultSet.getString("country");
                 user = new User(name, email, fname, lname, pw, gender, country, status);
+////////////////////////////////////////////////////////////
+                ArrayList<Pair> users = new ArrayList<>();
+                users = getCountries();
+                for (int i = 0; i < users.size(); i++) {
+                    System.out.println(users.get(i).getFirst() + " " + users.get(i).getSecond());
+                }
 
+                /////////////////////////////////////////////////////////////////////
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
-        closeResources();
+       //closeResources();
         return user;
     }
 
@@ -184,14 +193,14 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
 
     @Override
     public boolean sendMsg(String reciver, String msg) throws RemoteException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        System.out.println("sendMsg in server model");
+        return controller.sendMsg(reciver, msg);
     }
 
     @Override
     public void groupMsg(String msg, ArrayList<String> groupChatUsers) throws RemoteException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
 
     @Override
     public ArrayList<User> getContacts(String userName) throws RemoteException {
@@ -236,8 +245,9 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
 
     @Override
     public int sendRequest(String senderName, String reciverName, String type) throws RemoteException {
-         if(senderName.equals(reciverName))
+        if (senderName.equals(reciverName)) {
             return Constant.SAME_NAME;
+        }
         try {
             getConnection();
             query = "select * from UserTable where username='" + reciverName + "'";
@@ -266,8 +276,6 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
 
             query = "insert into Requests (sender,receiver,type)values ('" + senderName + "','" + reciverName + "','" + type + "')";
             statement.executeUpdate(query);
-
-            //zwat hna
             return Constant.SENDED;
 
         } catch (SQLException ex) {
@@ -275,16 +283,13 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
             return Constant.EXCEPTION;
         } finally {
             closeResources();
-            System.out.println("$_");
             notify(senderName, reciverName);
-            System.out.println("!_");
         }
 
     }
-    
     @Override
-    public void ignoreRequest(String senderName,String reciverName){
-         try {
+    public void ignoreRequest(String senderName, String reciverName) {
+        try {
             getConnection();
             query = "delete from Requests where sender='" + senderName + "' and receiver='" + reciverName + "'";
             statement = connection.createStatement();
@@ -293,5 +298,101 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
             ex.printStackTrace();
         }
         closeResources();
+    }
+    
+    public ArrayList<Integer> getStatistics() {
+        int countUsers = 0;
+        ArrayList<Integer> users = new ArrayList<Integer>();
+        try {
+            getConnection();
+            query = "select * from UserTable where status='online'";
+            statement = connection.createStatement();
+            resultSet = statement.executeQuery(query);
+            while (resultSet.next()) {
+                countUsers++;
+                System.out.println("in while");
+            }
+            users.add(countUsers);
+            countUsers = 0;
+
+            query = "select * from UserTable where status='offline'";
+            resultSet = statement.executeQuery(query);
+            while (resultSet.next()) {
+                countUsers++;
+                System.out.println("in while2");
+            }
+            users.add(countUsers);
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        closeResources();
+        return users;
+    }
+
+    public ArrayList<Pair> getGender() {
+        int count = 0;
+        ArrayList<Pair> users = new ArrayList<Pair>();
+        Pair user = new Pair();
+        try {
+            getConnection();
+            query = "select * from UserTable where gender='Female'";
+            statement = connection.createStatement();
+            resultSet = statement.executeQuery(query);
+            while (resultSet.next()) {
+                count++;
+            }
+            user = new Pair("Female", count);
+            users.add(user);
+            count = 0;
+            user = new Pair();
+            query = "select * from UserTable where gender='Male'";
+            resultSet = statement.executeQuery(query);
+            while (resultSet.next()) {
+                count++;
+            }
+            user = new Pair("Male", count);
+            users.add(user);
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        closeResources();
+        return users;
+    }
+
+    public ArrayList<Pair> getCountries() {
+        int count = 0;
+        String country = null;
+        ArrayList<String> distinctCountries = new ArrayList<String>();
+        ArrayList<Pair> countriesPairs = new ArrayList<Pair>();
+        Pair myPair = new Pair();
+        
+        try {
+            getConnection();
+            query = "select distinct country from UserTable";
+            statement = connection.createStatement();
+            resultSet = statement.executeQuery(query);
+            while (resultSet.next()) {
+                distinctCountries.add(resultSet.getString("country"));
+            } 
+            for (int i = 0; i < distinctCountries.size(); i++) {
+                query = "select * from UserTable where country='" + distinctCountries.get(i) + "'";
+                resultSet = statement.executeQuery(query);
+                while (resultSet.next()) {
+                    count++;
+                    country = resultSet.getString("country");
+                }
+                myPair = new Pair(country, count);
+                countriesPairs.add(myPair);
+                count = 0;
+            }
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        closeResources();
+        return countriesPairs;
+
     }
 }

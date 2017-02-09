@@ -29,7 +29,7 @@ public interface ClientViewInt {
 
     void notifyStatus(String username, String status);
 
-    void sendMsg();
+    void sendMsg(String friendName,String message);
 
     void reciveMsg(String msg);
 

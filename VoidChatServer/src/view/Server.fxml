@@ -40,7 +40,7 @@
                 <Button fx:id="sendBtn" layoutX="487.0" layoutY="270.0" mnemonicParsing="false" onAction="#sendAnnouncement" prefWidth="61.0" text="Send" />
                 <ToolBar layoutX="0.0" layoutY="324.0" prefHeight="45.0" prefWidth="600.0">
                   <items>
-                    <ToggleButton mnemonicParsing="false" prefWidth="69.0" text="Start" />
+                    <ToggleButton fx:id="start" mnemonicParsing="false" onAction="#ToggleButtonAction" prefWidth="69.0" text="Start" />
                   </items>
                 </ToolBar>
                 <Button layoutX="443.0" layoutY="271.0" mnemonicParsing="false">

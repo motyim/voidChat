@@ -44,7 +44,8 @@ public interface ServerControllerInt extends Notification{
      */
     //TODO : handle when user left group
     void groupMsg(String msg , ArrayList<String> groupChatUsers);
-    
+    void startServer();
+    void stopServer();
     
     /**
      * 

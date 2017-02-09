@@ -3,8 +3,7 @@ package view;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -18,6 +17,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import model.User;
 
+import javafx.scene.control.ToggleButton;
+
 /**
  * FXML Controller class
  *
@@ -30,6 +31,7 @@ public class ServerViewController implements Initializable {
     @FXML
     private Tab SendTab;
     @FXML
+
     private Button sendBtn;
     @FXML
     private TextArea announcement;
@@ -41,15 +43,40 @@ public class ServerViewController implements Initializable {
     @FXML
     private TextField username;
 
+    @FXML
     private ServerView serverView;
+
+    @FXML
+    private Button SendButton;
+
+    @FXML
+    private ToggleButton start;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+
         serverView = ServerView.getInstance();
         serverView.setServerViewController(this);
+
+    }
+
+    @FXML
+    private void ToggleButtonAction(ActionEvent event) {
+        System.out.println("serverViewController");
+
+        if (start.isSelected()) {
+            System.out.println("serverViewController start");
+            start.setText("Stop");
+            serverView.startServer();
+        } else {
+            start.setText("Start");
+            System.out.println("serverViewController stop");
+            serverView.stopServer();
+        }
+
     }
 
     /**
@@ -69,16 +96,16 @@ public class ServerViewController implements Initializable {
                 userContent.getChildren().clear();
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("UserInfoView.fxml"));
                 fxmlLoader.setController(new UserInfoController(user));
-                Pane pane=fxmlLoader.load();
+                Pane pane = fxmlLoader.load();
                 userContent.getChildren().add(pane);
-                
+
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
         }
     }
 
-    public void sendAnnouncement(){
+    public void sendAnnouncement() {
         serverView.sendAnnouncement(announcement.getText());
         announcement.setText("");
         Alert alert = new Alert(AlertType.INFORMATION);

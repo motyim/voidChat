@@ -19,7 +19,7 @@ public class ServerView extends Application implements ServerViewInt{
     private static ServerView instance;
     
     private ServerViewController serverViewController ; 
-    
+
     public ServerView(){
         //connect to Controller
         controller = new ServerController(this);
@@ -39,6 +39,7 @@ public class ServerView extends Application implements ServerViewInt{
         this.serverViewController = serverViewController;
     }
     
+
     @Override
     public void start(Stage stage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("Server.fxml"));
@@ -51,6 +52,16 @@ public class ServerView extends Application implements ServerViewInt{
                 //TODO : why not close
                 System.exit(0);
             });
+    }
+    
+    public void startServer(){
+        System.out.println("ServerView");
+        controller.startServer();
+    }
+    
+    public void stopServer(){
+        System.out.println("ServerView closeServer");
+        controller.stopServer();
     }
 
     @Override

@@ -24,6 +24,8 @@ public class ClientView extends Application implements ClientViewInt {
     private ClientController controller;
     private static ClientView instance;
     private Stage mainStage;
+    //2na 2le 3amlaha
+    ChatBoxController chatBoxController;
     
     //views Controller
     ChatSceneController chatSceneController ;
@@ -32,7 +34,8 @@ public class ClientView extends Application implements ClientViewInt {
 
     public ClientView() {
         controller = new ClientController(this);
-        instance = this;       
+        instance = this;
+       
     }
     
     /**
@@ -119,13 +122,16 @@ public class ClientView extends Application implements ClientViewInt {
     }
 
     @Override
-    public void sendMsg() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void sendMsg(String friendName,String message) {
+        System.out.println("sendMsg in clientView "+friendName+" "+message);
+        controller.sendMsg(friendName, message);
     }
 
     @Override
     public void reciveMsg(String msg) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        System.out.println("recieve msg in client view"+msg);
+        chatBoxController=new ChatBoxController();
+        chatBoxController.reciveMsg(msg);
     }
 
     @Override

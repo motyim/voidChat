@@ -31,7 +31,7 @@ public class ClientModel extends UnicastRemoteObject implements ClientModelInt {
 
     @Override
     public void reciveMsg(String msg) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        controller.reciveMsg(msg);
     }
 
     @Override

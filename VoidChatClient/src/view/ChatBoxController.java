@@ -7,6 +7,7 @@ package view;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -18,6 +19,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
+import tray.notification.TrayNotification;
 
 /**
  * FXML Controller class
@@ -46,7 +48,16 @@ public class ChatBoxController implements Initializable {
     private Image clips;
     @FXML
     private Button btnSendMsg;
+    
+    ClientView clientView;
 
+    //3amlt deh
+    public ChatBoxController() {
+        clientView = new ClientView();
+        txtAreaChatBox=new TextArea();
+    }
+
+    
     /**
      * Initializes the controller class.
      */
@@ -67,7 +78,22 @@ public class ChatBoxController implements Initializable {
 
     @FXML
     private void btnSendMsgAction(ActionEvent event) {
-        System.out.println("btnSendMsg Action");
+        System.out.println("btnsend");
+         //System.out.println(labelFriendName+" "+txtFieldMsg.getText());
+       clientView.sendMsg("Mero",txtFieldMsg.getText());
     }
+    
+    
+    public void reciveMsg(String msg){
+        System.out.println("in chatboxcontroller");
+       
+        
+        //Platform.runLater(() -> {
+            
+        txtAreaChatBox.appendText(msg);
+       // });
+              
+    }
+    
     
 }

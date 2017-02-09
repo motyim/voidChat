@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -13,7 +11,6 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -23,7 +20,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MenuButton;
+import javafx.scene.control.SplitPane;
 import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -32,7 +31,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import model.User;
@@ -47,13 +45,13 @@ public class ChatSceneController implements Initializable {
     @FXML
     private BorderPane chatBorderPane;
     @FXML
-    private ImageView imgHome;
-    @FXML
     private ImageView imgUser;
     @FXML
     private Label homeLabel;
     @FXML
     private ImageView iconLogout;
+    @FXML
+    private ImageView iconCreateGroup;
     @FXML
     private ListView<String> friendsListview;
     @FXML
@@ -69,11 +67,19 @@ public class ChatSceneController implements Initializable {
     @FXML
     private Tab requestsTab;
     @FXML
+    private Tab homeBox;
+    @FXML
+    private TabPane tabPane;
+    @FXML
     private MenuButton menuBntStatus;
     @FXML
     private ComboBox comboBoxStatus;
     @FXML
     private AnchorPane friendsPane;
+    @FXML
+    private SplitPane splitPane;
+    @FXML
+    private VBox leftPane;
 
     ObservableList<String> statusList = FXCollections.observableArrayList("online", "offline", "busy");
 
@@ -87,13 +93,18 @@ public class ChatSceneController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+
         updatePageInfo();
+
+        // to make spliter disable 
+        splitPane.setDividerPositions(0.3246);
+        leftPane.maxWidthProperty().bind(splitPane.widthProperty().multiply(0.3246));
+        tabPane.maxWidthProperty().bind(splitPane.widthProperty().multiply(0.6546));
 
         comboBoxStatus.setItems(statusList);
 
         try {
-            content.getChildren().clear();
-            content.getChildren().add(FXMLLoader.load(getClass().getResource("HomeBox.fxml")));
+            homeBox.setContent(FXMLLoader.load(getClass().getResource("HomeBox.fxml")));
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -109,15 +120,12 @@ public class ChatSceneController implements Initializable {
             ObservableList<String> data = FXCollections.observableArrayList(contactsName);
             friendsListview.setItems(data);
         } else {
-//            VBox hbox= new VBox();
-//            hbox.setPrefHeight(200);
-//            hbox.setPrefWidth(200);
-//            friendsPane.getChildren().clear();
-//            Label label=new Label("Add New Friends");
-//            ImageView imgView=new ImageView(new Image("resouces/circle.png",20,20,false,false));
-//            hbox.getChildren().addAll(label,imgView);
-//            hbox.setAlignment(Pos.CENTER);
-//            friendsPane.getChildren().add(hbox);
+            try {
+                friendsPane.getChildren().clear();
+                friendsPane.getChildren().add(FXMLLoader.load(getClass().getResource("EmptyList.fxml")));
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
         }
 
         friendsListview.setCellFactory(listView -> new ListCell<String>() {
@@ -128,7 +136,10 @@ public class ChatSceneController implements Initializable {
             @Override
             public void updateItem(String friend, boolean empty) {
                 super.updateItem(friend, empty);
-                if (friend != null) {
+                if (empty || friend == null) {
+                    setText(null);
+                    setGraphic(null);
+                } else {
 
                     FlowPane flow = new FlowPane();
                     flow.setHgap(4);
@@ -160,15 +171,20 @@ public class ChatSceneController implements Initializable {
             public void handle(MouseEvent event) {
                 try {
                     System.out.println("clicked on " + friendsListview.getSelectionModel().getSelectedItem());
-                    content.getChildren().clear();
-                    content.getChildren().add(FXMLLoader.load(getClass().getResource("ChatBox.fxml")));
-                    //labelFriendName.setText(listview.getSelectionModel().getSelectedItem());
+                    Tab newTab = new Tab();
+                    newTab.setId(friendsListview.getSelectionModel().getSelectedItem());
+                    newTab.setText(friendsListview.getSelectionModel().getSelectedItem() + "test");
+                    newTab.setClosable(true);
+
+                    tabPane.getTabs().add(newTab);
+                    tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.ALL_TABS);
+
+                    newTab.setContent(FXMLLoader.load(getClass().getResource("ChatBox.fxml")));
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 }
             }
         });
-
 
         ArrayList<String> requestsArrayList = clinetView.checkRequest();
 
@@ -223,16 +239,6 @@ public class ChatSceneController implements Initializable {
     }
 
     @FXML
-    private void homeAction(MouseEvent event) {
-        try {
-            content.getChildren().clear();
-            content.getChildren().add(FXMLLoader.load(getClass().getResource("HomeBox.fxml")));
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-    }
-
-    @FXML
     private void iconLogoutAction(MouseEvent event) {
         try {
             ((Node) (event.getSource())).getScene().getWindow().hide();
@@ -248,13 +254,24 @@ public class ChatSceneController implements Initializable {
         }
 
         //updateContactsList();
-
     }
 
+    @FXML
+    private void iconCreateGroupAction(MouseEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("GroupScene.fxml"));
+            Parent parent = loader.load();
+            Stage stage = new Stage();
+            Scene scene = new Scene(parent);
+            stage.setScene(scene);
+            stage.setTitle("Create New Group");
+            stage.show();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
 
-    
-
-   /* private void updateContactsList() {
+    /* private void updateContactsList() {
      //get requests form database
         ArrayList<String> requests = clinetView.checkRequest();
         
@@ -308,7 +325,6 @@ public class ChatSceneController implements Initializable {
         });   
 
     }*/
-
     public void updatePageInfo() {
         User user = clinetView.getUserInformation();
         homeLabel.setText(user.getUsername());

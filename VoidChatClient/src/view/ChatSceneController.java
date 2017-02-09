@@ -4,6 +4,9 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -32,8 +35,12 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 import model.User;
+import tray.animations.AnimationType;
+import tray.notification.TrayNotification;
+import utilitez.Notification;
 
 /**
  * FXML Controller class
@@ -89,6 +96,8 @@ public class ChatSceneController implements Initializable {
         //get instance form view
         clinetView = ClientView.getInstance();
         System.out.println("chat connect Client view");
+        clinetView.setChatSceneController(this);
+
     }
 
     @Override
@@ -109,7 +118,54 @@ public class ChatSceneController implements Initializable {
             ex.printStackTrace();
         }
 
-        ArrayList<User> contacts = clinetView.getContacts();
+
+        updateContactsList();
+        updateFriendsRequests();
+
+    }
+
+    @FXML
+    private void iconLogoutAction(MouseEvent event) {
+        try {
+            ((Node) (event.getSource())).getScene().getWindow().hide();
+            Parent parent = FXMLLoader.load(getClass().getResource("LoginScene.fxml"));
+            Stage stage = new Stage();
+            Scene scene = new Scene(parent);
+            stage.setScene(scene);
+            stage.setTitle("Signin Page");
+            stage.show();
+            clinetView.logout();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+
+
+  
+    }
+
+    @FXML
+    private void iconCreateGroupAction(MouseEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("GroupScene.fxml"));
+            Parent parent = loader.load();
+            Stage stage = new Stage();
+            Scene scene = new Scene(parent);
+            stage.setScene(scene);
+            stage.setTitle("Create New Group");
+            stage.show();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+
+
+    /**
+     * update friends contact list
+     */
+    private void updateContactsList() {
+        Platform.runLater(() -> {
+             ArrayList<User> contacts = clinetView.getContacts();
 
         //check not empty contact list
         if (contacts != null) {
@@ -185,7 +241,25 @@ public class ChatSceneController implements Initializable {
                 }
             }
         });
+        });
+    }
 
+
+    public void updatePageInfo() {
+        User user = clinetView.getUserInformation();
+        homeLabel.setText(user.getUsername());
+        comboBoxStatus.setValue("online");
+        if (user.getGender().equals("Female")) {
+            imgUser.setImage(new Image("/resouces/female.png"));
+        }
+    }
+
+    /**
+     * update Friends request from Database
+     */
+    public void updateFriendsRequests() {
+        Platform.runLater(() -> {
+            
         ArrayList<String> requestsArrayList = clinetView.checkRequest();
 
         if (requestsArrayList != null) {
@@ -212,6 +286,20 @@ public class ChatSceneController implements Initializable {
                             @Override
                             public void handle(ActionEvent event) {
                                 System.out.println("Accept :" + getItem());
+                                if (clinetView.acceptRequest(getItem())) {
+                                        clinetView.showSuccess("Operation Sccuess",
+                                                "Friend Added Successfuly",
+                                                "you now become friend with " + getItem());
+
+                                        //update requests
+                                        updateFriendsRequests();
+
+                                        //update list of friends
+                                        updateContactsList();
+                                    } else {
+                                        clinetView.showError("Error", "you can't add friend right now \n"
+                                                + "please try again later ..", "");
+                                    }
                             }
                         });
                         btnIgnore.setGraphic(new ImageView(new Image("/resouces/ignore.png", 9, 9, false, false)));
@@ -219,6 +307,8 @@ public class ChatSceneController implements Initializable {
                             @Override
                             public void handle(ActionEvent event) {
                                 System.out.println("Ignore :" + getItem());
+                              clinetView.ignoreRequest(getItem());
+                                    updateFriendsRequests();
                             }
                         });
 
@@ -236,102 +326,49 @@ public class ChatSceneController implements Initializable {
         } else {
             requestsTab.setDisable(true);
         }
+        });
     }
 
-    @FXML
-    private void iconLogoutAction(MouseEvent event) {
+    public void notify(String message, int type) {
+
         try {
-            ((Node) (event.getSource())).getScene().getWindow().hide();
-            Parent parent = FXMLLoader.load(getClass().getResource("LoginScene.fxml"));
-            Stage stage = new Stage();
-            Scene scene = new Scene(parent);
-            stage.setScene(scene);
-            stage.setTitle(" Sin_in Page");
-            stage.show();
-            clinetView.logout();
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
 
-        //updateContactsList();
-    }
+            switch (type) {
+                case Notification.FRIEND_REQUSET:
+                    showNotifaction("Friend Request", message, new Image(getClass().getResource("../resouces/add-contact.png").openStream()));
+                    updateFriendsRequests();
+                    break;
+                case Notification.FRIEND_OFFLINE:
+                    break;
+                case Notification.FRIEND_ONLINE:
+                    break;
+                case Notification.ACCEPT_FRIEND_REQUEST:
+                    showNotifaction("Accept Request", message, new Image(getClass().getResource("../resouces/add-contact.png").openStream()));
+                    updateContactsList();
+                    break;
+                case Notification.SERVER_MESSAGE:
+                    showNotifaction("New Announcement", message, new Image(getClass().getResource("../resouces/add-contact.png").openStream()));
+                    break;
 
-    @FXML
-    private void iconCreateGroupAction(MouseEvent event) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("GroupScene.fxml"));
-            Parent parent = loader.load();
-            Stage stage = new Stage();
-            Scene scene = new Scene(parent);
-            stage.setScene(scene);
-            stage.setTitle("Create New Group");
-            stage.show();
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-    }
-
-    /* private void updateContactsList() {
-     //get requests form database
-        ArrayList<String> requests = clinetView.checkRequest();
-        
-        if (requests != null) {
-            ObservableList<String> requestsList = FXCollections.observableArrayList(requests);
-            requestsListview.setItems(requestsList);
-        }
-
-        
-        
-        requestsListview.setCellFactory(listView -> new ListCell<String>() {
-
-            Button btnAccept = new Button();
-            Button btnIgnore = new Button();
-
-            @Override
-            public void updateItem(String name, boolean empty) {
-                super.updateItem(name, empty);
-                if (name != null) {
-
-                    BorderPane pane = new BorderPane();
-
-                    Label labelRequestFrom = new Label();
-                    labelRequestFrom.setText(name);
-
-                    btnAccept.setGraphic(new ImageView(new Image("/resouces/accept.png", 9, 9, false, false)));
-                    btnAccept.setOnAction(new EventHandler<ActionEvent>() {
-                        @Override
-                        public void handle(ActionEvent event) {
-                            System.out.println("Accept :" + getItem());
-                        }
-                    });
-                    btnIgnore.setGraphic(new ImageView(new Image("/resouces/ignore.png", 9, 9, false, false)));
-                    btnIgnore.setOnAction(new EventHandler<ActionEvent>() {
-                        @Override
-                        public void handle(ActionEvent event) {
-                            System.out.println("Ignore :" + getItem());
-                        }
-                    });
-
-                    HBox btnHbox = new HBox();
-
-                    btnHbox.getChildren().addAll(btnIgnore, btnAccept);
-                    btnHbox.setSpacing(3);
-                    pane.setRight(btnHbox);
-                    pane.setLeft(labelRequestFrom);
-                    setGraphic(pane);
-
-                }
             }
-        });   
 
-    }*/
-    public void updatePageInfo() {
-        User user = clinetView.getUserInformation();
-        homeLabel.setText(user.getUsername());
-        comboBoxStatus.setValue("online");
-        if (user.getGender().equals("Female")) {
-            imgUser.setImage(new Image("/resouces/female.png"));
+            //TODO change image to require image
+        } catch (IOException ex) {
+            Logger.getLogger(ChatSceneController.class.getName()).log(Level.SEVERE, null, ex);
         }
+
+    }
+
+    private void showNotifaction(String title, String message, Image image) {
+        Platform.runLater(() -> {
+            TrayNotification tray = new TrayNotification();
+            tray.setTitle(title);
+            tray.setMessage(message);
+            tray.setRectangleFill(Paint.valueOf("#bdc3c7"));
+            tray.setAnimationType(AnimationType.POPUP);
+            tray.setImage(image);
+            tray.showAndWait();
+        });
     }
 
 }

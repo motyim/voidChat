@@ -9,7 +9,7 @@ package utilitez;
  *
  * @author Romisaa
  */
-public class Constant {
+public interface Constant {
 
     public final static int USER_NOT_EXIST = 1;
     public final static int ALREADY_FRIENDS = 2;

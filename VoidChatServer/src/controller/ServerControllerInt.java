@@ -3,9 +3,11 @@ package controller;
 
 import java.util.ArrayList;
 import model.ClientModelInt;
+import model.User;
+import utilitez.Notification;
 
 
-public interface ServerControllerInt {
+public interface ServerControllerInt extends Notification{
     
     /**
      * save object on hash table in server
@@ -14,8 +16,14 @@ public interface ServerControllerInt {
      * @throws java.rmi.RemoteException 
      */
     void register(String username , ClientModelInt obj);
-    
-    void notify(String SenderName , String reciverName);
+    /**
+     * notify user with status
+     * @param reciver
+     * @param message
+     * @param type 
+     */
+    @Override
+    void notify(String reciver , String message , int type);
 
     void notifyStatus(String username , String status ,ArrayList<String> friends);
     
@@ -36,6 +44,20 @@ public interface ServerControllerInt {
      */
     //TODO : handle when user left group
     void groupMsg(String msg , ArrayList<String> groupChatUsers);
+    void startServer();
+    void stopServer();
     
+    /**
+     * 
+     * @param username
+     * @return User or null if not exsits
+     */
+    User getUserInfo(String username);
+    
+    /**
+     * Server Send announcement message to all users
+     * @param message 
+     */
+    void sendAnnouncement(String message);
     
 }

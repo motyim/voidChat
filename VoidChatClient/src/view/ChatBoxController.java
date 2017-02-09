@@ -23,6 +23,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import tray.notification.TrayNotification;
 
 /**
  * FXML Controller class
@@ -51,9 +52,19 @@ public class ChatBoxController implements Initializable {
     private ListView<HBox> listviewChat;
     @FXML
     private Button btnSendMsg;
+    
+    ClientView clientView;
+
+    //3amlt deh
+    public ChatBoxController() {
+        clientView = new ClientView();
+        txtAreaChatBox=new TextArea();
+    }
+
 
     Boolean sendFlag = true;
     Boolean recFlag = true;
+
 
     /**
      * Initializes the controller class.
@@ -78,6 +89,7 @@ public class ChatBoxController implements Initializable {
 
     @FXML
     private void btnSendMsgAction(ActionEvent event) {
+
 
         File f = new File("src/resouces/chatBoxStyle.css");
         listviewChat.getStylesheets().add("file:///" + f.getAbsolutePath().replace("\\", "/"));
@@ -128,5 +140,24 @@ public class ChatBoxController implements Initializable {
         }
         System.out.println("btnSendMsg Action");
     }
+
+
+        System.out.println("btnsend");
+         //System.out.println(labelFriendName+" "+txtFieldMsg.getText());
+       clientView.sendMsg("Mero",txtFieldMsg.getText());
+    }
+    
+    
+    public void reciveMsg(String msg){
+        System.out.println("in chatboxcontroller");
+       
+        
+        //Platform.runLater(() -> {
+            
+        txtAreaChatBox.appendText(msg);
+       // });
+              
+    }
+    
 
 }

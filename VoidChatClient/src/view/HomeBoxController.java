@@ -19,6 +19,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.util.Pair;
 import model.User;
@@ -41,13 +42,15 @@ public class HomeBoxController implements Initializable {
     private TextFlow txtFlowServerMsg;
     @FXML
     private Label labelUserName;
+    @FXML
+    private Text serverMessage;
 
     private ClientView clinetView;
 
     public HomeBoxController() {
         //get instance form view
         clinetView = ClientView.getInstance();
-        System.out.println("home connect Client view");
+        clinetView.setHomeBoxController(this);
     }
 
     /**
@@ -138,4 +141,8 @@ public class HomeBoxController implements Initializable {
         User user = clinetView.getUserInformation();
         labelUserName.setText(user.getUsername());
     }
+     
+     public void receiveAnnouncement(String message){
+         serverMessage.setText("Void Chat Server : "+message);
+     }
 }

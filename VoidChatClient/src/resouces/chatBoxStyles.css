@@ -1,0 +1,45 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Feb 9, 2017, 5:57:34 PM
+    Author     : Merna
+*/
+
+.list-view .list-cell:odd {
+    -fx-background-color: white;
+}
+.list-view .list-cell:even {
+    -fx-background-color: white;
+}
+.LabelSender {
+    -fx-border-radius: 0 10 10 10;
+    -fx-background-radius:0 10 10 10;
+    -fx-background-color:#e4e4e4;
+    -fx-padding:10;
+    -fx-border-insets: 5px;
+    -fx-background-insets: 5px;
+
+}
+.LabelSenderSec {
+    -fx-border-radius: 2 10 10 2;
+    -fx-background-radius:2 10 10 2;
+    -fx-background-color:#e4e4e4;
+    -fx-padding:10;
+    -fx-border-insets: 5px;
+    -fx-background-insets: 5px;
+
+}
+
+.LabelRec{
+
+    -fx-border-radius: 10 0 10 10;
+    -fx-background-radius:10 0 10 10;
+    -fx-background-color:#dbe5e7;
+    -fx-padding:10;
+    -fx-border-insets: 5px;
+    -fx-background-insets: 5px;
+
+}

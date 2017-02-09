@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #535f85;" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <ImageView fitHeight="337.0" fitWidth="576.0" layoutX="16.0" layoutY="34.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../resouces/error.png" />
+         </image>
+      </ImageView>
+      <Text fill="#e4e4e4" layoutX="37.0" layoutY="219.0" strokeType="OUTSIDE" strokeWidth="0.0" text="SORRY,">
+         <font>
+            <Font name="System Bold" size="24.0" />
+         </font>
+      </Text>
+      <Text fill="#e4e4e4" layoutX="38.0" layoutY="245.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Server out of service now" wrappingWidth="138.64453125">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Text>
+      <Text fill="#e4e4e4" layoutX="217.0" layoutY="364.0" strokeType="OUTSIDE" strokeWidth="0.0" text="TRY LOGIN LATER .." wrappingWidth="209.64453125">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Text>
+   </children>
+</AnchorPane>

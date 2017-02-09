@@ -22,10 +22,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.util.Pair;
-
 import model.User;
 import utilitez.Constant;
-
 
 /**
  * FXML Controller class
@@ -99,6 +97,7 @@ public class HomeBoxController implements Initializable {
         grid.add(new Label("Category:"), 0, 1);
         grid.add(comboBox, 1, 1);
 
+//        dialog.getDialogPane().setStyle(" -fx-background-color: #535f85;");        
         dialog.getDialogPane().setContent(grid);
 
         // Request focus on the txtFieldEmail field by default.
@@ -115,31 +114,32 @@ public class HomeBoxController implements Initializable {
         Optional<Pair<String, String>> result = dialog.showAndWait();
         result.ifPresent(emailCategory -> {
             System.out.println("user=" + emailCategory.getKey() + ", category=" + emailCategory.getValue());
-            switch(clinetView.sendRequest(emailCategory.getKey(),emailCategory.getValue())){
+            switch (clinetView.sendRequest(emailCategory.getKey(), emailCategory.getValue())) {
                 case Constant.ALREADY_FRIENDS:
-                    clinetView.showError("Error","Can't  Send Requset" , "User Already Friend to you..");
+                    clinetView.showError("Error", "Can't  Send Requset", "User Already Friend to you..");
                     break;
                 case Constant.REQUEST_ALREADY_EXIST:
-                    clinetView.showError("Error","Can't  Send Requset" ,  "you Already send request before "
+                    clinetView.showError("Error", "Can't  Send Requset", "you Already send request before "
                             + "\nor have request from this person");
                     break;
                 case Constant.USER_NOT_EXIST:
-                    clinetView.showError("Error","Can't  Send Requset"  , "User Not Exsist in our System");
+                    clinetView.showError("Error", "Can't  Send Requset", "User Not Exsist in our System");
                     break;
                 case Constant.EXCEPTION:
-                    clinetView.showError("Error","Can't  Send Requset"  , "An error Occure please Contact Admin");
+                    clinetView.showError("Error", "Can't  Send Requset", "An error Occure please Contact Admin");
                     break;
                 case Constant.SENDED:
-                    clinetView.showSuccess("Sccuess","Requset Sended" , "You send request to "+emailCategory.getKey());
+                    clinetView.showSuccess("Sccuess", "Requset Sended", "You send request to " + emailCategory.getKey());
                     break;
             }
-              
+
         });
 
     }
-     public void updatePageInfo(){
-       User user= clinetView.getUserInformation();
-       labelUserName.setText(user.getUsername());  
+
+    public void updatePageInfo() {
+        User user = clinetView.getUserInformation();
+        labelUserName.setText(user.getUsername());
     }
      
      public void receiveAnnouncement(String message){

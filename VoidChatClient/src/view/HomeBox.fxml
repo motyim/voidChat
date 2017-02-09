@@ -8,14 +8,12 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.text.TextFlow?>
 
 <VBox fx:id="homeBox" prefHeight="352.0" prefWidth="400.0" BorderPane.alignment="CENTER" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.HomeBoxController">
     <children>
-        <Line endX="300.0" startX="-100.0" stroke="#c6c6c6" />
         <Button fx:id="btnNewFriend" alignment="BOTTOM_RIGHT" mnemonicParsing="false" onAction="#btnNewFriendAction" prefHeight="33.0" prefWidth="105.0" text="New Friend" textAlignment="CENTER" textFill="#5e5d5d">
             <graphic>
                 <ImageView fitHeight="24.0" fitWidth="25.0" layoutX="-2.0" nodeOrientation="INHERIT">
@@ -33,14 +31,14 @@
         </Button>
         <HBox prefHeight="32.0" prefWidth="400.0">
             <children>
-                <Label text="WELCOME">
+                <Label text="WELCOME" textFill="#f8756c">
                     <font>
                         <Font name="System Bold" size="24.0" />
                     </font>
                 </Label>
                 <Label fx:id="labelUserName" text="User Name">
                     <font>
-                        <Font size="18.0" />
+                        <Font name="System Bold" size="18.0" />
                     </font>
                     <padding>
                         <Insets left="15.0" top="4.0" />

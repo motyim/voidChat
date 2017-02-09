@@ -1,0 +1,21 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Feb 9, 2017, 8:36:37 AM
+    Author     : Merna
+*/
+
+
+.myDialog{
+    -fx-background-color: #535f85;
+}
+.tab-pane .tab-header-area .tab-header-background {
+     -fx-background-color:  #535f85;
+}
+.list-view .list-cell:odd {
+    -fx-background-color: #dbe5e7;
+    -fx-text-fill: black;
+}

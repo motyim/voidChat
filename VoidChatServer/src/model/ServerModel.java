@@ -51,12 +51,12 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
      */
     private void closeResources() {
         try {
-            if (!isClosed) {
+          //  if (!isClosed) {
                 //resultSet.close();
                 statement.close();
                 connection.close();
                 isClosed=true;
-            }
+           // }
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
@@ -106,20 +106,14 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
                 String status = resultSet.getString("status");
                 String country = resultSet.getString("country");
                 user = new User(name, email, fname, lname, pw, gender, country, status);
-////////////////////////////////////////////////////////////
-                ArrayList<Pair> users = new ArrayList<>();
-                users = getCountries();
-                for (int i = 0; i < users.size(); i++) {
-                    System.out.println(users.get(i).getFirst() + " " + users.get(i).getSecond());
-                }
-
-                /////////////////////////////////////////////////////////////////////
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
+        }finally{
+           closeResources();
+            return user;
         }
-       //closeResources();
-        return user;
+       
     }
 
     @Override

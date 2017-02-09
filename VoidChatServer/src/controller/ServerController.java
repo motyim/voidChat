@@ -40,7 +40,7 @@ public class ServerController implements ServerControllerInt {
 
             //upload to registry
 
-           reg = LocateRegistry.getRegistry();
+           reg = LocateRegistry.createRegistry(1050);
         } catch (RemoteException ex) {
             ex.printStackTrace();
         }

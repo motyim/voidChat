@@ -5,13 +5,16 @@
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.control.ToolBar?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.ServerViewController">
   <children>
     <TabPane prefHeight="400.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
       <tabs>
@@ -32,9 +35,9 @@
           <content>
             <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
               <children>
-                <Label layoutX="55.0" layoutY="38.0" prefHeight="31.0" prefWidth="120.0" text="Send to All Clients" textFill="#797878" />
-                <TextArea layoutX="55.0" layoutY="69.0" prefHeight="189.0" prefWidth="493.0" promptText="Message ..." wrapText="true" />
-                <Button layoutX="487.0" layoutY="270.0" mnemonicParsing="false" prefWidth="61.0" text="Send" />
+                <Label layoutX="55.0" layoutY="38.0" prefHeight="31.0" prefWidth="192.0" text="Send Announcement to All Clients" textFill="#797878" />
+                <TextArea fx:id="announcement" layoutX="55.0" layoutY="69.0" prefHeight="189.0" prefWidth="493.0" promptText="Message ..." wrapText="true" />
+                <Button fx:id="sendBtn" layoutX="487.0" layoutY="270.0" mnemonicParsing="false" onAction="#sendAnnouncement" prefWidth="61.0" text="Send" />
                 <ToolBar layoutX="0.0" layoutY="324.0" prefHeight="45.0" prefWidth="600.0">
                   <items>
                     <ToggleButton mnemonicParsing="false" prefWidth="69.0" text="Start" />
@@ -53,6 +56,25 @@
             </AnchorPane>
           </content>
         </Tab>
+            <Tab text="Users ">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <Text layoutX="157.0" layoutY="46.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Get User Information ">
+                           <font>
+                              <Font size="30.0" />
+                           </font>
+                        </Text>
+                        <TextField fx:id="username" alignment="CENTER" layoutX="154.0" layoutY="66.0" onAction="#getUserData" prefHeight="25.0" prefWidth="283.0" promptText="Enter username and press Enter " />
+                        <AnchorPane fx:id="userContent" layoutX="161.0" layoutY="120.0" prefHeight="230.0" prefWidth="366.0">
+                            <children>
+                                
+                            </children>
+                        </AnchorPane>
+                     </children>
+                  </AnchorPane>
+              </content>
+            </Tab>
       </tabs>
     </TabPane>
   </children>

@@ -12,7 +12,6 @@ import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import model.User;
-import tray.notification.NotificationType;
 
 
 
@@ -23,11 +22,13 @@ import tray.notification.NotificationType;
 public class ClientView extends Application implements ClientViewInt {
 
     private ClientController controller;
-    static ClientView instance;
+    private static ClientView instance;
     private Stage mainStage;
     
-    //views Controlleres
+    //views Controller
     ChatSceneController chatSceneController ;
+    //HomeBox Controller
+    HomeBoxController homeBoxController ;
 
     public ClientView() {
         controller = new ClientController(this);
@@ -46,6 +47,10 @@ public class ClientView extends Application implements ClientViewInt {
     
     public void setChatSceneController(ChatSceneController chatSceneController){
         this.chatSceneController = chatSceneController;
+    }
+    
+    public void setHomeBoxController(HomeBoxController homeBoxController){
+        this.homeBoxController = homeBoxController;
     }
     
     @Override
@@ -99,8 +104,8 @@ public class ClientView extends Application implements ClientViewInt {
     }
 
     @Override
-    public void notify(String senderName) {
-        showTrayNotification("New Request", "New Request From "+senderName, NotificationType.INFORMATION);
+    public void notify(String message , int type) {
+        chatSceneController.notify(message, type);
     }
 
     @Override
@@ -180,25 +185,21 @@ public class ClientView extends Application implements ClientViewInt {
         return this.mainStage;
     }
 
-
-     /**
-     * show Desktop Notification
-     *  example:
-     *  showTrayNotification("title","Message",NotificationType.SUCCESS);
-     * @param title
-     * @param Message
-     * @param notificationType  types: INFORMATION,NOTICE, SUCCESS, WARNING, ERROR, CUSTOM
-     */
-    public void showTrayNotification(String title,String Message,NotificationType notificationType){
-
-      System.out.println(">> "+Message);
-      chatSceneController.showTrayNotification(title, Message, notificationType);
-    }
-
     @Override
     public User getUserInformation() {
         return controller.getUserInformation();
     }
 
+    
+    @Override
+    public void receiveAnnouncement(String message){
+        homeBoxController.receiveAnnouncement(message);
+    }
+    
+
+    @Override
+    public void ignoreRequest(String senderName){
+        controller.ignoreRequest(senderName);
+    }
 
 }

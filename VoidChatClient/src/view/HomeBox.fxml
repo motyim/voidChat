@@ -54,12 +54,12 @@
                 <Insets top="35.0" />
             </VBox.margin>
         </HBox>
-        <TextFlow fx:id="txtFlowServerMsg" prefHeight="200.0" prefWidth="200.0">
+        <TextFlow fx:id="txtFlowServerMsg" prefHeight="185.0" prefWidth="361.0">
             <VBox.margin>
                 <Insets left="20.0" right="20.0" top="20.0" />
             </VBox.margin>
             <children>
-                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Server message: void chat team yor7b beek :D" wrappingWidth="309.2578125">
+                <Text fx:id="serverMessage" strokeType="OUTSIDE" strokeWidth="0.0" text="Server message: void chat team yor7b beek :D" wrappingWidth="309.2578125">
                     <font>
                         <Font size="16.0" />
                     </font>

@@ -20,10 +20,8 @@ public class ClientModel extends UnicastRemoteObject implements ClientModelInt {
     
     @Override
     //////////////////////////3adlt hna//////////////////////////////////////////////////
-    public void notify(String senderName) {
-        System.out.println("client Model Notify");
-        controller.notify(senderName);
-       
+    public void notify(String message,int type) {
+        controller.notify(message ,type);
     }
 
     @Override
@@ -40,6 +38,12 @@ public class ClientModel extends UnicastRemoteObject implements ClientModelInt {
     public void reciveMsgGroup(String msg, ArrayList<String> groupChatUsers) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+    @Override
+    public void receiveAnnouncement(String message) {
+        controller.receiveAnnouncement(message);
+    }
+    
     
     
 }

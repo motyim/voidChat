@@ -12,6 +12,7 @@ import model.ClientModel;
 import model.ClientModelInt;
 import model.ServerModelInt;
 import model.User;
+import utilitez.Notification;
 import view.ClientView;
 
 public class ClientController implements ClientControllerInt {
@@ -31,7 +32,7 @@ public class ClientController implements ClientControllerInt {
             //connect with model 
             model = new ClientModel(this);
 
-            Registry reg = LocateRegistry.getRegistry("localhost");
+            Registry reg = LocateRegistry.getRegistry(1050);
 
             serverModelInt = (ServerModelInt) reg.lookup("voidChatServer");
             System.out.println("Conncet to Server");
@@ -140,9 +141,8 @@ public class ClientController implements ClientControllerInt {
     }
 
     @Override
-    public void notify(String senderName) { 
-        System.out.println("client controller notify");
-        view.notify(senderName);
+    public void notify(String message , int type) { 
+        view.notify(message , type);
     }
 
     @Override
@@ -184,6 +184,19 @@ public class ClientController implements ClientControllerInt {
     public User getUserInformation() {
         return this.loginUser;
     }
+
+    @Override
+    public void receiveAnnouncement(String message) {
+        view.receiveAnnouncement(message);
+        view.notify("New Message from Server Open Home to See it", Notification.SERVER_MESSAGE);
+    }
      
+    public void ignoreRequest(String senderName){
+        try {
+            serverModelInt.ignoreRequest(senderName, loginUser.getUsername());
+        } catch (RemoteException ex) {
+            ex.printStackTrace();
+        }
+    }
     
 }

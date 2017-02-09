@@ -70,7 +70,7 @@ public interface ClientControllerInt {
     int sendRequest(String reciverName,String category);
     
 
-    void notify(String senderName);
+    void notify(String message , int type);
 
     boolean acceptRequest(String friendName);
 
@@ -85,4 +85,16 @@ public interface ClientControllerInt {
     void reciveMsgGroup(String msg, ArrayList<String> groupChatUsers);
     
     User getUserInformation();
+    
+    /**
+     * get Announcement from Server 
+     * @param message 
+     */
+    void receiveAnnouncement(String message);
+    
+     /**
+     * refuser friend request
+     * @param senderName
+     */
+    public void ignoreRequest(String senderName);
 }

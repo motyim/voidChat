@@ -3,8 +3,9 @@ package model;
 
 import java.rmi.*;
 import java.util.ArrayList;
+import utilitez.Notification;
 
-public interface ServerModelInt extends Remote {
+public interface ServerModelInt extends Remote , Notification {
     
     /**
      * 
@@ -74,12 +75,14 @@ public interface ServerModelInt extends Remote {
     boolean acceptRequest(String senderName , String reciverName ) throws RemoteException;
     
     /**
-     * notify form friend request
-     * @param senderName
-     * @param reciverName 
+     * notify form friend request 
+     * @param reciver 
+     * @param message 
+     * @param type 
      * @throws java.rmi.RemoteException 
      */
-    void notify(String senderName , String reciverName) throws RemoteException;
+    @Override
+    void notify(String reciver , String message , int type) throws RemoteException;
 
     
     /**

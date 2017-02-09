@@ -11,6 +11,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import utilitez.SHA;
 import utilitez.Constant;
+import utilitez.Notification;
 
 /**
  *
@@ -24,6 +25,7 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
     private String query;
     private String property = System.getProperty("user.dir");
     private ServerController controller;
+    private boolean isClosed;      //check if databased is closed  
 
     public ServerModel(ServerController controller) throws RemoteException {
         this.controller = controller;
@@ -36,6 +38,7 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
         try {
             Class.forName("org.sqlite.JDBC");
             connection = DriverManager.getConnection("jdbc:sqlite:" + property + "/voidChat", "", "");
+            isClosed = false;
         } catch (SQLException | ClassNotFoundException ex) {
             ex.printStackTrace();
         }
@@ -46,9 +49,12 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
      */
     private void closeResources() {
         try {
-            //resultSet.close();
-            statement.close();
-            connection.close();
+            if (!isClosed) {
+                //resultSet.close();
+                statement.close();
+                connection.close();
+                isClosed=true;
+            }
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
@@ -154,21 +160,24 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
             statement.executeUpdate(query);
             query = "delete from Requests where sender='" + senderName + "' and receiver='" + reciverName + "'";
             statement.executeUpdate(query);
-            return true; 
+
+            //notify that friend accept friendship
+            notify(senderName, reciverName + " Accept Your Friend Request", ACCEPT_FRIEND_REQUEST);
+
+            return true;
         } catch (SQLException ex) {
             ex.printStackTrace();
-            return false ;
-        }finally{
+            return false;
+        } finally {
             closeResources();
         }
-        
+
     }
 
     @Override
     //hna zawdt
-    public void notify(String senderName, String reciverName) throws RemoteException {
-        System.out.println("notify in model controller");
-        controller.notify(senderName, reciverName);
+    public void notify(String reciver, String message, int type) throws RemoteException {
+        controller.notify(reciver, message, type);
     }
 
     @Override
@@ -198,18 +207,19 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
 
     @Override
     public ArrayList<User> getContacts(String userName) throws RemoteException {
-        ArrayList<User> friendsObjects = null;
+        ArrayList<User> friendsObjects = new ArrayList<User>();
         ArrayList<String> friendsNames = new ArrayList<String>();
         try {
             getConnection();
-            query = "select friend from Relationship where user = '" + userName + "'";
+            query = "select * from Relationship where user = '" + userName + "' or friend = '" + userName + "'";
             statement = connection.createStatement();
             resultSet = statement.executeQuery(query);
-            if (resultSet.next()) {
-                friendsObjects = new ArrayList<User>();
-                friendsNames.add(resultSet.getString("friend"));
-                while (resultSet.next()) {
+            while (resultSet.next()) {
+                //handle if friend name equals userName
+                if (!resultSet.getString("friend").equals(userName)) {
                     friendsNames.add(resultSet.getString("friend"));
+                } else {
+                    friendsNames.add(resultSet.getString("user"));
                 }
             }
 
@@ -234,7 +244,7 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
             ex.printStackTrace();
         }
         closeResources();
-        return friendsObjects;
+        return friendsObjects.size() == 0 ? null : friendsObjects;
     }
 
     @Override
@@ -272,6 +282,7 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
             statement.executeUpdate(query);
 
             //zwat hna
+            notify(reciverName, senderName + " Want to be your Friend", Notification.FRIEND_REQUSET); //notify if sccuess only
             return Constant.SENDED;
 
         } catch (SQLException ex) {
@@ -279,9 +290,6 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
             return Constant.EXCEPTION;
         } finally {
             closeResources();
-            System.out.println("$_");
-            notify(senderName, reciverName);
-            System.out.println("!_");
         }
 
     }

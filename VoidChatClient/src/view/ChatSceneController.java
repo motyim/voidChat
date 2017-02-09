@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -12,6 +14,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -31,10 +34,12 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 import model.User;
-import tray.notification.NotificationType;
+import tray.animations.AnimationType;
 import tray.notification.TrayNotification;
+import utilitez.Notification;
 
 /**
  * FXML Controller class
@@ -99,7 +104,6 @@ public class ChatSceneController implements Initializable {
             ex.printStackTrace();
         }
 
-        
         updateContactsList();
         updateFriendsRequests();
     }
@@ -130,12 +134,12 @@ public class ChatSceneController implements Initializable {
         }
 
     }
-    
+
     /**
      * update friends contact list
      */
-     private void updateContactsList() {
-     //get requests form database
+    private void updateContactsList() {
+        //get requests form database
         ArrayList<User> contacts = clinetView.getContacts();
 
         //check not empty contact list
@@ -147,15 +151,15 @@ public class ChatSceneController implements Initializable {
             ObservableList<String> data = FXCollections.observableArrayList(contactsName);
             friendsListview.setItems(data);
         } else {
-//            VBox hbox= new VBox();
-//            hbox.setPrefHeight(200);
-//            hbox.setPrefWidth(200);
-//            friendsPane.getChildren().clear();
-//            Label label=new Label("Add New Friends");
-//            ImageView imgView=new ImageView(new Image("resouces/circle.png",20,20,false,false));
-//            hbox.getChildren().addAll(label,imgView);
-//            hbox.setAlignment(Pos.CENTER);
-//            friendsPane.getChildren().add(hbox);
+            VBox hbox= new VBox();
+            hbox.setPrefHeight(200);
+            hbox.setPrefWidth(200);
+            friendsPane.getChildren().clear();
+            Label label=new Label("Add New Friends");
+            ImageView imgView=new ImageView(new Image("resouces/circle.png",20,20,false,false));
+            hbox.getChildren().addAll(label,imgView);
+            hbox.setAlignment(Pos.CENTER);
+            friendsPane.getChildren().add(hbox);
         }
 
         friendsListview.setCellFactory(listView -> new ListCell<String>() {
@@ -208,7 +212,7 @@ public class ChatSceneController implements Initializable {
         });
 
     }
-     
+
     public void updatePageInfo() {
         User user = clinetView.getUserInformation();
         homeLabel.setText(user.getUsername());
@@ -249,17 +253,17 @@ public class ChatSceneController implements Initializable {
                             //accept friend request
                             public void handle(ActionEvent event) {
                                 System.out.println("Accept :" + getItem());
-                                if(clinetView.acceptRequest(getItem())){
-                                    clinetView.showSuccess("Operation Sccuess"
-                                            , "Friend Added Successfuly"
-                                            , "you now become friend with "+ getItem());
-                                    
+                                if (clinetView.acceptRequest(getItem())) {
+                                    clinetView.showSuccess("Operation Sccuess",
+                                            "Friend Added Successfuly",
+                                            "you now become friend with " + getItem());
+
                                     //update requests
                                     updateFriendsRequests();
-                                    
+
                                     //update list of friends
                                     updateContactsList();
-                                }else{
+                                } else {
                                     clinetView.showError("Error", "you can't add friend right now \n"
                                             + "please try again later ..", "");
                                 }
@@ -270,6 +274,8 @@ public class ChatSceneController implements Initializable {
                             @Override
                             public void handle(ActionEvent event) {
                                 System.out.println("Ignore :" + getItem());
+                                clinetView.ignoreRequest(getItem());
+                                updateFriendsRequests();
                             }
                         });
 
@@ -289,12 +295,45 @@ public class ChatSceneController implements Initializable {
         }
     }
 
-    public void showTrayNotification(String title, String message, NotificationType notificationType) {
-        Platform.runLater(() -> {
-            TrayNotification tray = new TrayNotification(title, message, notificationType);
-            updateFriendsRequests();
-            tray.showAndWait();
+    public void notify(String message, int type) {
 
+        try {
+
+            switch (type) {
+                case Notification.FRIEND_REQUSET:
+                    showNotifaction("Friend Request", message, new Image(getClass().getResource("../resouces/add-contact.png").openStream()));
+                    updateFriendsRequests();
+                    break;
+                case Notification.FRIEND_OFFLINE:
+                    break;
+                case Notification.FRIEND_ONLINE:
+                    break;
+                case Notification.ACCEPT_FRIEND_REQUEST:
+                    showNotifaction("Accept Request", message, new Image(getClass().getResource("../resouces/add-contact.png").openStream()));
+                    updateContactsList();
+                    break;
+                case Notification.SERVER_MESSAGE:
+                    showNotifaction("New Announcement", message, new Image(getClass().getResource("../resouces/add-contact.png").openStream()));
+                    break;
+
+            }
+
+            //TODO change image to require image
+        } catch (IOException ex) {
+            Logger.getLogger(ChatSceneController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+
+    private void showNotifaction(String title, String message, Image image) {
+        Platform.runLater(() -> {
+            TrayNotification tray = new TrayNotification();
+            tray.setTitle(title);
+            tray.setMessage(message);
+            tray.setRectangleFill(Paint.valueOf("#bdc3c7"));
+            tray.setAnimationType(AnimationType.POPUP);
+            tray.setImage(image);
+            tray.showAndWait();
         });
     }
 

@@ -15,15 +15,14 @@ import javafx.scene.chart.PieChart;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
-import javafx.scene.control.Tab;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.Tab;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import model.User;
 /**
  * FXML Controller class
@@ -72,7 +71,9 @@ public class ServerViewController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
-
+        serverView = ServerView.getInstance();
+        serverView.setServerViewController(this);
+        
         ObservableList<PieChart.Data> data = FXCollections.observableArrayList(
                 new PieChart.Data("Online", 50),
                  new PieChart.Data("Offline", 30),
@@ -100,10 +101,9 @@ public class ServerViewController implements Initializable {
     }
 
 
-        serverView = ServerView.getInstance();
-        serverView.setServerViewController(this);
+       
 
-    }
+    
 
     @FXML
     private void ToggleButtonAction(ActionEvent event) {

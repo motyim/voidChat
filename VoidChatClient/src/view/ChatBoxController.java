@@ -58,7 +58,7 @@ public class ChatBoxController implements Initializable {
     //3amlt deh
     public ChatBoxController() {
         clientView = new ClientView();
-        txtAreaChatBox=new TextArea();
+
     }
 
 
@@ -142,20 +142,14 @@ public class ChatBoxController implements Initializable {
     }
 
 
-        System.out.println("btnsend");
-         //System.out.println(labelFriendName+" "+txtFieldMsg.getText());
-       clientView.sendMsg("Mero",txtFieldMsg.getText());
-    }
+      
     
     
     public void reciveMsg(String msg){
         System.out.println("in chatboxcontroller");
        
         
-        //Platform.runLater(() -> {
-            
-        txtAreaChatBox.appendText(msg);
-       // });
+     
               
     }
     

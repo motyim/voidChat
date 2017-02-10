@@ -11,7 +11,9 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import utilitez.SHA;
 import utilitez.Constant;
+import utilitez.Notification;
 import utilitez.Pair;
+
 
 /**
  *
@@ -25,6 +27,7 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
     private String query;
     private String property = System.getProperty("user.dir");
     private ServerController controller;
+    private boolean isClosed;      //check if databased is closed  
 
     public ServerModel(ServerController controller) throws RemoteException {
         this.controller = controller;
@@ -37,6 +40,7 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
         try {
             Class.forName("org.sqlite.JDBC");
             connection = DriverManager.getConnection("jdbc:sqlite:" + property + "/voidChat", "", "");
+            isClosed = false;
         } catch (SQLException | ClassNotFoundException ex) {
             ex.printStackTrace();
         }
@@ -47,9 +51,12 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
      */
     private void closeResources() {
         try {
-            //resultSet.close();
-            statement.close();
-            connection.close();
+          //  if (!isClosed) {
+                //resultSet.close();
+                statement.close();
+                connection.close();
+                isClosed=true;
+           // }
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
@@ -99,20 +106,14 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
                 String status = resultSet.getString("status");
                 String country = resultSet.getString("country");
                 user = new User(name, email, fname, lname, pw, gender, country, status);
-////////////////////////////////////////////////////////////
-                ArrayList<Pair> users = new ArrayList<>();
-                users = getCountries();
-                for (int i = 0; i < users.size(); i++) {
-                    System.out.println(users.get(i).getFirst() + " " + users.get(i).getSecond());
-                }
-
-                /////////////////////////////////////////////////////////////////////
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
+        }finally{
+           closeResources();
+            return user;
         }
-       //closeResources();
-        return user;
+       
     }
 
     @Override
@@ -149,11 +150,11 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
     }
 
     @Override
-    public void acceptRequest(String senderName, String reciverName) throws RemoteException {
+    public boolean acceptRequest(String senderName, String reciverName) throws RemoteException {
         try {
             String type = null;
             getConnection();
-            query = "select type from Requests where receiver='" + reciverName + "and sender='" + senderName + "'";
+            query = "select type from Requests where receiver='" + reciverName + "' and sender='" + senderName + "'";
             statement = connection.createStatement();
             resultSet = statement.executeQuery(query);
             while (resultSet.next()) {
@@ -163,17 +164,24 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
             statement.executeUpdate(query);
             query = "delete from Requests where sender='" + senderName + "' and receiver='" + reciverName + "'";
             statement.executeUpdate(query);
+
+            //notify that friend accept friendship
+            notify(senderName, reciverName + " Accept Your Friend Request", ACCEPT_FRIEND_REQUEST);
+
+            return true;
         } catch (SQLException ex) {
             ex.printStackTrace();
+            return false;
+        } finally {
+            closeResources();
         }
-        closeResources();
+
     }
 
     @Override
     //hna zawdt
-    public void notify(String senderName, String reciverName) throws RemoteException {
-        System.out.println("notify in model controller");
-        controller.notify(senderName, reciverName);
+    public void notify(String reciver, String message, int type) throws RemoteException {
+        controller.notify(reciver, message, type);
     }
 
     @Override
@@ -204,18 +212,19 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
 
     @Override
     public ArrayList<User> getContacts(String userName) throws RemoteException {
-        ArrayList<User> friendsObjects = null;
+        ArrayList<User> friendsObjects = new ArrayList<User>();
         ArrayList<String> friendsNames = new ArrayList<String>();
         try {
             getConnection();
-            query = "select friend from Relationship where user = '" + userName + "'";
+            query = "select * from Relationship where user = '" + userName + "' or friend = '" + userName + "'";
             statement = connection.createStatement();
             resultSet = statement.executeQuery(query);
-            if (resultSet.next()) {
-                friendsObjects = new ArrayList<User>();
-                friendsNames.add(resultSet.getString("friend"));
-                while (resultSet.next()) {
+            while (resultSet.next()) {
+                //handle if friend name equals userName
+                if (!resultSet.getString("friend").equals(userName)) {
                     friendsNames.add(resultSet.getString("friend"));
+                } else {
+                    friendsNames.add(resultSet.getString("user"));
                 }
             }
 
@@ -240,7 +249,7 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
             ex.printStackTrace();
         }
         closeResources();
-        return friendsObjects;
+        return friendsObjects.size() == 0 ? null : friendsObjects;
     }
 
     @Override
@@ -276,6 +285,10 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
 
             query = "insert into Requests (sender,receiver,type)values ('" + senderName + "','" + reciverName + "','" + type + "')";
             statement.executeUpdate(query);
+
+            //zwat hna
+            notify(reciverName, senderName + " Want to be your Friend", Notification.FRIEND_REQUSET); //notify if sccuess only
+
             return Constant.SENDED;
 
         } catch (SQLException ex) {
@@ -283,10 +296,11 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
             return Constant.EXCEPTION;
         } finally {
             closeResources();
-            notify(senderName, reciverName);
         }
 
     }
+
+
     @Override
     public void ignoreRequest(String senderName, String reciverName) {
         try {

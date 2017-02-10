@@ -5,14 +5,15 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Application;
 import model.ClientModelInt;
 import model.ServerModel;
 import model.ServerPrivateModel;
+import model.User;
 import view.ServerView;
 
 public class ServerController implements ServerControllerInt {
@@ -21,7 +22,9 @@ public class ServerController implements ServerControllerInt {
 
     private ServerModel model;
     private ServerView view;
+
     private Registry reg;
+
     private ServerPrivateModel privateModel;
 
     public ServerController(ServerView view) {
@@ -36,7 +39,8 @@ public class ServerController implements ServerControllerInt {
             privateModel = new ServerPrivateModel(this);
 
             //upload to registry
-           reg = LocateRegistry.getRegistry();
+
+           reg = LocateRegistry.createRegistry(1050);
         } catch (RemoteException ex) {
             ex.printStackTrace();
         }
@@ -46,6 +50,7 @@ public class ServerController implements ServerControllerInt {
         System.out.println("Server controller");
         try {
             reg.rebind("voidChatServer", model);
+
         } catch (RemoteException ex) {
             ex.printStackTrace();
         }
@@ -68,17 +73,12 @@ public class ServerController implements ServerControllerInt {
     }
 
     @Override
-    /////////////////////////////////3adlt hna/////////////////////////////////
-    public void notify(String SenderName, String reciverName) {
-        System.out.println(onlineUsers.size());
+    public void notify(String reciver , String message , int type) {
 
-        if (onlineUsers.containsKey(reciverName)) {
-            System.out.println("server controller");
-            ClientModelInt clientObject = onlineUsers.get(reciverName);
+        if (onlineUsers.containsKey(reciver)) {
+            ClientModelInt clientObject = onlineUsers.get(reciver);
             try {
-                System.out.println("before");
-                clientObject.notify(SenderName);
-                System.out.println("after");
+                clientObject.notify(message,type);
             } catch (RemoteException ex) {
                 ex.printStackTrace();
             }
@@ -120,6 +120,24 @@ public class ServerController implements ServerControllerInt {
     public void register(String username, ClientModelInt obj) {
         onlineUsers.put(username, obj);
         System.out.println("-- user login --" + onlineUsers.size());
+    }
+
+    @Override
+    public User getUserInfo(String username) {
+        return privateModel.getUserInfo(username);
+    }
+
+    @Override
+    public void sendAnnouncement(String message) {
+        Set<String> onlineSet = onlineUsers.keySet();
+        onlineSet.forEach((user) -> {
+            try {
+                onlineUsers.get(user).receiveAnnouncement(message);
+            } catch (RemoteException ex) {
+                Logger.getLogger(ServerController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
+
     }
 
 }

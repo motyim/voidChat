@@ -23,9 +23,9 @@ public interface ClientViewInt {
     int sendRequest(String friend,String category);
     
 
-    void notify(String senderName);
+    void notify(String message , int type);
 
-    void acceptRequest();
+    boolean acceptRequest(String friend);
 
     void notifyStatus(String username, String status);
 
@@ -46,4 +46,16 @@ public interface ClientViewInt {
     ArrayList<String> checkRequest();
     
     User getUserInformation();
+    
+    /**
+     * receive Announcement from server
+     * @param message 
+     */
+    void receiveAnnouncement(String message);
+    
+    /**
+     * refuser friend request
+     * @param senderName
+     */
+    public void ignoreRequest(String senderName);
 }

@@ -8,6 +8,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import model.User;
 /**
  *
  * @author Mostafa
@@ -17,7 +18,8 @@ public class ServerView extends Application implements ServerViewInt{
     private ServerController controller ; 
     private static ServerView instance;
     
-     private ServerViewController serverViewController ;
+    private ServerViewController serverViewController ; 
+
     public ServerView(){
         //connect to Controller
         controller = new ServerController(this);
@@ -37,7 +39,7 @@ public class ServerView extends Application implements ServerViewInt{
         this.serverViewController = serverViewController;
     }
     
-    
+
     @Override
     public void start(Stage stage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("Server.fxml"));
@@ -61,5 +63,17 @@ public class ServerView extends Application implements ServerViewInt{
         System.out.println("ServerView closeServer");
         controller.stopServer();
     }
+
+    @Override
+    public User getUserInfo(String username) {
+        return controller.getUserInfo(username);
+    }
+
+    @Override
+    public void sendAnnouncement(String message) {
+        controller.sendAnnouncement(message);
+    }
+    
+    
 
 }

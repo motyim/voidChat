@@ -39,7 +39,7 @@
                                     <Font size="14.0" />
                                 </font>
                             </Label>
-                            <ComboBox fx:id="comboBoxStatus" prefHeight="25.0" prefWidth="86.0" promptText="status">
+                            <ComboBox fx:id="comboBoxStatus" onAction="#changeStatus" prefHeight="25.0" prefWidth="86.0" promptText="status">
                                 <VBox.margin>
                                     <Insets bottom="5.0" left="10.0" />
                                 </VBox.margin>

@@ -10,6 +10,7 @@ import java.util.logging.Logger;
 import javafx.application.Application;
 import model.ClientModel;
 import model.ClientModelInt;
+import model.Message;
 import model.ServerModelInt;
 import model.User;
 import utilitez.Notification;
@@ -111,19 +112,23 @@ public class ClientController implements ClientControllerInt {
             return null;
         }
     }
-
+////////////////////////////////////////////////////////////
     @Override
     public void changeStatus(String status) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        try {
+            serverModelInt.changeStatus(loginUser.getUsername(), status);
+        } catch (RemoteException ex) {
+            ex.printStackTrace();
+        }
     }
-
+/////////////////////////////////////////////////////////////////////////
     @Override
     public void logout() {
         try {
             //System.out.println(userName);
             serverModelInt.unregister(loginUser.getUsername());
         } catch (RemoteException ex) {
-            Logger.getLogger(ClientController.class.getName()).log(Level.SEVERE, null, ex);
+            ex.printStackTrace();
         }
     }
 
@@ -143,6 +148,7 @@ public class ClientController implements ClientControllerInt {
     @Override
     public void notify(String message , int type) { 
         view.notify(message , type);
+        System.out.println("notify in client controller");
     }
 
     @Override
@@ -161,19 +167,30 @@ public class ClientController implements ClientControllerInt {
     }
 
     @Override
-    public void sendMsg(String friendName,String message) {
+    public void sendMsg(Message message){
+        try {
+            System.out.println("in client controller send msg");
+            serverModelInt.sendMsg(message);
+        } catch (RemoteException ex) {
+            ex.printStackTrace();
+        }
+    }
+/*    public void sendMsg(String friendName,String message) {
         try {
             System.out.println("send Message in client controller "+friendName+" "+message);
             serverModelInt.sendMsg(friendName, message);
         } catch (RemoteException ex) {
            ex.printStackTrace();
         }
-    }
+    }*/
 
     @Override
-    public void reciveMsg(String msg) {
-         view.reciveMsg(msg);
+     public void reciveMsg(Message message) {
+         view.reciveMsg(message);
     }
+  /*  public void reciveMsg(String msg) {
+         view.reciveMsg(msg);
+    }*/
 
     @Override
     public void groupMsg(String msg, ArrayList<String> groupChatUsers) {

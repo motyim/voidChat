@@ -104,7 +104,8 @@ public interface ServerModelInt extends Remote , Notification {
      * @return  
      * @throws java.rmi.RemoteException  
      */
-    boolean sendMsg(String reciver , String msg) throws RemoteException;
+    //boolean sendMsg(String reciver , String msg) throws RemoteException;
+    void sendMsg(Message message) throws RemoteException;
     
     
     void groupMsg(String msg , ArrayList<String> groupChatUsers) throws RemoteException;

@@ -37,6 +37,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import model.User;
 import tray.animations.AnimationType;
 import tray.notification.TrayNotification;
@@ -60,7 +61,7 @@ public class ChatSceneController implements Initializable {
     @FXML
     private ImageView iconCreateGroup;
     @FXML
-    private ListView<String> friendsListview;
+    private ListView<User> friendsListview;
     @FXML
     private ListView<String> requestsListview;
     @FXML
@@ -133,7 +134,13 @@ public class ChatSceneController implements Initializable {
             stage.setScene(scene);
             stage.setTitle("Signin Page");
             stage.show();
+            stage.setOnCloseRequest((WindowEvent ew) -> {
+                Platform.exit();
+                //TODO : why not close
+                System.exit(0);
+            });
             clinetView.logout();
+            clinetView.changeStatus("offline");
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -164,28 +171,26 @@ public class ChatSceneController implements Initializable {
 
             //check not empty contact list
             if (contacts != null) {
-                ArrayList<String> contactsName = new ArrayList<>();
-                for (User contact : contacts) {
-                    contactsName.add(contact.getUsername());
-                }
-                ObservableList<String> data = FXCollections.observableArrayList(contactsName);
+                System.out.println(">>><<<<" + contacts.size());
+                ObservableList<User> data = FXCollections.observableArrayList(contacts);
                 friendsListview.setItems(data);
             } else {
-                try {
-                    friendsPane.getChildren().clear();
-                    friendsPane.getChildren().add(FXMLLoader.load(getClass().getResource("EmptyList.fxml")));
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                }
+//            try {
+//                friendsPane.getChildren().clear();
+//                friendsPane.getChildren().add(FXMLLoader.load(getClass().getResource("EmptyList.fxml")));
+//            } catch (IOException ex) {
+//                ex.printStackTrace();
+//            }
             }
 
-            friendsListview.setCellFactory(listView -> new ListCell<String>() {
+            friendsListview.setCellFactory(listView -> new ListCell<User>() {
 
                 private final ImageView imageView = new ImageView();
                 private final ImageView imageViewStatus = new ImageView();
 
                 @Override
-                public void updateItem(String friend, boolean empty) {
+
+                public void updateItem(User friend, boolean empty) {
                     super.updateItem(friend, empty);
                     if (empty || friend == null) {
                         setText(null);
@@ -197,7 +202,8 @@ public class ChatSceneController implements Initializable {
                         flow.setPrefWidth(1);
 
                         Label friendName = new Label();
-                        friendName.setText(friend);
+
+                        friendName.setText(friend.getUsername());
 
                         Image image = new Image("/resouces/user.png", true);
                         Image statusImg = new Image("/resouces/circle.png", true);
@@ -223,8 +229,10 @@ public class ChatSceneController implements Initializable {
                     try {
                         System.out.println("clicked on " + friendsListview.getSelectionModel().getSelectedItem());
                         Tab newTab = new Tab();
-                        newTab.setId(friendsListview.getSelectionModel().getSelectedItem());
-                        newTab.setText(friendsListview.getSelectionModel().getSelectedItem() + "test");
+
+                        newTab.setId(friendsListview.getSelectionModel().getSelectedItem().getUsername());
+                        newTab.setText(friendsListview.getSelectionModel().getSelectedItem().getUsername() + "test");
+
                         newTab.setClosable(true);
 
                         tabPane.getTabs().add(newTab);
@@ -256,6 +264,7 @@ public class ChatSceneController implements Initializable {
 
             ArrayList<String> requestsArrayList = clinetView.checkRequest();
 
+
             if (requestsArrayList != null) {
                 requestsTab.setDisable(false);
                 ObservableList<String> requestsList = FXCollections.observableArrayList(requestsArrayList);
@@ -268,11 +277,12 @@ public class ChatSceneController implements Initializable {
                     @Override
                     public void updateItem(String name, boolean empty) {
                         super.updateItem(name, empty);
+
                         if (empty || name == null) {
                             setText(null);
                             setGraphic(null);
                         } else {
-                            
+
                             BorderPane pane = new BorderPane();
 
                             Label labelRequestFrom = new Label();
@@ -327,7 +337,7 @@ public class ChatSceneController implements Initializable {
     }
 
     public void notify(String message, int type) {
-
+        System.out.println("notify in chat controller");
         try {
 
             switch (type) {
@@ -336,8 +346,12 @@ public class ChatSceneController implements Initializable {
                     updateFriendsRequests();
                     break;
                 case Notification.FRIEND_OFFLINE:
+                    showNotifaction("Friend Become offline", message, new Image(getClass().getResource("../resouces/add-contact.png").openStream()));      
+                    updateContactsList();
                     break;
-                case Notification.FRIEND_ONLINE:
+                case Notification.FRIEND_ONLINE:                  
+                    showNotifaction("Friend Become online", message, new Image(getClass().getResource("../resouces/add-contact.png").openStream()));      
+                    updateContactsList();
                     break;
                 case Notification.ACCEPT_FRIEND_REQUEST:
                     showNotifaction("Accept Request", message, new Image(getClass().getResource("../resouces/add-contact.png").openStream()));
@@ -346,7 +360,10 @@ public class ChatSceneController implements Initializable {
                 case Notification.SERVER_MESSAGE:
                     showNotifaction("New Announcement", message, new Image(getClass().getResource("../resouces/add-contact.png").openStream()));
                     break;
-
+                case Notification.FRIEND_BUSY:
+                    showNotifaction("Friend Become busy", message, new Image(getClass().getResource("../resouces/add-contact.png").openStream()));      
+                    updateContactsList();
+                
             }
 
             //TODO change image to require image
@@ -368,4 +385,11 @@ public class ChatSceneController implements Initializable {
         });
     }
 
+    
+    ///////////////////////////////////////////
+    public void changeStatus(){
+        System.out.println("change status button in chatScene Controller");
+        clinetView.changeStatus(comboBoxStatus.getValue().toString());
+        System.out.println(comboBoxStatus.getValue().toString());
+    }
 }

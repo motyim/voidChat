@@ -77,7 +77,9 @@ public class LoginSceneController implements Initializable {
 
                 return;
             }
-
+            ///////////////////////////////////////////////////////
+            clinetView.changeStatus("online");
+            ////////////////////////////////////////////////////////
             //login successfully 
             ((Node) (event.getSource())).getScene().getWindow().hide(); //this line to hide login window ..
             Parent parent = FXMLLoader.load(getClass().getResource("ChatScene.fxml"));
@@ -88,6 +90,10 @@ public class LoginSceneController implements Initializable {
             stage.setTitle(" ");
             stage.show();
             stage.setOnCloseRequest((WindowEvent ew) -> {
+                ///////////////////////////////
+                clinetView.logout();
+                clinetView.changeStatus("offline");
+                //////////////////////////
                 Platform.exit();
                 //TODO : why not close
                 System.exit(0);

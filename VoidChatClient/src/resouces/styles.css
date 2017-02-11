@@ -19,3 +19,6 @@ and open the template in the editor.
     -fx-background-color: #dbe5e7;
     -fx-text-fill: black;
 }
+.list-cell:empty {
+    -fx-opacity: 0;
+}

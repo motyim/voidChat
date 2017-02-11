@@ -189,6 +189,7 @@ public class ChatSceneController implements Initializable {
                 private final ImageView imageViewStatus = new ImageView();
 
                 @Override
+
                 public void updateItem(User friend, boolean empty) {
                     super.updateItem(friend, empty);
                     if (empty || friend == null) {
@@ -201,6 +202,7 @@ public class ChatSceneController implements Initializable {
                         flow.setPrefWidth(1);
 
                         Label friendName = new Label();
+
                         friendName.setText(friend.getUsername());
 
                         Image image = new Image("/resouces/user.png", true);
@@ -227,8 +229,10 @@ public class ChatSceneController implements Initializable {
                     try {
                         System.out.println("clicked on " + friendsListview.getSelectionModel().getSelectedItem());
                         Tab newTab = new Tab();
+
                         newTab.setId(friendsListview.getSelectionModel().getSelectedItem().getUsername());
                         newTab.setText(friendsListview.getSelectionModel().getSelectedItem().getUsername() + "test");
+
                         newTab.setClosable(true);
 
                         tabPane.getTabs().add(newTab);
@@ -260,6 +264,7 @@ public class ChatSceneController implements Initializable {
 
             ArrayList<String> requestsArrayList = clinetView.checkRequest();
 
+
             if (requestsArrayList != null) {
                 requestsTab.setDisable(false);
                 ObservableList<String> requestsList = FXCollections.observableArrayList(requestsArrayList);
@@ -272,7 +277,11 @@ public class ChatSceneController implements Initializable {
                     @Override
                     public void updateItem(String name, boolean empty) {
                         super.updateItem(name, empty);
-                        if (name != null) {
+
+                        if (empty || name == null) {
+                            setText(null);
+                            setGraphic(null);
+                        } else {
 
                             BorderPane pane = new BorderPane();
 

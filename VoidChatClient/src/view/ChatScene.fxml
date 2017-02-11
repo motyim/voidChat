@@ -86,7 +86,7 @@
     <left>
         <SplitPane fx:id="splitPane" dividerPositions="0.32459016393442625" prefHeight="384.0" prefWidth="612.0" BorderPane.alignment="CENTER">
             <items>
-                <VBox fx:id="leftPane" prefHeight="338.0" prefWidth="198.0" SplitPane.resizableWithParent="false">
+                <VBox fx:id="leftPane" prefHeight="338.0" prefWidth="198.0" style="-fx-background-color: #fff;" SplitPane.resizableWithParent="false">
                     <children>
                         <TabPane prefHeight="200.0" prefWidth="200.0" stylesheets="@../resouces/styles.css" tabClosingPolicy="UNAVAILABLE">
                             <tabs>

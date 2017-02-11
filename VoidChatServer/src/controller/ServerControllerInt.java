@@ -3,6 +3,7 @@ package controller;
 
 import java.util.ArrayList;
 import model.ClientModelInt;
+import model.Message;
 import model.User;
 import utilitez.Notification;
 
@@ -34,8 +35,8 @@ public interface ServerControllerInt extends Notification{
      * @param msg
      * @return  
      */
-    boolean sendMsg(String reciver , String msg);
-    
+   // boolean sendMsg(String reciver , String msg);
+    void recieveMsg(Message message);
     /**
      * check for user group online user and send Msg 
      * for them .. fokkak mn offline now 
@@ -59,5 +60,5 @@ public interface ServerControllerInt extends Notification{
      * @param message 
      */
     void sendAnnouncement(String message);
-    
+    void unregister(String username);
 }

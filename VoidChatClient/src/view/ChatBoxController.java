@@ -30,6 +30,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import model.Message;
+import tray.notification.TrayNotification;
 
 /**
  * FXML Controller class
@@ -176,11 +178,18 @@ public class ChatBoxController implements Initializable {
             ex.printStackTrace();
         }
         System.out.println("btnSendMsg Action");
+        Message message=new Message();
+        message.setTo("Aya");
+        message.setBody("how are you aya");
+        System.out.println("in chat box controller sendMsg");
+        clientView.sendMsg(message);
+ }
+    
+    public void reciveMsg(Message message){
+        System.out.println("in chatboxcontroller");  
+        System.out.println(message.getBody());
     }
 
-    public void reciveMsg(String msg) {
-        System.out.println("in chatboxcontroller");
-    }
 
     void customizeEditorPane() {
         ObservableList<String> limitedFonts = FXCollections.observableArrayList("Arial", "Times", "Courier New", "Comic Sans MS");

@@ -1,6 +1,7 @@
 package view;
 
 import java.util.ArrayList;
+import model.Message;
 import model.User;
 
 /**
@@ -15,13 +16,13 @@ public interface ClientViewInt {
 
     void loadHomePage();
 
-    void changeStatus();
+    void changeStatus(String status);
 
     void logout();
 
     
     int sendRequest(String friend,String category);
-    
+     
 
     void notify(String message , int type);
 
@@ -29,10 +30,11 @@ public interface ClientViewInt {
 
     void notifyStatus(String username, String status);
 
-    void sendMsg(String friendName,String message);
+    //void sendMsg(String friendName,String message);
+    void sendMsg(Message message);
 
-    void reciveMsg(String msg);
-
+  //  void reciveMsg(String msg);
+        void reciveMsg(Message message);
     void groupMsg();
     
     void reciveMsgGroup(String msg ,ArrayList<String> groupChatUsers);

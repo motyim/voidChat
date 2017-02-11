@@ -2,6 +2,7 @@ package controller;
 
 import java.util.ArrayList;
 import model.ClientModelInt;
+import model.Message;
 import model.User;
 
 public interface ClientControllerInt {
@@ -76,10 +77,12 @@ public interface ClientControllerInt {
 
     void notifyStatus(String username, String status);
 
-    void sendMsg(String reciver, String Msg);
-
-    void reciveMsg(String msg);
-
+    //void sendMsg(String reciver, String Msg);
+    void sendMsg(Message message);
+    
+    //void reciveMsg(String msg);
+     void reciveMsg(Message message);
+     
     void groupMsg(String msg, ArrayList<String> groupChatUsers);
 
     void reciveMsgGroup(String msg, ArrayList<String> groupChatUsers);

@@ -135,6 +135,7 @@ public class ChatSceneController implements Initializable {
             stage.setTitle("Signin Page");
             stage.show();
             clinetView.logout();
+            clinetView.changeStatus("offline");
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -330,7 +331,7 @@ public class ChatSceneController implements Initializable {
     }
 
     public void notify(String message, int type) {
-
+        System.out.println("notify in chat controller");
         try {
 
             switch (type) {
@@ -339,8 +340,12 @@ public class ChatSceneController implements Initializable {
                     updateFriendsRequests();
                     break;
                 case Notification.FRIEND_OFFLINE:
+                    showNotifaction("Friend Become offline", message, new Image(getClass().getResource("../resouces/add-contact.png").openStream()));      
+                    updateContactsList();
                     break;
-                case Notification.FRIEND_ONLINE:
+                case Notification.FRIEND_ONLINE:                  
+                    showNotifaction("Friend Become online", message, new Image(getClass().getResource("../resouces/add-contact.png").openStream()));      
+                    updateContactsList();
                     break;
                 case Notification.ACCEPT_FRIEND_REQUEST:
                     showNotifaction("Accept Request", message, new Image(getClass().getResource("../resouces/add-contact.png").openStream()));
@@ -349,7 +354,10 @@ public class ChatSceneController implements Initializable {
                 case Notification.SERVER_MESSAGE:
                     showNotifaction("New Announcement", message, new Image(getClass().getResource("../resouces/add-contact.png").openStream()));
                     break;
-
+                case Notification.FRIEND_BUSY:
+                    showNotifaction("Friend Become busy", message, new Image(getClass().getResource("../resouces/add-contact.png").openStream()));      
+                    updateContactsList();
+                
             }
 
             //TODO change image to require image
@@ -371,4 +379,11 @@ public class ChatSceneController implements Initializable {
         });
     }
 
+    
+    ///////////////////////////////////////////
+    public void changeStatus(){
+        System.out.println("change status button in chatScene Controller");
+        clinetView.changeStatus(comboBoxStatus.getValue().toString());
+        System.out.println(comboBoxStatus.getValue().toString());
+    }
 }

@@ -23,6 +23,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import model.Message;
 import tray.notification.TrayNotification;
 
 /**
@@ -139,19 +140,25 @@ public class ChatBoxController implements Initializable {
             ex.printStackTrace();
         }
         System.out.println("btnSendMsg Action");
+        Message message=new Message();
+        message.setTo("Aya");
+        message.setBody("how are you aya");
+        System.out.println("in chat box controller sendMsg");
+        clientView.sendMsg(message);
     }
 
 
       
     
     
-    public void reciveMsg(String msg){
-        System.out.println("in chatboxcontroller");
-       
-        
-     
-              
+    /*public void reciveMsg(String msg){
+        System.out.println("in chatboxcontroller");        
     }
+    */
     
+    public void reciveMsg(Message message){
+        System.out.println("in chatboxcontroller");  
+        System.out.println(message.getBody());
+    }
 
 }

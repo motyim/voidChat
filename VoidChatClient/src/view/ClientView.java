@@ -11,6 +11,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import model.Message;
 import model.User;
 
 
@@ -89,12 +90,12 @@ public class ClientView extends Application implements ClientViewInt {
     public void loadHomePage() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
+/////////////////////////////////////////////////////////////////////
     @Override
-    public void changeStatus() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void changeStatus(String status) {
+        controller.changeStatus(status);
     }
-
+/////////////////////////////////////////////////////////////////////
     @Override
     public void logout() {
        controller.logout(); 
@@ -109,6 +110,7 @@ public class ClientView extends Application implements ClientViewInt {
     @Override
     public void notify(String message , int type) {
         chatSceneController.notify(message, type);
+        System.out.println("notify in client view");
     }
 
     @Override
@@ -122,17 +124,26 @@ public class ClientView extends Application implements ClientViewInt {
     }
 
     @Override
-    public void sendMsg(String friendName,String message) {
+     public void sendMsg(Message message) {
+         System.out.println("in client view sendMsg");
+        controller.sendMsg( message);
+    }
+   /* public void sendMsg(String friendName,String message) {
         System.out.println("sendMsg in clientView "+friendName+" "+message);
         controller.sendMsg(friendName, message);
-    }
+    }*/
 
     @Override
-    public void reciveMsg(String msg) {
+     public void reciveMsg(Message message) {
+        System.out.println("recieve msg in client view"+message.getBody());
+        //chatBoxController=new ChatBoxController();
+        //chatBoxController.reciveMsg(message);
+     }
+  /*  public void reciveMsg(String msg) {
         System.out.println("recieve msg in client view"+msg);
         chatBoxController=new ChatBoxController();
         chatBoxController.reciveMsg(msg);
-    }
+    }*/
 
     @Override
     public void groupMsg() {

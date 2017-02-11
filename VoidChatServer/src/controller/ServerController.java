@@ -11,6 +11,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Application;
 import model.ClientModelInt;
+import model.Message;
 import model.ServerModel;
 import model.ServerPrivateModel;
 import model.User;
@@ -74,8 +75,9 @@ public class ServerController implements ServerControllerInt {
 
     @Override
     public void notify(String reciver , String message , int type) {
-
+        System.out.println("in notify in server controller");
         if (onlineUsers.containsKey(reciver)) {
+            System.out.println("online user is "+ reciver);
             ClientModelInt clientObject = onlineUsers.get(reciver);
             try {
                 clientObject.notify(message,type);
@@ -91,7 +93,22 @@ public class ServerController implements ServerControllerInt {
     }
 
     @Override
-    public boolean sendMsg(String reciver, String msg) {
+    
+    public void recieveMsg(Message message){
+        String reciever=message.getTo();
+        if(!(reciever.contains("SS"))){
+            if (onlineUsers.containsKey(reciever)) {
+            ClientModelInt clientObject = onlineUsers.get(reciever);
+            try {
+                clientObject.reciveMsg(message);
+            } catch (RemoteException ex) {
+                ex.printStackTrace();
+                System.out.println("Exception Happen");
+            }
+    }
+        }
+    }
+   /* public boolean sendMsg(String reciver, String msg) {
         System.out.println("send message in server controller");
         System.out.println("size of online " + onlineUsers.size());
         if (onlineUsers.containsKey(reciver)) {
@@ -109,7 +126,7 @@ public class ServerController implements ServerControllerInt {
         }
         return false;
 
-    }
+    }*/
 
     @Override
     public void groupMsg(String msg, ArrayList<String> groupChatUsers) {
@@ -140,4 +157,9 @@ public class ServerController implements ServerControllerInt {
 
     }
 
+    public void unregister(String username){
+        System.out.println(onlineUsers.size());
+        onlineUsers.remove(username);
+        System.out.println(onlineUsers.size());
+    }
 }

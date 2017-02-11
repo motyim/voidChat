@@ -10,7 +10,8 @@ public interface ClientModelInt extends Remote{
     
     void notifyStatus(String username , String status) throws RemoteException;
     
-    void reciveMsg(String msg)  throws RemoteException;
+   // void reciveMsg(String msg)  throws RemoteException;
+    void reciveMsg(Message message)  throws RemoteException;
     
     void reciveMsgGroup(String msg ,ArrayList<String> groupChatUsers)  throws RemoteException;
    

@@ -14,7 +14,6 @@ import utilitez.Constant;
 import utilitez.Notification;
 import utilitez.Pair;
 
-
 /**
  *
  * @author Roma
@@ -51,12 +50,12 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
      */
     private void closeResources() {
         try {
-          //  if (!isClosed) {
-                //resultSet.close();
-                statement.close();
-                connection.close();
-                isClosed=true;
-           // }
+            //  if (!isClosed) {
+            //resultSet.close();
+            statement.close();
+            connection.close();
+            isClosed = true;
+            // }
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
@@ -109,11 +108,11 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
-        }finally{
-           closeResources();
+        } finally {
+            closeResources();
             return user;
         }
-       
+
     }
 
     @Override
@@ -124,7 +123,7 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
     @Override
     public void unregister(String username) throws RemoteException {
         //System.out.println(username);
-
+        controller.unregister(username);
     }
 
     @Override
@@ -182,28 +181,44 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
     //hna zawdt
     public void notify(String reciver, String message, int type) throws RemoteException {
         controller.notify(reciver, message, type);
+        System.out.println("in notify in server model");
     }
 
     @Override
     public void changeStatus(String username, String status) throws RemoteException {
+        System.out.println("change status in server model");
         try {
             getConnection();
             query = "update UserTable set status='" + status + "' where username= '" + username + "'";
             statement = connection.createStatement();
             statement.executeUpdate(query);
 
+            ArrayList<User> userFriends = userFriends = getContacts(username);
+            for (int i = 0; i < userFriends.size(); i++) {
+                if (status.equalsIgnoreCase("online")) {
+                    notify(userFriends.get(i).getUsername(), username + " Become online ", Notification.FRIEND_ONLINE);
+                } else if (status.equalsIgnoreCase("offline")) {
+                    notify(userFriends.get(i).getUsername(), username + " Become offline ", Notification.FRIEND_OFFLINE);
+                } else if (status.equalsIgnoreCase("busy")) {
+                    notify(userFriends.get(i).getUsername(), username + " Become busy ", Notification.FRIEND_BUSY);
+                }
+            }
+
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
-
-        closeResources();
+       // closeResources();
     }
 
     @Override
-    public boolean sendMsg(String reciver, String msg) throws RemoteException {
+    public void sendMsg(Message message){
+        System.out.println("in Server Model send message");
+        controller.recieveMsg(message);
+    }
+   /* public boolean sendMsg(String reciver, String msg) throws RemoteException {
         System.out.println("sendMsg in server model");
         return controller.sendMsg(reciver, msg);
-    }
+    }*/
 
     @Override
     public void groupMsg(String msg, ArrayList<String> groupChatUsers) throws RemoteException {
@@ -212,6 +227,7 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
 
     @Override
     public ArrayList<User> getContacts(String userName) throws RemoteException {
+        System.out.println("in get contacts");
         ArrayList<User> friendsObjects = new ArrayList<User>();
         ArrayList<String> friendsNames = new ArrayList<String>();
         try {
@@ -300,7 +316,6 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
 
     }
 
-
     @Override
     public void ignoreRequest(String senderName, String reciverName) {
         try {
@@ -313,7 +328,7 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
         }
         closeResources();
     }
-    
+
     public ArrayList<Integer> getStatistics() {
         int countUsers = 0;
         ArrayList<Integer> users = new ArrayList<Integer>();
@@ -381,7 +396,7 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
         ArrayList<String> distinctCountries = new ArrayList<String>();
         ArrayList<Pair> countriesPairs = new ArrayList<Pair>();
         Pair myPair = new Pair();
-        
+
         try {
             getConnection();
             query = "select distinct country from UserTable";
@@ -389,7 +404,7 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
             resultSet = statement.executeQuery(query);
             while (resultSet.next()) {
                 distinctCountries.add(resultSet.getString("country"));
-            } 
+            }
             for (int i = 0; i < distinctCountries.size(); i++) {
                 query = "select * from UserTable where country='" + distinctCountries.get(i) + "'";
                 resultSet = statement.executeQuery(query);

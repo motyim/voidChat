@@ -21,7 +21,6 @@ public class Message implements Serializable {
     protected String body;
 
     public Message(){
-        
     }
     public Message(int fontsSize, String from, String to, XMLGregorianCalendar date, String fontColor, String fontFamily, String fontStyle, String body) {
         this.fontsSize = fontsSize;

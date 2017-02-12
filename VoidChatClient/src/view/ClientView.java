@@ -26,8 +26,6 @@ public class ClientView extends Application implements ClientViewInt {
     private ClientController controller;
     private static ClientView instance;
     private Stage mainStage;
-    Boolean recMsgFlag = true;
-    Boolean sendMsgFlag = true;
     
     //2na 2le 3amlaha
     ChatBoxController chatBoxController;

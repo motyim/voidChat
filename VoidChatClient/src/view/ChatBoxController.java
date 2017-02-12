@@ -13,6 +13,7 @@ import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
@@ -26,6 +27,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -83,6 +86,9 @@ public class ChatBoxController implements Initializable {
     ClientView clientView;
     String receiver;
     Message message;
+    
+    Boolean recMsgFlag = true;
+    Boolean sendMsgFlag = true;
 
     //3amlt deh
     public ChatBoxController(String receiver) {
@@ -124,10 +130,9 @@ public class ChatBoxController implements Initializable {
         System.out.println("btnSendAttach Action");
     }
 
-    @FXML
-    private void btnSendMsgAction(ActionEvent event) {
-
-        clientView.sendMsgFlag = true;
+    private void sendMessageAction(){
+        
+        sendMsgFlag = true;
 
         String color = "#" + Integer.toHexString(colorPicker.getValue().hashCode());
         String weight = (boldToggleBtn.isSelected()) ? "Bold" : "normal";
@@ -168,11 +173,11 @@ public class ChatBoxController implements Initializable {
                     + "\";-fx-underline:" + underline
                     + ";");
 
-            if (clientView.recMsgFlag) {
+            if (recMsgFlag) {
 
                 sendLabel.getStyleClass().add("LabelSender");
                 cell.getChildren().addAll(img, sendLabel);
-                clientView.recMsgFlag = false;
+                recMsgFlag = false;
             } else {
                 sendLabel.getStyleClass().add("LabelSenderSec");
                 cell.getChildren().add(sendLabel);
@@ -188,11 +193,11 @@ public class ChatBoxController implements Initializable {
         System.out.println("btnSendMsg Action");
 
     }
-
+    
     public void reciveMsg(Message message) throws IOException {
 
         // hey there is new received msg, you will send the next msg with image 
-        clientView.recMsgFlag = true;
+        recMsgFlag = true;
         receiver = message.getFrom();
 
         if (message != null) {
@@ -209,11 +214,11 @@ public class ChatBoxController implements Initializable {
                     + "\";-fx-underline:" + message.getUnderline()
                     + ";");
 
-            if (clientView.sendMsgFlag) {
+            if (sendMsgFlag) {
                 recLabel.getStyleClass().add("LabelRec");
                 cell.getChildren().addAll(recLabel, img);
                 cell.setAlignment(Pos.TOP_RIGHT);
-                clientView.sendMsgFlag = false;
+                sendMsgFlag = false;
             } else {
                 recLabel.getStyleClass().add("LabelRecSec");
                 cell.getChildren().addAll(recLabel);
@@ -226,7 +231,18 @@ public class ChatBoxController implements Initializable {
         }
 
     }
-
+    
+    //handle Enter pressed action on txtFieldMessage and call the sendMessageAction ..
+    @FXML
+    private void txtFieldOnKeyPressed(KeyEvent event) {
+        if (event.getCode().equals(KeyCode.ENTER)){
+                   sendMessageAction();
+                }
+    }
+    
+    /*
+     *customize Editor pane with styles  (bold,italic,font,size ..) 
+     */
     void customizeEditorPane() {
         ObservableList<String> limitedFonts = FXCollections.observableArrayList("Arial", "Times", "Courier New", "Comic Sans MS");
         fontComboBox.setItems(limitedFonts);

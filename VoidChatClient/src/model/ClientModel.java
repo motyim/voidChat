@@ -32,6 +32,7 @@ public class ClientModel extends UnicastRemoteObject implements ClientModelInt {
 
     @Override
      public void reciveMsg(Message message) {
+         System.out.println("receive msg in client model"+ message.getBody());
         controller.reciveMsg(message);
     }
   /*  public void reciveMsg(String msg) {

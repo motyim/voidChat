@@ -2,6 +2,7 @@ package view;
 
 
 import controller.ClientController;
+import java.io.IOException;
 import java.util.ArrayList;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -25,6 +26,9 @@ public class ClientView extends Application implements ClientViewInt {
     private ClientController controller;
     private static ClientView instance;
     private Stage mainStage;
+    Boolean recMsgFlag = true;
+    Boolean sendMsgFlag = true;
+    
     //2na 2le 3amlaha
     ChatBoxController chatBoxController;
     
@@ -126,25 +130,23 @@ public class ClientView extends Application implements ClientViewInt {
     @Override
      public void sendMsg(Message message) {
          System.out.println("in client view sendMsg");
-        controller.sendMsg( message);
+         controller.sendMsg( message);
     }
-   /* public void sendMsg(String friendName,String message) {
-        System.out.println("sendMsg in clientView "+friendName+" "+message);
-        controller.sendMsg(friendName, message);
-    }*/
-
+  
+   /**
+    * get received message and pass it to chatSeneController
+    * @param message 
+    */
     @Override
      public void reciveMsg(Message message) {
-        System.out.println("recieve msg in client view"+message.getBody());
-        //chatBoxController=new ChatBoxController();
-        //chatBoxController.reciveMsg(message);
+        try {
+            System.out.println("recieve msg in client view"+message.getBody());
+            chatSceneController.reciveMsg(message);
+        } catch (IOException ex) {
+           ex.printStackTrace();
+        }
      }
-  /*  public void reciveMsg(String msg) {
-        System.out.println("recieve msg in client view"+msg);
-        chatBoxController=new ChatBoxController();
-        chatBoxController.reciveMsg(msg);
-    }*/
-
+ 
     @Override
     public void groupMsg() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.

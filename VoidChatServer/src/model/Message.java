@@ -19,6 +19,9 @@ public class Message implements Serializable {
     protected String fontFamily;
     protected String fontStyle;
     protected String body;
+    protected String fontWeight;
+    protected Boolean underline;
+
 
     public Message(){
     }
@@ -95,6 +98,22 @@ public class Message implements Serializable {
 
     public void setBody(String body) {
         this.body = body;
+    }
+    
+    public String getFontWeight() {
+        return fontWeight;
+    }
+
+    public void setFontWeight(String fontWeight) {
+        this.fontWeight = fontWeight;
+    }
+    
+    public Boolean getUnderline() {
+        return underline;
+    }
+
+    public void setUnderline(Boolean underline) {
+        this.underline = underline;
     }
 
 }

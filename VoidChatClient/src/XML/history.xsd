@@ -33,10 +33,10 @@
     
     <xs:simpleType name="fontFamily">
         <xs:restriction base="xs:string">
-            <xs:enumeration value="cursive"/>
-            <xs:enumeration value="sans-serif"/>
-            <xs:enumeration value="three"/>
-            <xs:enumeration value="four"/>
+            <xs:enumeration value="Arial"/>
+            <xs:enumeration value="Times"/>
+            <xs:enumeration value="Courier New"/>
+            <xs:enumeration value="Comic Sans MS"/>
         </xs:restriction>
     </xs:simpleType>
     

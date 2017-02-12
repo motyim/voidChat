@@ -204,9 +204,23 @@ public class ChatSceneController implements Initializable {
                         Label friendName = new Label();
 
                         friendName.setText(friend.getUsername());
-
+                           
                         Image image = new Image("/resouces/user.png", true);
-                        Image statusImg = new Image("/resouces/circle.png", true);
+                        Image statusImg =null;
+                        
+                        //change status image                        
+                        switch(friend.getStatus()){
+                            case "offline":
+                                statusImg= new Image("/resouces/circle.png", true);
+                                break;
+                            case "online":
+                                statusImg= new Image("/resouces/online.png", true);
+                                break;
+                            case "busy":
+                                statusImg= new Image("/resouces/busy.png", true);
+                                break;
+                        }
+                                
 
                         imageView.setImage(image);
                         imageView.setFitWidth(35);
@@ -361,7 +375,7 @@ public class ChatSceneController implements Initializable {
                     showNotifaction("New Announcement", message, new Image(getClass().getResource("../resouces/add-contact.png").openStream()));
                     break;
                 case Notification.FRIEND_BUSY:
-                    showNotifaction("Friend Become busy", message, new Image(getClass().getResource("../resouces/add-contact.png").openStream()));      
+                   // showNotifaction("Friend Become busy", message, new Image(getClass().getResource("../resouces/add-contact.png").openStream()));      
                     updateContactsList();
                 
             }

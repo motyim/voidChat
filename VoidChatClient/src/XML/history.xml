@@ -4,12 +4,23 @@
          xsi:noNamespaceSchemaLocation="history.xsd" owner="mohamed">
     
     <message>
+        <from>osama</from>
+        <to>ahmed</to>
+        <date>2002-09-24</date>
+        <color>red</color>
+        <size>20</size>
+        <family>Times</family>
+        <style>overline</style>
+        <body>welcome</body>
+    </message>
+    
+    <message>
         <from>mohamed</from>
         <to>ahmed</to>
         <date>2002-09-24</date>
         <color>red</color>
         <size>20</size>
-        <family>cursive</family>
+        <family>Times</family>
         <style>overline</style>
         <body>welcome</body>
     </message>
@@ -20,7 +31,7 @@
         <date>2002-09-24</date>
         <color>red</color>
         <size>20</size>
-        <family>cursive</family>
+        <family>Times</family>
         <style>overline</style>
         <body>welcome</body>
     </message>
@@ -30,7 +41,7 @@
         <date>2002-09-24</date>
         <color>red</color>
         <size>20</size>
-        <family>cursive</family>
+        <family>Times</family>
         <style>overline</style>
         <body>welcome</body>
     </message>
@@ -41,7 +52,7 @@
         <date>2002-09-24</date>
         <color>red</color>
         <size>14</size>
-        <family>sans-serif</family>
+        <family>Times</family>
         <style>underline</style>
         <body>hi</body>
     </message>

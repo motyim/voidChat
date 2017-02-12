@@ -82,7 +82,7 @@ public class ChatBoxController implements Initializable {
 
     //3amlt deh
     public ChatBoxController() {
-        clientView = new ClientView();
+        clientView = ClientView.getInstance();
 
     }
 

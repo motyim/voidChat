@@ -43,3 +43,11 @@ and open the template in the editor.
     -fx-background-insets: 5px;
 
 }
+.LabelRecSec{
+    -fx-border-radius: 10 2 2 10;
+    -fx-background-radius:10 2 2 10;
+    -fx-background-color:#dbe5e7;
+    -fx-padding:10;
+    -fx-border-insets: 5px;
+    -fx-background-insets: 5px;
+}

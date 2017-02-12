@@ -8,15 +8,15 @@ package view;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.List;
+import java.util.GregorianCalendar;
 import java.util.ResourceBundle;
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.ComboBox;
@@ -30,8 +30,10 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
 import model.Message;
-import tray.notification.TrayNotification;
 
 /**
  * FXML Controller class
@@ -79,11 +81,18 @@ public class ChatBoxController implements Initializable {
     private ComboBox<String> fontSizeComboBox;
 
     ClientView clientView;
+    String receiver;
+    Message message;
 
     //3amlt deh
-    public ChatBoxController() {
-        clientView = new ClientView();
+    public ChatBoxController(String receiver) {
+        clientView = ClientView.getInstance();
+        this.receiver = receiver;
+    }
 
+    public ChatBoxController(Message message) {
+        clientView = ClientView.getInstance();
+        this.message = message;
     }
 
     Boolean sendFlag = true;
@@ -97,12 +106,16 @@ public class ChatBoxController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-
         customizeEditorPane();
     }
 
     @FXML
     private void iconCloseChatAction(MouseEvent event) {
+
+    }
+
+    @FXML
+    void saveBtnAction(ActionEvent event) {
 
     }
 
@@ -113,63 +126,58 @@ public class ChatBoxController implements Initializable {
 
     @FXML
     private void btnSendMsgAction(ActionEvent event) {
-        
+
+        clientView.sendMsgFlag = true;
+
         String color = "#" + Integer.toHexString(colorPicker.getValue().hashCode());
         String weight = (boldToggleBtn.isSelected()) ? "Bold" : "normal";
         String size = fontSizeComboBox.getSelectionModel().getSelectedItem();
         String style = (italicTogglebtn.isSelected()) ? "italic" : "normal";
         String font = fontComboBox.getSelectionModel().getSelectedItem();
         Boolean underline = lineToggleBtn.isSelected();
-        
+
+        Message msg = new Message();
+        msg.setFontsSize(Integer.parseInt(size));
+        msg.setFontColor(color);
+        msg.setBody(txtFieldMsg.getText());
+        msg.setFontWeight(weight);
+        msg.setFontFamily(font);
+        msg.setFrom(clientView.getUserInformation().getUsername());
+        msg.setFontStyle(style);
+        msg.setTo(receiver);
+        msg.setDate(getXMLGregorianCalendarNow());
+        msg.setUnderline(underline);
+
+        clientView.sendMsg(msg);
+
         File f = new File("src/resouces/chatBoxStyle.css");
         listviewChat.getStylesheets().add("file:///" + f.getAbsolutePath().replace("\\", "/"));
 
         try {
 
             HBox cell = new HBox();
-            if (sendFlag) {
-                if (txtFieldMsg.getText() != null) {
-                    ImageView img = new ImageView(new Image(getClass().getResource("..//resouces//user_32.png").openStream()));
-                    Label sendLabel = new Label(txtFieldMsg.getText());
+            ImageView img = new ImageView(new Image(getClass().getResource("..//resouces//user_32.png").openStream()));
+            Label sendLabel = new Label(txtFieldMsg.getText());
+            sendLabel.setMaxWidth(300);
+            sendLabel.setWrapText(true);
+            sendLabel.setStyle("-fx-text-fill:" + color
+                    + ";-fx-font-weight:" + weight
+                    + ";-fx-font-size:" + size
+                    + ";-fx-font-style:" + style
+                    + ";-fx-font-family:\"" + font
+                    + "\";-fx-underline:" + underline
+                    + ";");
 
-                    sendLabel.setMaxWidth(300);
-                    sendLabel.setWrapText(true);
-                    sendLabel.getStyleClass().add("LabelSender");
-                    sendLabel.setStyle("-fx-text-fill:" + color
-                            + ";-fx-font-weight:" + weight
-                            + ";-fx-font-size:" + size 
-                            + ";-fx-font-style:\""+style
-                            +"\";-fx-font-family:\""+font
-                            +"\";-fx-underline:"+underline
-                            +";");
-                    
-                    cell.getChildren().addAll(img, sendLabel);
-                }
-                sendFlag = false;
+            if (clientView.recMsgFlag) {
+
+                sendLabel.getStyleClass().add("LabelSender");
+                cell.getChildren().addAll(img, sendLabel);
+                clientView.recMsgFlag = false;
             } else {
-                Label sendLabel = new Label(txtFieldMsg.getText());
                 sendLabel.getStyleClass().add("LabelSenderSec");
-                sendLabel.setMaxWidth(300);
-                sendLabel.setWrapText(true);
-                sendLabel.setPadding(Insets.EMPTY);
                 cell.getChildren().add(sendLabel);
                 cell.setMargin(sendLabel, new Insets(0, 0, 0, 32));
-                recFlag = false;
             }
-//           
-//           if(!recFlag){
-//               if(txtFieldMsg.getText()!=null){
-//                    ImageView img = new ImageView(new Image(getClass().getResource("..//resouces//user_32.png").openStream()));
-//                    
-//                    Label recLabel =new Label(txtFieldMsg.getText());
-//                    recLabel.setMaxWidth(300);
-//                    recLabel.setWrapText(true);
-//                    recLabel.getStyleClass().add("LabelRec");
-//                    cell.getChildren().addAll(recLabel,img);
-//                    cell.setAlignment(Pos.TOP_RIGHT);
-//     
-//                }
-//           }
 
             listviewChat.getItems().add(cell);
             txtFieldMsg.setText(null);
@@ -178,18 +186,46 @@ public class ChatBoxController implements Initializable {
             ex.printStackTrace();
         }
         System.out.println("btnSendMsg Action");
-        Message message=new Message();
-        message.setTo("Aya");
-        message.setBody("how are you aya");
-        System.out.println("in chat box controller sendMsg");
-        clientView.sendMsg(message);
- }
-    
-    public void reciveMsg(Message message){
-        System.out.println("in chatboxcontroller");  
-        System.out.println(message.getBody());
+
     }
 
+    public void reciveMsg(Message message) throws IOException {
+
+        // hey there is new received msg, you will send the next msg with image 
+        clientView.recMsgFlag = true;
+        receiver = message.getFrom();
+
+        if (message != null) {
+            HBox cell = new HBox();
+            ImageView img = new ImageView(new Image(getClass().getResource("..//resouces//user_32.png").openStream()));
+            Label recLabel = new Label(message.getBody());
+            recLabel.setMaxWidth(300);
+            recLabel.setWrapText(true);
+            recLabel.setStyle("-fx-text-fill:" + message.getFontColor()
+                    + ";-fx-font-weight:" + message.getFontWeight()
+                    + ";-fx-font-size:" + message.getFontsSize()
+                    + ";-fx-font-style:" + message.getFontStyle()
+                    + ";-fx-font-family:\"" + message.getFontFamily()
+                    + "\";-fx-underline:" + message.getUnderline()
+                    + ";");
+
+            if (clientView.sendMsgFlag) {
+                recLabel.getStyleClass().add("LabelRec");
+                cell.getChildren().addAll(recLabel, img);
+                cell.setAlignment(Pos.TOP_RIGHT);
+                clientView.sendMsgFlag = false;
+            } else {
+                recLabel.getStyleClass().add("LabelRecSec");
+                cell.getChildren().addAll(recLabel);
+                cell.setAlignment(Pos.TOP_RIGHT);
+                cell.setMargin(recLabel, new Insets(0, 32, 0, 0));
+            }
+
+            listviewChat.getItems().add(cell);
+
+        }
+
+    }
 
     void customizeEditorPane() {
         ObservableList<String> limitedFonts = FXCollections.observableArrayList("Arial", "Times", "Courier New", "Comic Sans MS");
@@ -202,4 +238,17 @@ public class ChatBoxController implements Initializable {
 
         colorPicker.setValue(Color.BLACK);
     }
+
+    public XMLGregorianCalendar getXMLGregorianCalendarNow() {
+        try {
+            GregorianCalendar gregorianCalendar = new GregorianCalendar();
+            DatatypeFactory datatypeFactory = DatatypeFactory.newInstance();
+            XMLGregorianCalendar now = datatypeFactory.newXMLGregorianCalendar(gregorianCalendar);
+            return now;
+        } catch (DatatypeConfigurationException ex) {
+            ex.printStackTrace();
+        }
+        return null;
+    }
+
 }

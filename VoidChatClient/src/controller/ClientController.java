@@ -66,8 +66,10 @@ public class ClientController implements ClientControllerInt {
             //assigne data return to loginUser 
             loginUser =  serverModelInt.signin(username, password);
             //register client to server
-            if(loginUser !=null)
+            if(loginUser !=null){
                 registerToServer(loginUser.getUsername(), model);
+                System.out.println(">><<>>"+loginUser.getUsername());
+            }
         } catch (RemoteException | NullPointerException ex) {
             ex.printStackTrace();
             throw new Exception("Server not working now");
@@ -136,6 +138,7 @@ public class ClientController implements ClientControllerInt {
     public int sendRequest(String reciverName,String category) {
         System.out.println("in client Controller "+ reciverName+" "+category);
         try {
+            System.out.println("my name is "+ loginUser.getUsername());
             return serverModelInt.sendRequest(loginUser.getUsername(), reciverName, category);
         } catch (RemoteException ex) {
             System.out.println("Exception in client controller");
@@ -204,6 +207,7 @@ public class ClientController implements ClientControllerInt {
 
     @Override
     public User getUserInformation() {
+        System.out.println("here"+this.loginUser);
         return this.loginUser;
     }
 

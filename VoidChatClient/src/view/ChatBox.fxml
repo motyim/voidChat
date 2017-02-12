@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox fx:id="chatBox" prefHeight="351.0" prefWidth="400.0" style="-fx-background-color: #535f85;" BorderPane.alignment="CENTER" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.ChatBoxController">
+<VBox fx:id="chatBox" prefHeight="351.0" prefWidth="400.0" style="-fx-background-color: #535f85;" BorderPane.alignment="CENTER" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
     <children>
       <ListView fx:id="listviewChat" prefHeight="305.0" prefWidth="390.0" stylesheets="@../resouces/chatBoxStyles.css">
          <VBox.margin>
@@ -23,6 +23,21 @@
          </VBox.margin></ListView>
         <FlowPane fx:id="editPane" alignment="TOP_RIGHT" layoutY="146.0" prefHeight="37.0" prefWidth="386.0" style="-fx-background-color: #e4e4e4;">
          <children>
+            <ComboBox fx:id="fontComboBox" prefHeight="27.0" prefWidth="136.0">
+               <FlowPane.margin>
+                  <Insets right="7.0" />
+               </FlowPane.margin>
+            </ComboBox>
+            <ComboBox fx:id="fontSizeComboBox" prefHeight="27.0" prefWidth="68.0">
+               <FlowPane.margin>
+                  <Insets right="8.0" />
+               </FlowPane.margin>
+            </ComboBox>
+            <ColorPicker fx:id="colorPicker" prefHeight="27.0" prefWidth="46.0">
+               <FlowPane.margin>
+                  <Insets right="5.0" />
+               </FlowPane.margin>
+            </ColorPicker>
             <ToggleButton fx:id="boldToggleBtn" mnemonicParsing="false" prefHeight="27.0" prefWidth="34.0" text="B">
                <font>
                   <Font name="System Bold" size="13.0" />
@@ -43,21 +58,6 @@
                <FlowPane.margin>
                   <Insets right="6.0" />
                </FlowPane.margin></ToggleButton>
-            <ComboBox fx:id="fontComboBox" prefHeight="27.0" prefWidth="136.0">
-               <FlowPane.margin>
-                  <Insets right="7.0" />
-               </FlowPane.margin>
-            </ComboBox>
-            <ComboBox fx:id="fontSizeComboBox" prefHeight="27.0" prefWidth="68.0">
-               <FlowPane.margin>
-                  <Insets right="8.0" />
-               </FlowPane.margin>
-            </ComboBox>
-            <ColorPicker fx:id="colorPicker" prefHeight="27.0" prefWidth="46.0">
-               <FlowPane.margin>
-                  <Insets right="5.0" />
-               </FlowPane.margin>
-            </ColorPicker>
          </children>
          <opaqueInsets>
             <Insets />
@@ -71,7 +71,7 @@
       </FlowPane>
         <HBox prefHeight="40.0" prefWidth="400.0">
             <children>
-                <TextField fx:id="txtFieldMsg" prefHeight="27.0" prefWidth="293.0">
+                <TextField fx:id="txtFieldMsg" onKeyPressed="#txtFieldOnKeyPressed" prefHeight="27.0" prefWidth="310.0" promptText="Type a Message ">
                     <opaqueInsets>
                         <Insets />
                     </opaqueInsets>
@@ -79,7 +79,19 @@
                         <Insets bottom="5.0" left="5.0" top="5.0" />
                     </HBox.margin>
                 </TextField>
-                <Button fx:id="btnSendAttach" mnemonicParsing="false" onAction="#btnSendAttachAction" prefHeight="27.0" prefWidth="35.0">
+            <Button fx:id="saveBtn" mnemonicParsing="false" onAction="#saveBtnAction" prefHeight="27.0" prefWidth="32.0">
+                <graphic>
+                        <ImageView fitHeight="14.0" fitWidth="15.0" layoutX="-2.0">
+                            <image>
+                                <Image fx:id="clips" url="@../resouces/save.png" />
+                            </image>
+                        </ImageView>
+                    </graphic>
+               <HBox.margin>
+                  <Insets left="5.0" top="5.0" />
+               </HBox.margin>
+            </Button>
+                <Button fx:id="btnSendAttach" mnemonicParsing="false" onAction="#btnSendAttachAction" prefHeight="27.0" prefWidth="32.0">
                     <graphic>
                         <ImageView fitHeight="14.0" fitWidth="15.0" layoutX="-2.0">
                             <image>
@@ -89,11 +101,6 @@
                     </graphic>
                     <HBox.margin>
                         <Insets left="5.0" top="5.0" />
-                    </HBox.margin>
-                </Button>
-                <Button fx:id="btnSendMsg" mnemonicParsing="false" onAction="#btnSendMsgAction" prefHeight="27.0" prefWidth="50.0" text="Send">
-                    <HBox.margin>
-                        <Insets left="5.0" right="5.0" top="5.0" />
                     </HBox.margin>
                 </Button>
             </children>

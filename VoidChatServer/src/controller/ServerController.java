@@ -40,8 +40,7 @@ public class ServerController implements ServerControllerInt {
             privateModel = new ServerPrivateModel(this);
 
             //upload to registry
-
-           reg = LocateRegistry.createRegistry(1050);
+            reg = LocateRegistry.createRegistry(1050);
         } catch (RemoteException ex) {
             ex.printStackTrace();
         }
@@ -74,13 +73,13 @@ public class ServerController implements ServerControllerInt {
     }
 
     @Override
-    public void notify(String reciver , String message , int type) {
+    public void notify(String reciver, String message, int type) {
         System.out.println("in notify in server controller");
         if (onlineUsers.containsKey(reciver)) {
-            System.out.println("online user is "+ reciver);
+            System.out.println("online user is " + reciver);
             ClientModelInt clientObject = onlineUsers.get(reciver);
             try {
-                clientObject.notify(message,type);
+                clientObject.notify(message, type);
             } catch (RemoteException ex) {
                 ex.printStackTrace();
             }
@@ -93,22 +92,24 @@ public class ServerController implements ServerControllerInt {
     }
 
     @Override
-    
-    public void recieveMsg(Message message){
-        String reciever=message.getTo();
-        if(!(reciever.contains("SS"))){
+
+    public void recieveMsg(Message message) {
+        System.out.println("receive msg in server controller" + message.getBody());
+        String reciever = message.getTo();
+        if (!(reciever.contains("SS"))) {
             if (onlineUsers.containsKey(reciever)) {
-            ClientModelInt clientObject = onlineUsers.get(reciever);
-            try {
-                clientObject.reciveMsg(message);
-            } catch (RemoteException ex) {
-                ex.printStackTrace();
-                System.out.println("Exception Happen");
+                ClientModelInt clientObject = onlineUsers.get(reciever);
+                try {
+                    clientObject.reciveMsg(message);
+                } catch (RemoteException ex) {
+                    ex.printStackTrace();
+                    System.out.println("Exception Happen");
+                }
             }
-    }
         }
     }
-   /* public boolean sendMsg(String reciver, String msg) {
+
+    /* public boolean sendMsg(String reciver, String msg) {
         System.out.println("send message in server controller");
         System.out.println("size of online " + onlineUsers.size());
         if (onlineUsers.containsKey(reciver)) {
@@ -157,7 +158,7 @@ public class ServerController implements ServerControllerInt {
 
     }
 
-    public void unregister(String username){
+    public void unregister(String username) {
         System.out.println(onlineUsers.size());
         onlineUsers.remove(username);
         System.out.println(onlineUsers.size());

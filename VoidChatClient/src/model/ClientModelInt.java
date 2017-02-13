@@ -21,6 +21,7 @@ public interface ClientModelInt extends Remote{
      * @throws java.rmi.RemoteException 
      */
     void receiveAnnouncement(String message)throws RemoteException;
+
     
     /**
      * 
@@ -40,4 +41,5 @@ public interface ClientModelInt extends Remote{
     */
      void reciveFile(String path , String extension, byte [] data , int dataLength)throws RemoteException;
     
+
 }

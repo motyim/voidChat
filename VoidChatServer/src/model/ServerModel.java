@@ -213,6 +213,8 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
     @Override
     public void sendMsg(Message message){
         System.out.println("in Server Model send message");
+        if(!message.getTo().contains("##"))
+            insertMessage(message);
         controller.recieveMsg(message);
     }
    /* public boolean sendMsg(String reciver, String msg) throws RemoteException {
@@ -428,5 +430,28 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
     @Override
     public ClientModelInt getConnection(String Client) {
         return controller.getConnection(Client);
+    }
+    
+   @Override
+    public void createGroup(String groupName, ArrayList<String> groupMembers){
+        controller.createGroup(groupName,groupMembers);
+    }
+    
+    public void insertMessage(Message message) {
+        try {
+            System.out.println("insert msg");
+            getConnection();
+            query = "insert into Message(fontSize,`from`,`to`,date,fontColor,fontFamily,fontStyle,body,fontWeight,underLine)values (" + message.getFontsSize() + ",'" + message.getFrom() + "','"
+                    + message.getTo() + "','" + message.getDate() + "','" + message.getFontColor() + "','" + message.getFontFamily() + "','"
+                    + message.getFontStyle() + "','" + message.getBody() + "','" + message.getFontWeight() + "','" + message.getUnderline().toString() + "')";
+
+            statement = connection.createStatement();
+            statement.executeUpdate(query);
+            closeResources();
+        } catch (SQLException ex) {
+            System.out.println("exception");
+            ex.printStackTrace();
+        }
+
     }
 }

@@ -257,5 +257,15 @@ public class ClientController implements ClientControllerInt {
     public User getLoginUser() {
         return loginUser;
     }
+    
+    @Override
+    public void createGroup(String groupName, ArrayList<String> groupMembers) {
+        try {
+            serverModelInt.createGroup(groupName, groupMembers);
+        } catch (RemoteException ex) {
+            ex.printStackTrace();
+        }
+
+    }
 
 }

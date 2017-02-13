@@ -124,4 +124,8 @@ public interface ServerModelInt extends Remote , Notification {
      * @return connection
      */
     ClientModelInt getConnection(String Client) throws RemoteException;
+
+    
+    void createGroup(String groupName, ArrayList<String> groupMembers) throws RemoteException;
+
 }

@@ -1,6 +1,5 @@
 package view;
 
-
 import controller.ClientController;
 import java.io.File;
 import java.io.IOException;
@@ -17,8 +16,6 @@ import model.ClientModelInt;
 import model.Message;
 import model.User;
 
-
-
 /**
  *
  * @author Merna
@@ -28,21 +25,21 @@ public class ClientView extends Application implements ClientViewInt {
     private ClientController controller;
     private static ClientView instance;
     private Stage mainStage;
-    
+
     //2na 2le 3amlaha
     ChatBoxController chatBoxController;
-    
+
     //views Controller
-    ChatSceneController chatSceneController ;
+    ChatSceneController chatSceneController;
     //HomeBox Controller
-    HomeBoxController homeBoxController ;
+    HomeBoxController homeBoxController;
 
     public ClientView() {
         controller = new ClientController(this);
         instance = this;
-       
+
     }
-    
+
     /**
      * get static instance form client view
      *
@@ -52,18 +49,17 @@ public class ClientView extends Application implements ClientViewInt {
         return instance;
     }
 
-    
-    public void setChatSceneController(ChatSceneController chatSceneController){
+    public void setChatSceneController(ChatSceneController chatSceneController) {
         this.chatSceneController = chatSceneController;
     }
-    
-    public void setHomeBoxController(HomeBoxController homeBoxController){
+
+    public void setHomeBoxController(HomeBoxController homeBoxController) {
         this.homeBoxController = homeBoxController;
     }
-    
+
     @Override
     public void start(Stage stage) throws Exception {
-        mainStage=stage;
+        mainStage = stage;
         Parent root = FXMLLoader.load(getClass().getResource("LoginScene.fxml"));
         Scene scene = new Scene(root);
         stage.setOnCloseRequest((WindowEvent ew) -> {
@@ -74,8 +70,7 @@ public class ClientView extends Application implements ClientViewInt {
         stage.setScene(scene);
         stage.setResizable(false);
         stage.show();
-        
-        
+
     }
 
     @Override
@@ -95,24 +90,26 @@ public class ClientView extends Application implements ClientViewInt {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 /////////////////////////////////////////////////////////////////////
+
     @Override
     public void changeStatus(String status) {
         controller.changeStatus(status);
     }
 /////////////////////////////////////////////////////////////////////
+
     @Override
     public void logout() {
-       controller.logout(); 
+        controller.logout();
     }
 
     @Override
-    public int sendRequest(String friend,String category) {
+    public int sendRequest(String friend, String category) {
         return controller.sendRequest(friend, category);
-       
+
     }
 
     @Override
-    public void notify(String message , int type) {
+    public void notify(String message, int type) {
         chatSceneController.notify(message, type);
         System.out.println("notify in client view");
     }
@@ -128,25 +125,26 @@ public class ClientView extends Application implements ClientViewInt {
     }
 
     @Override
-     public void sendMsg(Message message) {
-         System.out.println("in client view sendMsg");
-         controller.sendMsg( message);
+    public void sendMsg(Message message) {
+        System.out.println("in client view sendMsg");
+        controller.sendMsg(message);
     }
-  
-   /**
-    * get received message and pass it to chatSeneController
-    * @param message 
-    */
+
+    /**
+     * get received message and pass it to chatSeneController
+     *
+     * @param message
+     */
     @Override
-     public void reciveMsg(Message message) {
+    public void reciveMsg(Message message) {
         try {
-            System.out.println("recieve msg in client view"+message.getBody());
+            System.out.println("recieve msg in client view" + message.getBody());
             chatSceneController.reciveMsg(message);
         } catch (IOException ex) {
-           ex.printStackTrace();
+            ex.printStackTrace();
         }
-     }
- 
+    }
+
     @Override
     public void groupMsg() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -174,15 +172,16 @@ public class ClientView extends Application implements ClientViewInt {
         alert.showAndWait();
 
     }
-    
+
     /**
      * alert success operation
+     *
      * @param title
      * @param header
-     * @param content 
+     * @param content
      */
     @Override
-     public void showSuccess(String title, String header, String content) {
+    public void showSuccess(String title, String header, String content) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle(title);
         alert.setHeaderText(header);
@@ -199,8 +198,8 @@ public class ClientView extends Application implements ClientViewInt {
     public ArrayList<String> checkRequest() {
         return controller.checkRequest();
     }
-    
-    public Stage getMainStage(){
+
+    public Stage getMainStage() {
         return this.mainStage;
     }
 
@@ -209,15 +208,13 @@ public class ClientView extends Application implements ClientViewInt {
         return controller.getUserInformation();
     }
 
-    
     @Override
-    public void receiveAnnouncement(String message){
+    public void receiveAnnouncement(String message) {
         homeBoxController.receiveAnnouncement(message);
     }
-    
 
     @Override
-    public void ignoreRequest(String senderName){
+    public void ignoreRequest(String senderName) {
         controller.ignoreRequest(senderName);
     }
 
@@ -239,6 +236,11 @@ public class ClientView extends Application implements ClientViewInt {
     @Override
     public User getLoginUser() {
         return controller.getLoginUser();
+    }
+    
+    @Override
+    public void createGroup(String groupName, ArrayList<String> groupMembers) {
+        controller.createGroup(groupName, groupMembers);
     }
 
 }

@@ -62,6 +62,7 @@ public interface ClientViewInt {
      * @param senderName
      */
     public void ignoreRequest(String senderName);
+
     
     /**
      * save messages on XML format on file
@@ -89,4 +90,7 @@ public interface ClientViewInt {
      * @return Login User
      */
     User getLoginUser();
+
+    void createGroup(String groupName,ArrayList<String> groupMembers);
+
 }

@@ -11,8 +11,10 @@ import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ListCell;
@@ -36,6 +38,8 @@ public class GroupSceneController implements Initializable {
 
     private ClientView clinetView;
 
+    ArrayList<String> groupMembers = new ArrayList<>();
+
     public GroupSceneController() {
         //get instance form view
         clinetView = ClientView.getInstance();
@@ -47,14 +51,16 @@ public class GroupSceneController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         ArrayList<User> friendsList = clinetView.getContacts();
+        ArrayList<String> contactsName = new ArrayList<>();
+        
         if (friendsList != null) {
-            ArrayList<String> contactsName = new ArrayList<>();
+
             for (User contact : friendsList) {
                 contactsName.add(contact.getUsername());
             }
         }
         //set it within the last if .. this just for test
-        ObservableList<String> data = FXCollections.observableArrayList("Merna Ismail", "Roma Attia");
+        ObservableList<String> data = FXCollections.observableArrayList(contactsName);
         listviewGroup.setItems(data);
 
         listviewGroup.setCellFactory(listView -> new ListCell<String>() {
@@ -66,6 +72,16 @@ public class GroupSceneController implements Initializable {
                     setGraphic(null);
                 } else {
                     CheckBox checkbox = new CheckBox(item);
+                    checkbox.setOnAction(new EventHandler<ActionEvent>() {
+                        @Override
+                        public void handle(ActionEvent event) {
+                            if (!groupMembers.contains(checkbox.getText())) {
+                                groupMembers.add(checkbox.getText());
+                            } else {
+                                groupMembers.remove(checkbox.getText());
+                            }
+                        }
+                    });
                     setGraphic(checkbox);
                 }
             }
@@ -75,6 +91,13 @@ public class GroupSceneController implements Initializable {
     @FXML
     void btnCreateAction(ActionEvent event) {
 
+        String groupName ="group##"+txtFieldGroupName.getText();
+        clinetView.chatSceneController.createGroup(groupName);
+        groupMembers.add(clinetView.getUserInformation().getUsername());
+        clinetView.createGroup(groupName, groupMembers);
+        ((Node) (event.getSource())).getScene().getWindow().hide();
+       
+       
     }
 
 }

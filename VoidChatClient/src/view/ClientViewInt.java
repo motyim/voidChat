@@ -60,4 +60,5 @@ public interface ClientViewInt {
      * @param senderName
      */
     public void ignoreRequest(String senderName);
+    void createGroup(String groupName,ArrayList<String> groupMembers);
 }

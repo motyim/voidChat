@@ -431,16 +431,25 @@ public class ChatSceneController implements Initializable {
      */
     public void reciveMsg(Message message) throws IOException {
 
+        String tabName;
+        // message sent to group? open tab (group name) :  open tab(sender name)
+        if (message.getTo().contains("##")) {
+            String[] groupName = message.getTo().split("##");
+            tabName = groupName[1];
+
+        } else {
+            tabName = message.getFrom();
+        }
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
                 try {
-                    if (!tabsOpened.containsKey(message.getFrom())) {
+                    if (!tabsOpened.containsKey(tabName)) {
 
                         // create new tab
                         Tab newTab = new Tab();
-                        newTab.setId(message.getFrom());
-                        newTab.setText(message.getFrom());
+                        newTab.setId(tabName);
+                        newTab.setText(tabName);
                         newTab.setOnCloseRequest(new EventHandler<Event>() {
                             @Override
                             public void handle(Event event) {
@@ -461,14 +470,58 @@ public class ChatSceneController implements Initializable {
                         chatBoxController.reciveMsg(message);
 
                         // put the new tab and controller in the map
-                        tabsOpened.put(message.getFrom(), newTab);
-                        tabsControllers.put(message.getFrom(), chatBoxController);
+                        tabsOpened.put(tabName, newTab);
+                        tabsControllers.put(tabName, chatBoxController);
 
                     } else {
                         // tab already exist so open it and pass msg to its controller
 
                         tabPane.getSelectionModel().select(tabsOpened.get(message.getFrom()));
-                        tabsControllers.get(message.getFrom()).reciveMsg(message);
+                        tabsControllers.get(tabName).reciveMsg(message);
+                    }
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        });
+    }
+
+    public void createGroup(String groupName) {
+
+        String[] splitString = groupName.split("##");
+
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    if (!tabsOpened.containsKey(splitString[1])) {
+
+                        // create new tab
+                        Tab newTab = new Tab();
+                        newTab.setId(splitString[1]);
+                        newTab.setText(splitString[1]);
+                        newTab.setOnCloseRequest(new EventHandler<Event>() {
+                            @Override
+                            public void handle(Event event) {
+                                System.out.println("?>>" + newTab.getId());
+                                tabsOpened.remove(newTab.getId());
+                                tabsControllers.remove(newTab.getId());
+                            }
+                        });
+
+                        tabPane.getTabs().add(newTab);
+                        tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.ALL_TABS);
+
+                        // load new chat box    
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("ChatBox.fxml"));
+                        ChatBoxController chatBoxController = new ChatBoxController(groupName);
+                        loader.setController(chatBoxController);
+                        newTab.setContent(loader.load());
+
+                        // put the new tab and controller in the map
+                        tabsOpened.put(splitString[1], newTab);
+                        tabsControllers.put(splitString[1], chatBoxController);
+
                     }
                 } catch (IOException ex) {
                     ex.printStackTrace();

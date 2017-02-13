@@ -21,5 +21,5 @@ public interface ClientModelInt extends Remote{
      * @throws java.rmi.RemoteException 
      */
     void receiveAnnouncement(String message)throws RemoteException;
-    
+
 }

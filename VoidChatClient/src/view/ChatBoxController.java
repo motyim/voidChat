@@ -13,7 +13,6 @@ import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
@@ -33,6 +32,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
@@ -86,12 +86,14 @@ public class ChatBoxController implements Initializable {
     ClientView clientView;
     String receiver;
     Message message;
-    
+
     Boolean recMsgFlag = true;
     Boolean sendMsgFlag = true;
 
+
     //3amlt deh
     public ChatBoxController(String receiver) {
+        System.out.println("recGroupName:>>" + receiver);
         clientView = ClientView.getInstance();
         this.receiver = receiver;
     }
@@ -99,6 +101,7 @@ public class ChatBoxController implements Initializable {
     public ChatBoxController(Message message) {
         clientView = ClientView.getInstance();
         this.message = message;
+        
     }
 
     Boolean sendFlag = true;
@@ -113,6 +116,10 @@ public class ChatBoxController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         customizeEditorPane();
+        
+        if((message != null && message.getTo().contains("##"))|| receiver.contains("##")){
+            btnSendAttach.setDisable(true);
+        }
     }
 
     @FXML
@@ -130,8 +137,8 @@ public class ChatBoxController implements Initializable {
         System.out.println("btnSendAttach Action");
     }
 
-    private void sendMessageAction(){
-        
+    private void sendMessageAction() {
+
         sendMsgFlag = true;
 
         String color = "#" + Integer.toHexString(colorPicker.getValue().hashCode());
@@ -161,6 +168,8 @@ public class ChatBoxController implements Initializable {
         try {
 
             HBox cell = new HBox();
+            VBox vbox = new VBox();
+
             ImageView img = new ImageView(new Image(getClass().getResource("..//resouces//user_32.png").openStream()));
             Label sendLabel = new Label(txtFieldMsg.getText());
             sendLabel.setMaxWidth(300);
@@ -176,12 +185,18 @@ public class ChatBoxController implements Initializable {
             if (recMsgFlag) {
 
                 sendLabel.getStyleClass().add("LabelSender");
-                cell.getChildren().addAll(img, sendLabel);
+                if (!receiver.contains("##")) {
+                    cell.getChildren().addAll(img, sendLabel);
+                } else {
+                    cell.getChildren().addAll(sendLabel);
+                }
                 recMsgFlag = false;
             } else {
                 sendLabel.getStyleClass().add("LabelSenderSec");
                 cell.getChildren().add(sendLabel);
-                cell.setMargin(sendLabel, new Insets(0, 0, 0, 32));
+                if (!receiver.contains("##")) {
+                    cell.setMargin(sendLabel, new Insets(0, 0, 0, 32));
+                }
             }
 
             listviewChat.getItems().add(cell);
@@ -193,16 +208,30 @@ public class ChatBoxController implements Initializable {
         System.out.println("btnSendMsg Action");
 
     }
-    
+
     public void reciveMsg(Message message) throws IOException {
 
         // hey there is new received msg, you will send the next msg with image 
+        Boolean groupFlag = false;
+
         recMsgFlag = true;
-        receiver = message.getFrom();
+        if (message.getTo().contains("##")) {
+            System.out.println("test rec group >>" + message.getTo());
+            receiver = message.getTo();
+            groupFlag = true;
+        } else {
+            receiver = message.getFrom();
+        }
 
         if (message != null) {
             HBox cell = new HBox();
+            VBox vbox = new VBox();
+
             ImageView img = new ImageView(new Image(getClass().getResource("..//resouces//user_32.png").openStream()));
+
+            Text recName = new Text(message.getFrom());
+            recName.setStyle("-fx-font: 10 arial;");
+
             Label recLabel = new Label(message.getBody());
             recLabel.setMaxWidth(300);
             recLabel.setWrapText(true);
@@ -216,14 +245,33 @@ public class ChatBoxController implements Initializable {
 
             if (sendMsgFlag) {
                 recLabel.getStyleClass().add("LabelRec");
-                cell.getChildren().addAll(recLabel, img);
+
+                vbox.getChildren().addAll(recName, recLabel);
+
+                if (groupFlag) {
+                    vbox.setAlignment(Pos.TOP_RIGHT);
+                    vbox.setMargin(recName, new Insets(0, 8, 0, 0));
+                    cell.getChildren().addAll(vbox);
+                    groupFlag = false;
+                } else {
+                    cell.getChildren().addAll(recLabel, img);
+                }
                 cell.setAlignment(Pos.TOP_RIGHT);
                 sendMsgFlag = false;
             } else {
                 recLabel.getStyleClass().add("LabelRecSec");
-                cell.getChildren().addAll(recLabel);
+                vbox.getChildren().addAll(recName, recLabel);
+                if (groupFlag) {
+                    vbox.setAlignment(Pos.TOP_RIGHT);
+                    vbox.setMargin(recName, new Insets(0, 8, 0, 0));
+                    cell.getChildren().addAll(vbox);
+                    groupFlag = false;
+                } else {
+                    cell.getChildren().addAll(recLabel);
+                    cell.setMargin(recLabel, new Insets(0, 32, 0, 0));
+                }
                 cell.setAlignment(Pos.TOP_RIGHT);
-                cell.setMargin(recLabel, new Insets(0, 32, 0, 0));
+
             }
 
             listviewChat.getItems().add(cell);
@@ -231,15 +279,15 @@ public class ChatBoxController implements Initializable {
         }
 
     }
-    
+
     //handle Enter pressed action on txtFieldMessage and call the sendMessageAction ..
     @FXML
     private void txtFieldOnKeyPressed(KeyEvent event) {
-        if (event.getCode().equals(KeyCode.ENTER)){
-                   sendMessageAction();
-                }
+        if (event.getCode().equals(KeyCode.ENTER)) {
+            sendMessageAction();
+        }
     }
-    
+
     /*
      *customize Editor pane with styles  (bold,italic,font,size ..) 
      */

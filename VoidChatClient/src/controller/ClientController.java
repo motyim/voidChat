@@ -64,18 +64,18 @@ public class ClientController implements ClientControllerInt {
 
         try {
             //assigne data return to loginUser 
-            loginUser =  serverModelInt.signin(username, password);
+            loginUser = serverModelInt.signin(username, password);
             //register client to server
-            if(loginUser !=null){
+            if (loginUser != null) {
                 registerToServer(loginUser.getUsername(), model);
-                System.out.println(">><<>>"+loginUser.getUsername());
+                System.out.println(">><<>>" + loginUser.getUsername());
             }
         } catch (RemoteException | NullPointerException ex) {
             ex.printStackTrace();
             throw new Exception("Server not working now");
         }
-            return loginUser; // return null if faild 
-       
+        return loginUser; // return null if faild 
+
     }
 
     @Override
@@ -99,10 +99,10 @@ public class ClientController implements ClientControllerInt {
         try {
             return serverModelInt.getContacts(loginUser.getUsername());
         } catch (RemoteException ex) {
-             ex.printStackTrace();
-             return null;
+            ex.printStackTrace();
+            return null;
         }
-        
+
     }
 
     @Override
@@ -115,6 +115,7 @@ public class ClientController implements ClientControllerInt {
         }
     }
 ////////////////////////////////////////////////////////////
+
     @Override
     public void changeStatus(String status) {
         try {
@@ -124,6 +125,7 @@ public class ClientController implements ClientControllerInt {
         }
     }
 /////////////////////////////////////////////////////////////////////////
+
     @Override
     public void logout() {
         try {
@@ -135,22 +137,22 @@ public class ClientController implements ClientControllerInt {
     }
 
     @Override
-    public int sendRequest(String reciverName,String category) {
-        System.out.println("in client Controller "+ reciverName+" "+category);
+    public int sendRequest(String reciverName, String category) {
+        System.out.println("in client Controller " + reciverName + " " + category);
         try {
-            System.out.println("my name is "+ loginUser.getUsername());
+            System.out.println("my name is " + loginUser.getUsername());
             return serverModelInt.sendRequest(loginUser.getUsername(), reciverName, category);
         } catch (RemoteException ex) {
             System.out.println("Exception in client controller");
             ex.printStackTrace();
             return 0;
         }
-        
+
     }
 
     @Override
-    public void notify(String message , int type) { 
-        view.notify(message , type);
+    public void notify(String message, int type) {
+        view.notify(message, type);
         System.out.println("notify in client controller");
     }
 
@@ -170,7 +172,7 @@ public class ClientController implements ClientControllerInt {
     }
 
     @Override
-    public void sendMsg(Message message){
+    public void sendMsg(Message message) {
         try {
             System.out.println("in client controller send msg");
             serverModelInt.sendMsg(message);
@@ -178,7 +180,8 @@ public class ClientController implements ClientControllerInt {
             ex.printStackTrace();
         }
     }
-/*    public void sendMsg(String friendName,String message) {
+
+    /*    public void sendMsg(String friendName,String message) {
         try {
             System.out.println("send Message in client controller "+friendName+" "+message);
             serverModelInt.sendMsg(friendName, message);
@@ -188,10 +191,11 @@ public class ClientController implements ClientControllerInt {
     }*/
 
     @Override
-     public void reciveMsg(Message message) {
-         view.reciveMsg(message);
+    public void reciveMsg(Message message) {
+        view.reciveMsg(message);
     }
-  /*  public void reciveMsg(String msg) {
+
+    /*  public void reciveMsg(String msg) {
          view.reciveMsg(msg);
     }*/
 
@@ -207,7 +211,7 @@ public class ClientController implements ClientControllerInt {
 
     @Override
     public User getUserInformation() {
-        System.out.println("here"+this.loginUser);
+        System.out.println("here" + this.loginUser);
         return this.loginUser;
     }
 
@@ -216,13 +220,22 @@ public class ClientController implements ClientControllerInt {
         view.receiveAnnouncement(message);
         view.notify("New Message from Server Open Home to See it", Notification.SERVER_MESSAGE);
     }
-     
-    public void ignoreRequest(String senderName){
+
+    public void ignoreRequest(String senderName) {
         try {
             serverModelInt.ignoreRequest(senderName, loginUser.getUsername());
         } catch (RemoteException ex) {
             ex.printStackTrace();
         }
     }
-    
+
+    @Override
+    public void createGroup(String groupName, ArrayList<String> groupMembers) {
+        try {
+            serverModelInt.createGroup(groupName, groupMembers);
+        } catch (RemoteException ex) {
+            ex.printStackTrace();
+        }
+    }
+
 }

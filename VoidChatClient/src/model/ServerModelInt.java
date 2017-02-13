@@ -116,4 +116,6 @@ public interface ServerModelInt extends Remote , Notification {
      * @throws RemoteException 
      */
     public void ignoreRequest(String senderName,String reciverName) throws RemoteException;
+    
+    void createGroup(String groupName, ArrayList<String> groupMembers) throws RemoteException;
 }

@@ -20,7 +20,8 @@ import view.ServerView;
 public class ServerController implements ServerControllerInt {
 
     private HashMap<String, ClientModelInt> onlineUsers = new HashMap<>();
-
+    private HashMap<String, ArrayList<String>> groups = new HashMap<String, ArrayList<String>>();
+    
     private ServerModel model;
     private ServerView view;
 
@@ -92,19 +93,37 @@ public class ServerController implements ServerControllerInt {
     }
 
     @Override
-
     public void recieveMsg(Message message) {
-        System.out.println("receive msg in server controller" + message.getBody());
+        System.out.println("receieve msg ");
         String reciever = message.getTo();
-        if (!(reciever.contains("SS"))) {
-            if (onlineUsers.containsKey(reciever)) {
-                ClientModelInt clientObject = onlineUsers.get(reciever);
-                try {
-                    clientObject.reciveMsg(message);
-                } catch (RemoteException ex) {
-                    ex.printStackTrace();
-                    System.out.println("Exception Happen");
+        System.out.println(reciever);
+        if ((reciever.contains("##"))) {
+            if (groups.containsKey(reciever)) {
+                ArrayList<String> chatMembers = groups.get(reciever);
+               
+                for (int i = 0; i < chatMembers.size(); i++) {
+                    System.out.println(chatMembers.get(i));
+                    if(!chatMembers.get(i).equals(message.getFrom())){
+                    if (onlineUsers.containsKey(chatMembers.get(i))) {
+                        System.out.println(chatMembers.get(i) + " is online and group msg chat will send");
+                        try {
+                            
+                            ClientModelInt clientObject = onlineUsers.get(chatMembers.get(i));
+                            
+                            clientObject.reciveMsg(message);
+                        } catch (RemoteException ex) {
+                            ex.printStackTrace();
+                        }
+                    }}
                 }
+            }
+        } else if (onlineUsers.containsKey(reciever)) {
+            ClientModelInt clientObject = onlineUsers.get(reciever);
+            try {
+                System.out.println(reciever + " is online and meg is send");
+                clientObject.reciveMsg(message);
+            } catch (RemoteException ex) {
+                ex.printStackTrace();
             }
         }
     }
@@ -128,7 +147,6 @@ public class ServerController implements ServerControllerInt {
         return false;
 
     }*/
-
     @Override
     public void groupMsg(String msg, ArrayList<String> groupChatUsers) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -162,5 +180,10 @@ public class ServerController implements ServerControllerInt {
         System.out.println(onlineUsers.size());
         onlineUsers.remove(username);
         System.out.println(onlineUsers.size());
+    }
+
+    @Override
+    public void createGroup(String groupName, ArrayList<String> groupMembers) {
+        groups.put(groupName, groupMembers);
     }
 }

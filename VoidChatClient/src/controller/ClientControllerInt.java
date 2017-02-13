@@ -66,12 +66,11 @@ public interface ClientControllerInt {
      * call unregister from SM handle out form chat mn error w kda
      */
     void logout();
-    
-    //zwadt 2l category
-    int sendRequest(String reciverName,String category);
-    
 
-    void notify(String message , int type);
+    //zwadt 2l category
+    int sendRequest(String reciverName, String category);
+
+    void notify(String message, int type);
 
     boolean acceptRequest(String friendName);
 
@@ -79,25 +78,30 @@ public interface ClientControllerInt {
 
     //void sendMsg(String reciver, String Msg);
     void sendMsg(Message message);
-    
+
     //void reciveMsg(String msg);
-     void reciveMsg(Message message);
-     
+    void reciveMsg(Message message);
+
     void groupMsg(String msg, ArrayList<String> groupChatUsers);
 
     void reciveMsgGroup(String msg, ArrayList<String> groupChatUsers);
-    
+
     User getUserInformation();
-    
+
     /**
-     * get Announcement from Server 
-     * @param message 
+     * get Announcement from Server
+     *
+     * @param message
      */
     void receiveAnnouncement(String message);
-    
-     /**
+
+    /**
      * refuser friend request
+     *
      * @param senderName
      */
     public void ignoreRequest(String senderName);
+
+    void createGroup(String groupName, ArrayList<String> groupMembers);
+
 }

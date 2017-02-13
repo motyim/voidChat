@@ -61,4 +61,5 @@ public interface ServerControllerInt extends Notification{
      */
     void sendAnnouncement(String message);
     void unregister(String username);
+    void createGroup(String groupName, ArrayList<String> groupMembers);
 }

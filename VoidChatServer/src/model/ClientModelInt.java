@@ -11,8 +11,8 @@ public interface ClientModelInt extends Remote{
     void notifyStatus(String username , String status) throws RemoteException;
     
    // void reciveMsg(String msg)  throws RemoteException;
-    void reciveMsg(Message message)  throws RemoteException;
-    
+     void reciveMsg(Message message)  throws RemoteException;
+     
     void reciveMsgGroup(String msg ,ArrayList<String> groupChatUsers)  throws RemoteException;
    
     /**
@@ -21,5 +21,23 @@ public interface ClientModelInt extends Remote{
      * @throws java.rmi.RemoteException 
      */
     void receiveAnnouncement(String message)throws RemoteException;
+    
+    /**
+     * 
+     * @param sender
+     * @return url location or null if not file choosen
+     * @throws RemoteException 
+     */
+    String getSaveLocation(String sender)throws RemoteException;
+    
+    /**
+    * save file
+    * @param path
+    * @param extension
+    * @param data
+    * @param dataLength
+    * @throws RemoteException 
+    */
+     void reciveFile(String path , String extension, byte [] data , int dataLength)throws RemoteException;
     
 }

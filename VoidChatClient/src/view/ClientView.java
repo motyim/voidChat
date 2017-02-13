@@ -2,6 +2,7 @@ package view;
 
 
 import controller.ClientController;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import javafx.application.Application;
@@ -12,6 +13,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import model.ClientModelInt;
 import model.Message;
 import model.User;
 
@@ -217,6 +219,26 @@ public class ClientView extends Application implements ClientViewInt {
     @Override
     public void ignoreRequest(String senderName){
         controller.ignoreRequest(senderName);
+    }
+
+    @Override
+    public void saveXMLFile(File file, ArrayList<Message> messages) {
+        controller.saveXMLFile(file, messages);
+    }
+
+    @Override
+    public ClientModelInt getConnection(String Client) {
+        return controller.getConnection(Client);
+    }
+
+    @Override
+    public String getSaveLocation(String sender) {
+        return chatSceneController.getSaveLocation(sender);
+    }
+
+    @Override
+    public User getLoginUser() {
+        return controller.getLoginUser();
     }
 
 }

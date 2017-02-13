@@ -104,8 +104,9 @@ public interface ServerModelInt extends Remote , Notification {
      * @return  
      * @throws java.rmi.RemoteException  
      */
-  //  boolean sendMsg(String reciver , String msg) throws RemoteException;
-    void sendMsg(Message message)throws RemoteException;
+    //boolean sendMsg(String reciver , String msg) throws RemoteException;
+    void sendMsg(Message message) throws RemoteException;
+    
     
     void groupMsg(String msg , ArrayList<String> groupChatUsers) throws RemoteException;
     
@@ -115,5 +116,12 @@ public interface ServerModelInt extends Remote , Notification {
      * @param reciverName
      * @throws RemoteException 
      */
-    public void ignoreRequest(String senderName,String reciverName) throws RemoteException;
+    void ignoreRequest(String senderName,String reciverName) throws RemoteException;
+    
+    /**
+     * make peet-to-peer connection with Client 
+     * @param Client
+     * @return connection
+     */
+    ClientModelInt getConnection(String Client) throws RemoteException;
 }

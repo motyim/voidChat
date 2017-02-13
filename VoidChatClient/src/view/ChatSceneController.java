@@ -1,11 +1,15 @@
 package view;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.FutureTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Platform;
@@ -21,7 +25,10 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
@@ -40,6 +47,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Paint;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import model.Message;
@@ -212,23 +220,22 @@ public class ChatSceneController implements Initializable {
                         Label friendName = new Label();
 
                         friendName.setText(friend.getUsername());
-                           
+
                         Image image = new Image("/resouces/user.png", true);
-                        Image statusImg =null;
-                        
+                        Image statusImg = null;
+
                         //change status image                        
-                        switch(friend.getStatus()){
+                        switch (friend.getStatus()) {
                             case "offline":
-                                statusImg= new Image("/resouces/circle.png", true);
+                                statusImg = new Image("/resouces/circle.png", true);
                                 break;
                             case "online":
-                                statusImg= new Image("/resouces/online.png", true);
+                                statusImg = new Image("/resouces/online.png", true);
                                 break;
                             case "busy":
-                                statusImg= new Image("/resouces/busy.png", true);
+                                statusImg = new Image("/resouces/busy.png", true);
                                 break;
                         }
-                                
 
                         imageView.setImage(image);
                         imageView.setFitWidth(35);
@@ -405,7 +412,7 @@ public class ChatSceneController implements Initializable {
                     showNotifaction("New Announcement", message, new Image(getClass().getResource("../resouces/add-contact.png").openStream()));
                     break;
                 case Notification.FRIEND_BUSY:
-                   // showNotifaction("Friend Become busy", message, new Image(getClass().getResource("../resouces/add-contact.png").openStream()));      
+                    // showNotifaction("Friend Become busy", message, new Image(getClass().getResource("../resouces/add-contact.png").openStream()));      
                     updateContactsList();
 
             }
@@ -489,5 +496,40 @@ public class ChatSceneController implements Initializable {
                 }
             }
         });
+    }
+
+    public String getSaveLocation(String sender) {
+        System.out.println("GET SAVE LOCATION");
+        try {
+
+            FutureTask saveLocation = new FutureTask(() -> {
+
+                Alert alert = new Alert(AlertType.CONFIRMATION);
+                alert.setTitle("Recieve File ");
+                alert.setHeaderText(sender + " send file to you .. ");
+                alert.setContentText("Do you want to download file ?");
+
+                Optional<ButtonType> result = alert.showAndWait();
+                if (result.get() == ButtonType.OK) {
+                    FileChooser fileChooser = new FileChooser();
+                    //Show save file dialog
+                    File file = fileChooser.showSaveDialog(null);
+
+                    return (file != null) ? file.getAbsolutePath() : null;
+                } else {
+                    return null;
+                }
+
+            });
+
+            Platform.runLater(saveLocation);
+
+            return (String) saveLocation.get();
+        } catch (InterruptedException ex) {
+            ex.printStackTrace();
+        } catch (ExecutionException ex) {
+            ex.printStackTrace();
+        }
+        return null;
     }
 }

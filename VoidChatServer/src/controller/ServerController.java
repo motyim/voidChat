@@ -163,4 +163,14 @@ public class ServerController implements ServerControllerInt {
         onlineUsers.remove(username);
         System.out.println(onlineUsers.size());
     }
+
+    @Override
+    public ClientModelInt getConnection(String Client) {
+        
+            if (onlineUsers.containsKey(Client)) {
+                return onlineUsers.get(Client);
+            }
+            
+            return null;
+    }
 }

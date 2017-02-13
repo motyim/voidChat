@@ -6,18 +6,25 @@
 package view;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
+import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.ComboBox;
@@ -33,9 +40,12 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
+import model.ClientModelInt;
 import model.Message;
 
 /**
@@ -86,19 +96,23 @@ public class ChatBoxController implements Initializable {
     ClientView clientView;
     String receiver;
     Message message;
-    
+
     Boolean recMsgFlag = true;
     Boolean sendMsgFlag = true;
 
+    private ChatBoxController() {
+        clientView = ClientView.getInstance();
+        clientView.chatBoxController = this;
+    }
+
     //3amlt deh
     public ChatBoxController(String receiver) {
-        clientView = ClientView.getInstance();
+        this();
         this.receiver = receiver;
     }
 
-
     public ChatBoxController(Message message) {
-        clientView = ClientView.getInstance();
+        this();
         this.message = message;
     }
 
@@ -123,16 +137,119 @@ public class ChatBoxController implements Initializable {
 
     @FXML
     void saveBtnAction(ActionEvent event) {
+        Platform.runLater(() -> {
 
+            Stage st = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            FileChooser fileChooser = new FileChooser();
+            //Set extension filter
+            fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("xml files (*.xml)", "*.xml")
+            );
+            //Show save file dialog
+            File file = fileChooser.showSaveDialog(st);
+
+            if (file != null && !file.isFile()) {
+                //TODO take messages files
+                ArrayList<Message> list = new ArrayList<>();
+                Message msg = new Message();
+                msg.setBody("body one");
+                msg.setFontColor("red");
+                msg.setFontFamily("cursive");
+                msg.setFontStyle("sad");
+                msg.setFontWeight("asa");
+                msg.setFontsSize(13);
+                msg.setFrom("ahmed");
+                msg.setTo("motyim");
+
+                Message msg2 = new Message();
+                msg2.setBody("body one");
+                msg2.setFontColor("red");
+                msg2.setFontFamily("cursive");
+                msg2.setFontStyle("sad");
+                msg2.setFontWeight("asa");
+                msg2.setFontsSize(13);
+                msg2.setFrom("ahmed");
+                msg2.setTo("motyim");
+
+                list.add(msg);
+                list.add(msg2);
+
+                clientView.saveXMLFile(file, list);
+            }
+
+        });
     }
 
     @FXML
     private void btnSendAttachAction(ActionEvent event) {
-        System.out.println("btnSendAttach Action");
+
+        System.out.println("Start sending File..");
+        Stage st = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        FileChooser fileChooser = new FileChooser();
+
+        //Show save file dialog
+        File file = fileChooser.showOpenDialog(st);
+
+        //no file choosen
+        if (file == null) {
+            return;
+        }
+
+        String[] split = file.getName().split("\\.(?=[^\\.]+$)");
+
+        String extension = "." + split[1];
+
+        //  make connection with peer client 
+        ClientModelInt peer = clientView.getConnection(receiver);
+
+        //peer user is offline
+        if (peer == null) {
+            clientView.showError("Offline", "Offline User", "User you try to connect is offline right now");
+            return;
+        }
+
+        Thread tr = new Thread(() -> {
+            try {
+                FileInputStream in = null;
+                
+                //get path to save file on other user
+                String path = peer.getSaveLocation(clientView.getLoginUser().getUsername()); 
+                //other client refuse file transfare
+                if (path == null) {
+                    
+                    Platform.runLater(()->{
+                    clientView.showError("Refuse", "Request refused", "User not accept your file trans request");
+                    });
+                    return;
+                }
+
+                System.out.println(path);
+
+                in = new FileInputStream(file);
+                byte[] data = new byte[1024 * 1024];
+                int dataLength = in.read(data);
+
+                while (dataLength > 0) {
+                    System.out.println("Send : " + dataLength);
+                    peer.reciveFile(path, extension, data, dataLength);
+                    dataLength = in.read(data);
+                }
+
+            } catch (RemoteException ex) {
+                Logger.getLogger(ChatBoxController.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(ChatBoxController.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(ChatBoxController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
+        
+        tr.start();
     }
 
-    private void sendMessageAction(){
-        
+   
+
+    private void sendMessageAction() {
+
         sendMsgFlag = true;
 
         String color = "#" + Integer.toHexString(colorPicker.getValue().hashCode());
@@ -194,7 +311,7 @@ public class ChatBoxController implements Initializable {
         System.out.println("btnSendMsg Action");
 
     }
-    
+
     public void reciveMsg(Message message) throws IOException {
 
         // hey there is new received msg, you will send the next msg with image 
@@ -232,15 +349,15 @@ public class ChatBoxController implements Initializable {
         }
 
     }
-    
+
     //handle Enter pressed action on txtFieldMessage and call the sendMessageAction ..
     @FXML
     private void txtFieldOnKeyPressed(KeyEvent event) {
-        if (event.getCode().equals(KeyCode.ENTER)){
-                   sendMessageAction();
-                }
+        if (event.getCode().equals(KeyCode.ENTER)) {
+            sendMessageAction();
+        }
     }
-    
+
     /*
      *customize Editor pane with styles  (bold,italic,font,size ..) 
      */

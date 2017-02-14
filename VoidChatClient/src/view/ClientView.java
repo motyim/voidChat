@@ -233,10 +233,6 @@ public class ClientView extends Application implements ClientViewInt {
         return chatSceneController.getSaveLocation(sender);
     }
 
-    @Override
-    public User getLoginUser() {
-        return controller.getLoginUser();
-    }
     
     @Override
     public void createGroup(String groupName, ArrayList<String> groupMembers) {

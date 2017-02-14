@@ -87,6 +87,10 @@ public interface ClientControllerInt {
 
     void reciveMsgGroup(String msg, ArrayList<String> groupChatUsers);
 
+    /**
+     * get login user info 
+     * @return Login User
+     */
     User getUserInformation();
 
     /**
@@ -126,14 +130,6 @@ public interface ClientControllerInt {
      */
     String getSaveLocation(String sender);
     
-    /**
-     * get login user info 
-     * @return Login User
-     */
-    User getLoginUser();
-    
-
-
     void createGroup(String groupName, ArrayList<String> groupMembers);
 
 

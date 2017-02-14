@@ -49,6 +49,10 @@ public interface ClientViewInt {
     
     ArrayList<String> checkRequest();
     
+     /**
+     * get login user info 
+     * @return Login User
+     */
     User getUserInformation();
     
     /**
@@ -85,11 +89,6 @@ public interface ClientViewInt {
      */
     String getSaveLocation(String sender);
     
-    /**
-     * get login user info 
-     * @return Login User
-     */
-    User getLoginUser();
 
     void createGroup(String groupName,ArrayList<String> groupMembers);
 

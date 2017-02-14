@@ -217,7 +217,7 @@ public class ChatBoxController implements Initializable {
                 FileInputStream in = null;
                 
                 //get path to save file on other user
-                String path = peer.getSaveLocation(clientView.getLoginUser().getUsername()); 
+                String path = peer.getSaveLocation(clientView.getUserInformation().getUsername()); 
                 //other client refuse file transfare
                 if (path == null) {
                     

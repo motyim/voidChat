@@ -254,11 +254,6 @@ public class ClientController implements ClientControllerInt {
     }
 
     @Override
-    public User getLoginUser() {
-        return loginUser;
-    }
-    
-    @Override
     public void createGroup(String groupName, ArrayList<String> groupMembers) {
         try {
             serverModelInt.createGroup(groupName, groupMembers);

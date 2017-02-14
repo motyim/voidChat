@@ -235,10 +235,11 @@ public class ChatSceneController implements Initializable {
             friendsListview.setOnMouseClicked(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent event) {
-
-                    if (!tabsOpened.containsKey(friendsListview.getSelectionModel().getSelectedItem().getUsername())) {
+                    
+                    String friendName = friendsListview.getSelectionModel().getSelectedItem().getUsername();
+                    if (!tabsOpened.containsKey(friendName)) {
                         try {
-                            String friendName = friendsListview.getSelectionModel().getSelectedItem().getUsername();
+                            
                             System.out.println("clicked on " + friendName);
                             Tab newTab = new Tab();
 

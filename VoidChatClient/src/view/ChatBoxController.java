@@ -117,7 +117,7 @@ public class ChatBoxController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         customizeEditorPane();
         
-        if((message != null && message.getTo().contains("##"))|| receiver.contains("##")){
+        if((message != null && message.getTo().contains("##"))||(receiver!=null &&receiver.contains("##"))){
             btnSendAttach.setDisable(true);
         }
     }

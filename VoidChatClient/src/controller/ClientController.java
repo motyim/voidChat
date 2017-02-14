@@ -1,5 +1,6 @@
 package controller;
 
+import java.io.File;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -10,6 +11,7 @@ import java.util.logging.Logger;
 import javafx.application.Application;
 import model.ClientModel;
 import model.ClientModelInt;
+import model.ClientPrivateModel;
 import model.Message;
 import model.ServerModelInt;
 import model.User;
@@ -20,6 +22,7 @@ public class ClientController implements ClientControllerInt {
 
     private ClientView view;
     private ClientModel model;
+    private ClientPrivateModel pmodel ;
     private ServerModelInt serverModelInt;
     private User loginUser;
 
@@ -32,6 +35,9 @@ public class ClientController implements ClientControllerInt {
 
             //connect with model 
             model = new ClientModel(this);
+            
+            //connect to private model
+            pmodel = new ClientPrivateModel(this);
 
             Registry reg = LocateRegistry.getRegistry(1050);
 
@@ -189,7 +195,6 @@ public class ClientController implements ClientControllerInt {
            ex.printStackTrace();
         }
     }*/
-
     @Override
     public void reciveMsg(Message message) {
         view.reciveMsg(message);
@@ -198,7 +203,6 @@ public class ClientController implements ClientControllerInt {
     /*  public void reciveMsg(String msg) {
          view.reciveMsg(msg);
     }*/
-
     @Override
     public void groupMsg(String msg, ArrayList<String> groupChatUsers) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -230,12 +234,38 @@ public class ClientController implements ClientControllerInt {
     }
 
     @Override
+    public void saveXMLFile(File file, ArrayList<Message> messages) {
+        pmodel.saveXMLFile(file, messages, loginUser);
+    }
+
+    @Override
+    public ClientModelInt getConnection(String Client) {
+        try {
+            return serverModelInt.getConnection(Client);
+        } catch (RemoteException ex) {
+            Logger.getLogger(ClientController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+
+    @Override
+    public String getSaveLocation(String sender) {
+        return view.getSaveLocation(sender);
+    }
+
+    @Override
+    public User getLoginUser() {
+        return loginUser;
+    }
+    
+    @Override
     public void createGroup(String groupName, ArrayList<String> groupMembers) {
         try {
             serverModelInt.createGroup(groupName, groupMembers);
         } catch (RemoteException ex) {
             ex.printStackTrace();
         }
+
     }
 
 }

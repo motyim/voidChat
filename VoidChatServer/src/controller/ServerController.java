@@ -176,12 +176,23 @@ public class ServerController implements ServerControllerInt {
 
     }
 
+    @Override
     public void unregister(String username) {
         System.out.println(onlineUsers.size());
         onlineUsers.remove(username);
         System.out.println(onlineUsers.size());
     }
 
+    @Override
+    public ClientModelInt getConnection(String Client) {
+        
+            if (onlineUsers.containsKey(Client)) {
+                return onlineUsers.get(Client);
+            }
+            
+            return null;
+    }
+    
     @Override
     public void createGroup(String groupName, ArrayList<String> groupMembers) {
         groups.put(groupName, groupMembers);

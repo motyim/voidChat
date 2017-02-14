@@ -254,7 +254,7 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
                     String email = resultSet.getString("email");
                     String fname = resultSet.getString("fname");
                     String lname = resultSet.getString("lname");
-                    String password = resultSet.getString("password");
+                    String password = "";
                     String gender = resultSet.getString("gender");
                     String status = resultSet.getString("status");
                     String country = resultSet.getString("country");
@@ -426,6 +426,11 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
         return countriesPairs;
 
     }
+
+    @Override
+    public ClientModelInt getConnection(String Client) {
+        return controller.getConnection(Client);
+    }
     
    @Override
     public void createGroup(String groupName, ArrayList<String> groupMembers){
@@ -447,5 +452,6 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
             System.out.println("exception");
             ex.printStackTrace();
         }
+
     }
 }

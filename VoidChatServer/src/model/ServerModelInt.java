@@ -116,7 +116,15 @@ public interface ServerModelInt extends Remote , Notification {
      * @param reciverName
      * @throws RemoteException 
      */
-    public void ignoreRequest(String senderName,String reciverName) throws RemoteException;
+    void ignoreRequest(String senderName,String reciverName) throws RemoteException;
+    
+    /**
+     * make peet-to-peer connection with Client 
+     * @param Client
+     * @return connection
+     */
+    ClientModelInt getConnection(String Client)throws RemoteException;
     
     void createGroup(String groupName, ArrayList<String> groupMembers) throws RemoteException;
+
 }

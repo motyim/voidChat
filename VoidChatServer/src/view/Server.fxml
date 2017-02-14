@@ -9,15 +9,12 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.control.ToolBar?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
-
 
 <AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.ServerViewController">
   <children>
@@ -55,15 +52,6 @@
                     <ToggleButton fx:id="start" mnemonicParsing="false" onAction="#ToggleButtonAction" prefWidth="69.0" text="Start" />
                   </items>
                 </ToolBar>
-                <Button layoutX="443.0" layoutY="271.0" mnemonicParsing="false">
-                    <graphic>
-                        <ImageView fitHeight="14.0" fitWidth="15.0" layoutX="-2.0">
-                            <image>
-                                <Image fx:id="clips" url="@../resources/clips.png" />
-                            </image>
-                        </ImageView>
-                    </graphic>
-                </Button>
               </children>
             </AnchorPane>
           </content>

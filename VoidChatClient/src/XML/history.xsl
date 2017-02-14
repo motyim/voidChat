@@ -2,17 +2,17 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="2.0">
     <xsl:output method="html"/>
     
-    
-    
+<!--     <xsl:variable name="owner" select="'mohamed'"/>-->
+    <xsl:variable name="owner" select="/history/@owner"/>
     
 
     <xsl:template match="/*[1]">
         <html>
 
             <head>
-                <xsl:variable name="owner" select="'mohamed'"/>
-<!--                <title><xsl:value-of select="$owner"/></title>-->
-                <title>{$owner}</title>
+               
+                <title><xsl:value-of select="$owner"/></title>
+                <title>$owner</title>
                 <style type="text/css">
                     @import url(http://fonts.googleapis.com/css?family=Lato:100,300,400,700);
                     @import url(http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css);
@@ -307,8 +307,8 @@
                 <ol class="chat">
                     
                     <xsl:for-each select="message">
-<!--                        <xsl:choose>
-                            <xsl:when test="from = $owner">-->
+                        <xsl:choose>
+                            <xsl:when test="from = $owner">
                                 <li class="self">
                                     <div class="avatar">
                                         <img src="http://i.imgur.com/HYcn9xO.png" draggable="false" />
@@ -326,7 +326,7 @@
                                         </time>
                                     </div>
                                 </li>
-<!--                            </xsl:when>
+                            </xsl:when>
                             <xsl:otherwise>
                                 <li class="other">
                                     <div class="avatar">
@@ -346,7 +346,7 @@
                                     </div>
                                 </li>
                             </xsl:otherwise>
-                        </xsl:choose>-->
+                        </xsl:choose>
                         
                        
                         

@@ -98,6 +98,8 @@ public class ChatBoxController implements Initializable {
     String receiver;
     Message message;
 
+    ArrayList<Message> History = new ArrayList<>();
+
     Boolean recMsgFlag = true;
     Boolean sendMsgFlag = true;
 
@@ -129,9 +131,12 @@ public class ChatBoxController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         customizeEditorPane();
-        
-        if((message != null && message.getTo().contains("##"))||(receiver!=null &&receiver.contains("##"))){
+        if ((message != null && message.getTo().contains("##")) || (receiver != null && receiver.contains("##"))) {
             btnSendAttach.setDisable(true);
+        }
+        if (clientView.getHistory(receiver) != null) {
+            System.out.println("");
+            loadHistory(clientView.getHistory(receiver));
         }
     }
 
@@ -215,14 +220,15 @@ public class ChatBoxController implements Initializable {
         Thread tr = new Thread(() -> {
             try {
                 FileInputStream in = null;
-                
+
                 //get path to save file on other user
                 String path = peer.getSaveLocation(clientView.getUserInformation().getUsername()); 
+
                 //other client refuse file transfare
                 if (path == null) {
-                    
-                    Platform.runLater(()->{
-                    clientView.showError("Refuse", "Request refused", "User not accept your file trans request");
+
+                    Platform.runLater(() -> {
+                        clientView.showError("Refuse", "Request refused", "User not accept your file trans request");
                     });
                     return;
                 }
@@ -247,11 +253,9 @@ public class ChatBoxController implements Initializable {
                 Logger.getLogger(ChatBoxController.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
-        
+
         tr.start();
     }
-
-   
 
     private void sendMessageAction() {
 
@@ -431,4 +435,88 @@ public class ChatBoxController implements Initializable {
         return null;
     }
 
+    public void loadHistory(ArrayList<Message> messages) {
+        
+        Boolean myFlag = true;
+        Boolean otherFlag = true;
+        
+        for (Message message : messages) {
+            System.out.println("from:"+message.getFrom()+" "+message.getBody());
+            if (message.getFrom().equals(clientView.getUserInformation().getUsername())) {
+                myFlag = true;
+                try {
+                    HBox cell = new HBox();
+                    
+                    ImageView img = new ImageView(new Image(getClass().getResource("..//resouces//user_32.png").openStream()));
+
+                    Label sendLabel = new Label(message.getBody());
+                    sendLabel.setMaxWidth(300);
+                    sendLabel.setWrapText(true);
+                    sendLabel.setStyle("-fx-text-fill:" + message.getFontColor()
+                            + ";-fx-font-weight:" + message.getFontWeight()
+                            + ";-fx-font-size:" + message.getFontsSize()
+                            + ";-fx-font-style:" + message.getFontStyle()
+                            + ";-fx-font-family:\"" + message.getFontFamily()
+                            + "\";-fx-underline:" + message.getUnderline()
+                            + ";");
+
+                    if (otherFlag) {
+                        
+                        sendLabel.getStyleClass().add("LabelSender");
+                        cell.getChildren().addAll(img, sendLabel);
+                        otherFlag = false;
+
+                    } else {
+                        sendLabel.getStyleClass().add("LabelSenderSec");
+                        cell.getChildren().add(sendLabel);
+                        cell.setMargin(sendLabel, new Insets(0, 0, 0, 32));
+                    }
+
+                    listviewChat.getItems().add(cell);
+
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            } else {
+
+                try {
+                    otherFlag = true;
+                    HBox cell = new HBox();
+                    VBox vbox = new VBox();
+
+                    ImageView img = new ImageView(new Image(getClass().getResource("..//resouces//user_32.png").openStream()));
+
+                    Label recLabel = new Label(message.getBody());
+                    recLabel.setMaxWidth(300);
+                    recLabel.setWrapText(true);
+                    recLabel.setStyle("-fx-text-fill:" + message.getFontColor()
+                            + ";-fx-font-weight:" + message.getFontWeight()
+                            + ";-fx-font-size:" + message.getFontsSize()
+                            + ";-fx-font-style:" + message.getFontStyle()
+                            + ";-fx-font-family:\"" + message.getFontFamily()
+                            + "\";-fx-underline:" + message.getUnderline()
+                            + ";");
+
+                    if (myFlag) {
+                        
+                        recLabel.getStyleClass().add("LabelRec");
+                        cell.getChildren().addAll(recLabel, img);
+                        cell.setAlignment(Pos.TOP_RIGHT);
+                        myFlag = false;
+                        
+                    } else {
+                        
+                        recLabel.getStyleClass().add("LabelRecSec");
+                        cell.getChildren().addAll(recLabel);
+                        cell.setMargin(recLabel, new Insets(0, 32, 0, 0));
+                        cell.setAlignment(Pos.TOP_RIGHT);
+                    }
+
+                    listviewChat.getItems().add(cell);
+                } catch (IOException ex) {
+                    Logger.getLogger(ChatBoxController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+    }
 }

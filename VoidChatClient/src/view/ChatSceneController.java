@@ -256,11 +256,11 @@ public class ChatSceneController implements Initializable {
             friendsListview.setOnMouseClicked(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent event) {
-                    
+
                     String friendName = friendsListview.getSelectionModel().getSelectedItem().getUsername();
                     if (!tabsOpened.containsKey(friendName)) {
                         try {
-                            
+
                             System.out.println("clicked on " + friendName);
                             Tab newTab = new Tab();
 
@@ -437,17 +437,15 @@ public class ChatSceneController implements Initializable {
         });
     }
 
-    ///////////////////////////////////////////
     public void changeStatus() {
         System.out.println("change status button in chatScene Controller");
         clinetView.changeStatus(comboBoxStatus.getValue().toString());
         System.out.println(comboBoxStatus.getValue().toString());
     }
-
+    
     /**
      * get message from clientView and open existing tab or create new tab and
      * load new chatBoxScene on it
-     *
      * @param message
      * @throws java.io.IOException
      */
@@ -551,7 +549,7 @@ public class ChatSceneController implements Initializable {
             }
         });
     }
-
+    
     public String getSaveLocation(String sender) {
         System.out.println("GET SAVE LOCATION");
         try {

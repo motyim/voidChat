@@ -232,11 +232,15 @@ public class ClientView extends Application implements ClientViewInt {
     public String getSaveLocation(String sender) {
         return chatSceneController.getSaveLocation(sender);
     }
-
     
+
     @Override
     public void createGroup(String groupName, ArrayList<String> groupMembers) {
         controller.createGroup(groupName, groupMembers);
     }
 
+    @Override
+    public ArrayList<Message> getHistory(String receiver) {
+        return controller.getHistory(receiver);
+    }
 }

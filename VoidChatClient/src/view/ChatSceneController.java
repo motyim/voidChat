@@ -21,7 +21,6 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -583,5 +582,22 @@ public class ChatSceneController implements Initializable {
             ex.printStackTrace();
         }
         return null;
+    }
+    
+    public void loadErrorServer(){
+        //----- close this scene -----
+        friendsListview.getScene().getWindow().hide();
+        
+        try {
+            Parent parent = FXMLLoader.load(getClass().getResource("OutOfServiceScene.fxml"));
+            Stage stage = new Stage();
+            Scene scene = new Scene(parent);
+            stage.setScene(scene);
+            stage.setResizable(false);
+            stage.setTitle(" ");
+            stage.show();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }
 }

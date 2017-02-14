@@ -6,14 +6,14 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="394.0" style="-fx-background-color: #535f85;" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="394.0" style="-fx-background-color: #535f85;" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.LaunchSceneController">
    <children>
         <Text fill="#e4e4e4" layoutX="101.0" layoutY="140.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Void Chat" textAlignment="CENTER" wrappingWidth="192.2138671875">
          <font>
             <Font name="System Bold" size="34.0" />
          </font>
       </Text>
-      <TextField layoutX="114.0" layoutY="180.0" promptText="Host Name" />
-      <Button layoutX="163.0" layoutY="237.0" mnemonicParsing="false" text="connect" />
+      <TextField fx:id="txtFieldHostIP" layoutX="114.0" layoutY="180.0" promptText="Host IP" />
+      <Button fx:id="btnConnect" layoutX="163.0" layoutY="237.0" mnemonicParsing="false" onAction="#btnConnectAction" text="connect" />
    </children>
 </AnchorPane>

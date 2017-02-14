@@ -278,4 +278,10 @@ public class ClientController implements ClientControllerInt {
         return null;
     }
 
+    @Override
+    public void errorServer() {
+        view.errorServer();
+    }
+    
+    
 }

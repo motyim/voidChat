@@ -60,7 +60,7 @@ public class ClientView extends Application implements ClientViewInt {
     @Override
     public void start(Stage stage) throws Exception {
         mainStage = stage;
-        Parent root = FXMLLoader.load(getClass().getResource("LoginScene.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("LaunchScene.fxml"));
         Scene scene = new Scene(root);
         stage.setOnCloseRequest((WindowEvent ew) -> {
             Platform.exit();
@@ -247,4 +247,10 @@ public class ClientView extends Application implements ClientViewInt {
     public ArrayList<Message> getHistory(String receiver) {
         return controller.getHistory(receiver);
     }
+
+    @Override
+    public void errorServer() {
+      //  chatSceneController.LoadErrorServer();
+    }
+   
 }

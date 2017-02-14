@@ -137,4 +137,5 @@ public interface ClientControllerInt {
 
     public ArrayList<Message> getHistory(String receiver);
 
+    void errorServer();
 }

@@ -97,4 +97,6 @@ public interface ClientViewInt {
     void createGroup(String groupName, ArrayList<String> groupMembers);
 
     ArrayList<Message> getHistory(String receiver);
+    
+    void errorServer();
 }

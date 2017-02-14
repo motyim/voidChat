@@ -103,38 +103,38 @@ public interface ClientControllerInt {
      */
     public void ignoreRequest(String senderName);
 
-    
     /**
      * save messages on XML format on file
+     *
      * @param file
-     * @param messages 
+     * @param messages
      */
-    public void saveXMLFile(File file , ArrayList<Message> messages);
-    
-    
+    public void saveXMLFile(File file, ArrayList<Message> messages);
+
     /**
-     * make peet-to-peer connection with Client 
+     * make peet-to-peer connection with Client
+     *
      * @param Client
      * @return connection
      */
     ClientModelInt getConnection(String Client);
-    
+
     /**
-     * 
+     *
      * @return url location or null if not file choosen
-     * @throws RemoteException 
+     * @throws RemoteException
      */
     String getSaveLocation(String sender);
-    
+
     /**
-     * get login user info 
+     * get login user info
+     *
      * @return Login User
      */
     User getLoginUser();
-    
-
 
     void createGroup(String groupName, ArrayList<String> groupMembers);
 
+    public ArrayList<Message> getHistory(String receiver);
 
 }

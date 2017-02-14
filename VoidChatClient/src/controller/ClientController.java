@@ -22,7 +22,7 @@ public class ClientController implements ClientControllerInt {
 
     private ClientView view;
     private ClientModel model;
-    private ClientPrivateModel pmodel ;
+    private ClientPrivateModel pmodel;
     private ServerModelInt serverModelInt;
     private User loginUser;
 
@@ -35,7 +35,7 @@ public class ClientController implements ClientControllerInt {
 
             //connect with model 
             model = new ClientModel(this);
-            
+
             //connect to private model
             pmodel = new ClientPrivateModel(this);
 
@@ -257,7 +257,7 @@ public class ClientController implements ClientControllerInt {
     public User getLoginUser() {
         return loginUser;
     }
-    
+
     @Override
     public void createGroup(String groupName, ArrayList<String> groupMembers) {
         try {
@@ -266,6 +266,16 @@ public class ClientController implements ClientControllerInt {
             ex.printStackTrace();
         }
 
+    }
+
+    @Override
+    public ArrayList<Message> getHistory(String receiver) {
+        try {
+            return  serverModelInt.getHistory(loginUser.getUsername(), receiver);
+        } catch (RemoteException ex) {
+            ex.printStackTrace();
+        }
+        return null;
     }
 
 }

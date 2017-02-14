@@ -237,10 +237,14 @@ public class ClientView extends Application implements ClientViewInt {
     public User getLoginUser() {
         return controller.getLoginUser();
     }
-    
+
     @Override
     public void createGroup(String groupName, ArrayList<String> groupMembers) {
         controller.createGroup(groupName, groupMembers);
     }
 
+    @Override
+    public ArrayList<Message> getHistory(String receiver) {
+        return controller.getHistory(receiver);
+    }
 }

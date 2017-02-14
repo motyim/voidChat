@@ -127,5 +127,6 @@ public interface ServerModelInt extends Remote , Notification {
 
     
     void createGroup(String groupName, ArrayList<String> groupMembers) throws RemoteException;
-
+    
+    ArrayList<Message> getHistory(String sender, String receiver) throws RemoteException;
 }

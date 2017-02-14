@@ -8,7 +8,13 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.GregorianCalendar;
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
 import utilitez.SHA;
 import utilitez.Constant;
 import utilitez.Notification;
@@ -207,17 +213,19 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
-       // closeResources();
+        // closeResources();
     }
 
     @Override
-    public void sendMsg(Message message){
+    public void sendMsg(Message message) {
         System.out.println("in Server Model send message");
-        if(!message.getTo().contains("##"))
+        if (!message.getTo().contains("##")) {
             insertMessage(message);
+        }
         controller.recieveMsg(message);
     }
-   /* public boolean sendMsg(String reciver, String msg) throws RemoteException {
+
+    /* public boolean sendMsg(String reciver, String msg) throws RemoteException {
         System.out.println("sendMsg in server model");
         return controller.sendMsg(reciver, msg);
     }*/
@@ -431,12 +439,12 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
     public ClientModelInt getConnection(String Client) {
         return controller.getConnection(Client);
     }
-    
-   @Override
-    public void createGroup(String groupName, ArrayList<String> groupMembers){
-        controller.createGroup(groupName,groupMembers);
+
+    @Override
+    public void createGroup(String groupName, ArrayList<String> groupMembers) {
+        controller.createGroup(groupName, groupMembers);
     }
-    
+
     public void insertMessage(Message message) {
         try {
             System.out.println("insert msg");
@@ -454,4 +462,52 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
         }
 
     }
+
+    public ArrayList<Message> getHistory(String sender, String receiver) {
+        ArrayList<Message> messages = new ArrayList<Message>();
+        try {
+            getConnection();
+            query = "select * from Message where (`from` = '" + sender + "' and `to`='" + receiver + "') or"
+                    + " (`to`='" + sender + "'and `from`='" + receiver + "')";
+            System.out.println(query);
+            statement = connection.createStatement();
+            resultSet = statement.executeQuery(query);
+            while (resultSet.next()) {
+                int id = resultSet.getInt(1);
+                int fontSize = resultSet.getInt(2);
+                String from = resultSet.getString(3);
+                String to = resultSet.getString(4);
+                String date = resultSet.getString(5);
+                String fontColor = resultSet.getString(6);
+                String fontFamily = resultSet.getString(7);
+                String fontStyle = resultSet.getString(8);
+                String body = resultSet.getString(9);
+                String fontWeight = resultSet.getString(10);
+                boolean underline = Boolean.parseBoolean(resultSet.getString(11));
+
+                String format = "yyyy-MM-dd'T'HH:mm:ss.SSSX";
+                GregorianCalendar cal = new GregorianCalendar();
+                try {
+                    cal.setTime(new SimpleDateFormat(format).parse(date));
+                    XMLGregorianCalendar calendar;
+                    try {
+                        calendar = DatatypeFactory.newInstance().newXMLGregorianCalendar(cal);
+                        Message message = new Message(fontSize, from, to, calendar, fontColor, fontFamily, fontStyle, body, fontWeight, underline);
+                        messages.add(message);
+                    } catch (DatatypeConfigurationException ex) {
+                        ex.printStackTrace();
+                    }
+
+                } catch (ParseException ex) {
+                    ex.printStackTrace();
+                }
+            }
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        closeResources();
+        return messages.size() == 0 ? null : messages;
+    }
+
 }

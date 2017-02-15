@@ -77,6 +77,8 @@ public class ChatBoxController implements Initializable {
     @FXML
     private Button btnSendMsg;
     @FXML
+    private Button saveBtn;
+    @FXML
     private ToggleButton boldToggleBtn;
 
     @FXML
@@ -102,6 +104,7 @@ public class ChatBoxController implements Initializable {
 
     Boolean recMsgFlag = true;
     Boolean sendMsgFlag = true;
+    Boolean conFlag = false;
 
     private ChatBoxController() {
         clientView = ClientView.getInstance();
@@ -117,11 +120,16 @@ public class ChatBoxController implements Initializable {
     public ChatBoxController(Message message) {
         this();
         this.message = message;
+
+        if (!message.getTo().contains("##")) {
+            receiver = message.getFrom();
+            conFlag = true;
+        }
+
     }
 
-    Boolean sendFlag = true;
-    Boolean recFlag = true;
-
+//    Boolean sendFlag = true;
+//    Boolean recFlag = true;
     /**
      * Initializes the controller class.
      *
@@ -133,6 +141,7 @@ public class ChatBoxController implements Initializable {
         customizeEditorPane();
         if ((message != null && message.getTo().contains("##")) || (receiver != null && receiver.contains("##"))) {
             btnSendAttach.setDisable(true);
+            saveBtn.setDisable(true);
         }
         if (clientView.getHistory(receiver) != null) {
             System.out.println("");
@@ -198,8 +207,7 @@ public class ChatBoxController implements Initializable {
                 FileInputStream in = null;
 
                 //get path to save file on other user
-                String path = peer.getSaveLocation(clientView.getUserInformation().getUsername()); 
-
+                String path = peer.getSaveLocation(clientView.getUserInformation().getUsername());
                 //other client refuse file transfare
                 if (path == null) {
 
@@ -296,6 +304,7 @@ public class ChatBoxController implements Initializable {
             }
 
             listviewChat.getItems().add(cell);
+            listviewChat.scrollTo(cell);
             txtFieldMsg.setText(null);
 
         } catch (IOException ex) {
@@ -307,9 +316,14 @@ public class ChatBoxController implements Initializable {
 
     public void reciveMsg(Message message) throws IOException {
 
-        // hey there is new received msg, you will send the next msg with image 
-        Boolean groupFlag = false;
+        // Msg received in initialize don't send it again
+        if (conFlag) {
+            conFlag = false;
+            return;
+        }
 
+        Boolean groupFlag = false;
+        // hey there is new received msg, you will send the next msg with image 
         recMsgFlag = true;
         if (message.getTo().contains("##")) {
             System.out.println("test rec group >>" + message.getTo());
@@ -371,7 +385,7 @@ public class ChatBoxController implements Initializable {
             }
 
             listviewChat.getItems().add(cell);
-
+            listviewChat.scrollTo(cell);
         }
 
     }
@@ -412,17 +426,17 @@ public class ChatBoxController implements Initializable {
     }
 
     public void loadHistory(ArrayList<Message> messages) {
-        
+
         Boolean myFlag = true;
         Boolean otherFlag = true;
-        
+
         for (Message message : messages) {
-            System.out.println("from:"+message.getFrom()+" "+message.getBody());
+            System.out.println("from:" + message.getFrom() + " " + message.getBody());
             if (message.getFrom().equals(clientView.getUserInformation().getUsername())) {
                 myFlag = true;
                 try {
                     HBox cell = new HBox();
-                    
+
                     ImageView img = new ImageView(new Image(getClass().getResource("..//resouces//user_32.png").openStream()));
 
                     Label sendLabel = new Label(message.getBody());
@@ -437,7 +451,7 @@ public class ChatBoxController implements Initializable {
                             + ";");
 
                     if (otherFlag) {
-                        
+
                         sendLabel.getStyleClass().add("LabelSender");
                         cell.getChildren().addAll(img, sendLabel);
                         otherFlag = false;
@@ -449,7 +463,7 @@ public class ChatBoxController implements Initializable {
                     }
 
                     listviewChat.getItems().add(cell);
-
+                    listviewChat.scrollTo(cell);
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 }
@@ -474,14 +488,14 @@ public class ChatBoxController implements Initializable {
                             + ";");
 
                     if (myFlag) {
-                        
+
                         recLabel.getStyleClass().add("LabelRec");
                         cell.getChildren().addAll(recLabel, img);
                         cell.setAlignment(Pos.TOP_RIGHT);
                         myFlag = false;
-                        
+
                     } else {
-                        
+
                         recLabel.getStyleClass().add("LabelRecSec");
                         cell.getChildren().addAll(recLabel);
                         cell.setMargin(recLabel, new Insets(0, 32, 0, 0));
@@ -489,6 +503,7 @@ public class ChatBoxController implements Initializable {
                     }
 
                     listviewChat.getItems().add(cell);
+                    listviewChat.scrollTo(cell);
                 } catch (IOException ex) {
                     Logger.getLogger(ChatBoxController.class.getName()).log(Level.SEVERE, null, ex);
                 }

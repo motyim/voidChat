@@ -100,4 +100,9 @@ public interface ClientViewInt {
     ArrayList<Message> getHistory(String receiver);
     
     ArrayList<Pair> getContactsWithType();
+    
+    void errorServer();
+    
+    void reciveSponser(byte[] data, int dataLength);
 }
+

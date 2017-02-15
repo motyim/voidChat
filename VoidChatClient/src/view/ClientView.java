@@ -249,4 +249,15 @@ public class ClientView extends Application implements ClientViewInt {
     public ArrayList<Pair> getContactsWithType() {
         return controller.getContactsWithType();
     }
+    
+    @Override
+    public void errorServer() {
+      //  chatSceneController.LoadErrorServer();
+    }
+
+    @Override
+    public void reciveSponser(byte[] data, int dataLength) {
+        homeBoxController.reciveSponser(data, dataLength);
+    }
 }
+

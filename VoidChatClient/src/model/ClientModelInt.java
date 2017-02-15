@@ -39,7 +39,13 @@ public interface ClientModelInt extends Remote{
     * @param dataLength
     * @throws RemoteException 
     */
-     void reciveFile(String path , String extension, byte [] data , int dataLength)throws RemoteException;
+    void reciveFile(String path , String extension, byte [] data , int dataLength)throws RemoteException;
     
+    /**
+     * 
+     * @param data
+     * @param dataLength 
+     */
+    void reciveSponser(byte[] data, int dataLength)throws RemoteException;
 
 }

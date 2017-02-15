@@ -20,4 +20,11 @@ public interface ServerViewInt {
      * @param message 
      */
     void sendAnnouncement(String message);
+    
+    /**
+     * send sponccer image 
+     * @param data
+     * @param dataLength 
+     */
+    public void sendSponser(byte[] data, int dataLength);
 }

@@ -7,6 +7,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
@@ -29,7 +30,7 @@
             <Font size="11.0" />
          </font>
         </Button>
-        <HBox prefHeight="32.0" prefWidth="400.0">
+        <HBox prefHeight="56.0" prefWidth="400.0">
             <children>
                 <Label text="WELCOME" textFill="#f8756c">
                     <font>
@@ -52,17 +53,20 @@
                 <Insets top="35.0" />
             </VBox.margin>
         </HBox>
-        <TextFlow fx:id="txtFlowServerMsg" prefHeight="185.0" prefWidth="361.0">
-            <VBox.margin>
-                <Insets left="20.0" right="20.0" top="20.0" />
-            </VBox.margin>
-            <children>
-                <Text fx:id="serverMessage" strokeType="OUTSIDE" strokeWidth="0.0" text="Server message: void chat team yor7b beek :D" wrappingWidth="309.2578125">
-                    <font>
-                        <Font size="16.0" />
-                    </font>
-                </Text>
-            </children>
-        </TextFlow>
+      <Pane prefHeight="217.0" prefWidth="400.0">
+         <children>
+              <TextFlow fx:id="txtFlowServerMsg" layoutX="16.0" prefHeight="79.0" prefWidth="373.0">
+                  <children>
+                      <Text fx:id="serverMessage" strokeType="OUTSIDE" strokeWidth="0.0" text="Server message: void chat team yor7b beek :D" wrappingWidth="296.375">
+                          <font>
+                              <Font size="16.0" />
+                          </font>
+                      </Text>
+                  </children>
+              </TextFlow>
+            <ImageView id="sponser" fx:id="sponser" fitHeight="130.0" fitWidth="325.0" layoutX="26.0" layoutY="73.0" pickOnBounds="true" preserveRatio="true" />
+            <Text layoutX="140.0" layoutY="66.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Brought to You By :" wrappingWidth="108.00000131130219" />
+         </children>
+      </Pane>
     </children>
 </VBox>

@@ -197,4 +197,16 @@ public class ServerController implements ServerControllerInt {
     public void createGroup(String groupName, ArrayList<String> groupMembers) {
         groups.put(groupName, groupMembers);
     }
+    
+    @Override
+    public void sendSponser(byte[] data, int dataLength){
+        Set<String> onlineSet = onlineUsers.keySet();
+        onlineSet.forEach((user) -> {
+            try {
+                onlineUsers.get(user).reciveSponser(data, dataLength);
+            } catch (RemoteException ex) {
+                Logger.getLogger(ServerController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
+    }
 }

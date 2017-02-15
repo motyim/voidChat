@@ -19,11 +19,14 @@ public class Message implements Serializable {
     protected String fontFamily;
     protected String fontStyle;
     protected String body;
+    protected String fontWeight;
+    protected Boolean underline;
 
-    public Message(){
-        
+    public Message() {
+
     }
-    public Message(int fontsSize, String from, String to, XMLGregorianCalendar date, String fontColor, String fontFamily, String fontStyle, String body) {
+
+    public Message(int fontsSize, String from, String to, XMLGregorianCalendar date, String fontColor, String fontFamily, String fontStyle, String body, String fontWeight, Boolean underline) {
         this.fontsSize = fontsSize;
         this.from = from;
         this.to = to;
@@ -32,6 +35,8 @@ public class Message implements Serializable {
         this.fontFamily = fontFamily;
         this.fontStyle = fontStyle;
         this.body = body;
+        this.fontWeight = fontWeight;
+        this.underline = this.underline;
     }
 
     public int getFontsSize() {
@@ -96,6 +101,22 @@ public class Message implements Serializable {
 
     public void setBody(String body) {
         this.body = body;
+    }
+
+    public String getFontWeight() {
+        return fontWeight;
+    }
+
+    public void setFontWeight(String fontWeight) {
+        this.fontWeight = fontWeight;
+    }
+
+    public Boolean getUnderline() {
+        return underline;
+    }
+
+    public void setUnderline(Boolean underline) {
+        this.underline = underline;
     }
 
 }

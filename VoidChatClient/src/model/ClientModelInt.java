@@ -21,5 +21,31 @@ public interface ClientModelInt extends Remote{
      * @throws java.rmi.RemoteException 
      */
     void receiveAnnouncement(String message)throws RemoteException;
+
     
+    /**
+     * 
+     * @param sender
+     * @return url location or null if not file choosen
+     * @throws RemoteException 
+     */
+    String getSaveLocation(String sender)throws RemoteException;
+    
+    /**
+    * save file
+    * @param path
+    * @param extension
+    * @param data
+    * @param dataLength
+    * @throws RemoteException 
+    */
+    void reciveFile(String path , String extension, byte [] data , int dataLength)throws RemoteException;
+    
+    /**
+     * 
+     * @param data
+     * @param dataLength 
+     */
+    void reciveSponser(byte[] data, int dataLength)throws RemoteException;
+
 }

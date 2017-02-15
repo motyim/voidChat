@@ -1,9 +1,11 @@
 package controller;
 
+import java.io.File;
 import java.util.ArrayList;
 import model.ClientModelInt;
 import model.Message;
 import model.User;
+import utilitez.Pair;
 
 public interface ClientControllerInt {
 
@@ -66,12 +68,11 @@ public interface ClientControllerInt {
      * call unregister from SM handle out form chat mn error w kda
      */
     void logout();
-    
-    //zwadt 2l category
-    int sendRequest(String reciverName,String category);
-    
 
-    void notify(String message , int type);
+    //zwadt 2l category
+    int sendRequest(String reciverName, String category);
+
+    void notify(String message, int type);
 
     boolean acceptRequest(String friendName);
 
@@ -79,25 +80,66 @@ public interface ClientControllerInt {
 
     //void sendMsg(String reciver, String Msg);
     void sendMsg(Message message);
-    
+
     //void reciveMsg(String msg);
-     void reciveMsg(Message message);
-     
+    void reciveMsg(Message message);
+
     void groupMsg(String msg, ArrayList<String> groupChatUsers);
 
     void reciveMsgGroup(String msg, ArrayList<String> groupChatUsers);
-    
-    User getUserInformation();
-    
+
     /**
-     * get Announcement from Server 
-     * @param message 
+     * get login user info 
+     * @return Login User
+     */
+    User getUserInformation();
+
+    /**
+     * get Announcement from Server
+     *
+     * @param message
      */
     void receiveAnnouncement(String message);
-    
-     /**
+
+    /**
      * refuser friend request
+     *
      * @param senderName
      */
     public void ignoreRequest(String senderName);
+
+    /**
+     * save messages on XML format on file
+     *
+     * @param file
+     * @param messages
+     */
+    public void saveXMLFile(File file, ArrayList<Message> messages);
+
+    /**
+     * make peet-to-peer connection with Client
+     *
+     * @param Client
+     * @return connection
+     */
+    ClientModelInt getConnection(String Client);
+
+    /**
+     *
+     * @return url location or null if not file choosen
+     * @throws RemoteException
+     */
+    String getSaveLocation(String sender);
+    
+
+
+
+    void createGroup(String groupName, ArrayList<String> groupMembers);
+
+    public ArrayList<Message> getHistory(String receiver);
+    
+    ArrayList<Pair> getContactsWithType();
+    void errorServer();
+    
+    void reciveSponser(byte[] data, int dataLength);
 }

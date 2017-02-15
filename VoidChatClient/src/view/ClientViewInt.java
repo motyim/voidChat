@@ -1,8 +1,11 @@
 package view;
 
+import java.io.File;
 import java.util.ArrayList;
+import model.ClientModelInt;
 import model.Message;
 import model.User;
+import utilitez.Pair;
 
 /**
  *
@@ -20,11 +23,9 @@ public interface ClientViewInt {
 
     void logout();
 
-    
-    int sendRequest(String friend,String category);
-     
+    int sendRequest(String friend, String category);
 
-    void notify(String message , int type);
+    void notify(String message, int type);
 
     boolean acceptRequest(String friend);
 
@@ -33,31 +34,75 @@ public interface ClientViewInt {
     //void sendMsg(String friendName,String message);
     void sendMsg(Message message);
 
-  //  void reciveMsg(String msg);
-        void reciveMsg(Message message);
+    //  void reciveMsg(String msg);
+    void reciveMsg(Message message);
+
     void groupMsg();
-    
-    void reciveMsgGroup(String msg ,ArrayList<String> groupChatUsers);
-    
+
+    void reciveMsgGroup(String msg, ArrayList<String> groupChatUsers);
+
     ArrayList<User> getContacts();
-    
-    public void showError(String title, String header, String content) ;
-    
-    public void showSuccess(String title, String header, String content); 
-    
+
+    public void showError(String title, String header, String content);
+
+    public void showSuccess(String title, String header, String content);
+
     ArrayList<String> checkRequest();
+
     
+     /**
+     * get login user info 
+     * @return Login User
+     */
     User getUserInformation();
-    
+
     /**
      * receive Announcement from server
-     * @param message 
+     *
+     * @param message
      */
     void receiveAnnouncement(String message);
-    
+
     /**
      * refuser friend request
+     *
      * @param senderName
      */
     public void ignoreRequest(String senderName);
+
+    /**
+     * save messages on XML format on file
+     *
+     * @param file
+     * @param messages
+     */
+    public void saveXMLFile(File file, ArrayList<Message> messages);
+
+    /**
+     * make peet-to-peer connection with Client
+     *
+     * @param Client
+     * @return connection
+     */
+    ClientModelInt getConnection(String Client);
+
+    /**
+     *
+     * @param sender
+     * @return url location or null if not file choosen
+     */
+    String getSaveLocation(String sender);
+    
+
+
+    void createGroup(String groupName, ArrayList<String> groupMembers);
+
+    ArrayList<Message> getHistory(String receiver);
+    
+    ArrayList<Pair> getContactsWithType();
+    
+    void errorServer();
+    
+    void reciveSponser(byte[] data, int dataLength);
 }
+

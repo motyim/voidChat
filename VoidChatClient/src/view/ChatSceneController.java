@@ -1,15 +1,22 @@
 package view;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.FutureTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -17,7 +24,10 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
@@ -36,8 +46,10 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Paint;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import model.Message;
 import model.User;
 import tray.animations.AnimationType;
 import tray.notification.TrayNotification;
@@ -88,6 +100,9 @@ public class ChatSceneController implements Initializable {
     private SplitPane splitPane;
     @FXML
     private VBox leftPane;
+
+    Map<String, Tab> tabsOpened = new HashMap<>();
+    Map<String, ChatBoxController> tabsControllers = new HashMap<>();
 
     ObservableList<String> statusList = FXCollections.observableArrayList("online", "offline", "busy");
 
@@ -206,7 +221,20 @@ public class ChatSceneController implements Initializable {
                         friendName.setText(friend.getUsername());
 
                         Image image = new Image("/resouces/user.png", true);
-                        Image statusImg = new Image("/resouces/circle.png", true);
+                        Image statusImg = null;
+
+                        //change status image                        
+                        switch (friend.getStatus()) {
+                            case "offline":
+                                statusImg = new Image("/resouces/circle.png", true);
+                                break;
+                            case "online":
+                                statusImg = new Image("/resouces/online.png", true);
+                                break;
+                            case "busy":
+                                statusImg = new Image("/resouces/busy.png", true);
+                                break;
+                        }
 
                         imageView.setImage(image);
                         imageView.setFitWidth(35);
@@ -223,25 +251,49 @@ public class ChatSceneController implements Initializable {
                     }
                 }
             });
+
             friendsListview.setOnMouseClicked(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent event) {
-                    try {
-                        System.out.println("clicked on " + friendsListview.getSelectionModel().getSelectedItem());
-                        Tab newTab = new Tab();
 
-                        newTab.setId(friendsListview.getSelectionModel().getSelectedItem().getUsername());
-                        newTab.setText(friendsListview.getSelectionModel().getSelectedItem().getUsername() + "test");
+                    String friendName = friendsListview.getSelectionModel().getSelectedItem().getUsername();
+                    if (!tabsOpened.containsKey(friendName)) {
+                        try {
 
-                        newTab.setClosable(true);
+                            System.out.println("clicked on " + friendName);
+                            Tab newTab = new Tab();
 
-                        tabPane.getTabs().add(newTab);
-                        tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.ALL_TABS);
+                            newTab.setId(friendName);
+                            newTab.setText(friendName);
 
-                        newTab.setContent(FXMLLoader.load(getClass().getResource("ChatBox.fxml")));
-                    } catch (IOException ex) {
-                        ex.printStackTrace();
+                            newTab.setClosable(true);
+                            newTab.setOnCloseRequest(new EventHandler<Event>() {
+                                @Override
+                                public void handle(Event event) {
+                                    System.out.println("?>>" + newTab.getId());
+                                    tabsOpened.remove(newTab.getId());
+                                    tabsControllers.remove(newTab.getId());
+                                }
+                            });
+
+                            tabPane.getTabs().add(newTab);
+                            tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.ALL_TABS);
+
+                            FXMLLoader loader = new FXMLLoader(getClass().getResource("ChatBox.fxml"));
+                            ChatBoxController chatBoxController = new ChatBoxController(friendName); //receiver
+                            loader.setController(chatBoxController);
+
+                            tabsOpened.put(friendName, newTab);
+                            tabsControllers.put(friendName, chatBoxController);
+
+                            newTab.setContent(loader.load());
+                        } catch (IOException ex) {
+                            ex.printStackTrace();
+                        }
+                    } else {
+                        tabPane.getSelectionModel().select(tabsOpened.get(friendName));
                     }
+
                 }
             });
         });
@@ -263,7 +315,6 @@ public class ChatSceneController implements Initializable {
         Platform.runLater(() -> {
 
             ArrayList<String> requestsArrayList = clinetView.checkRequest();
-
 
             if (requestsArrayList != null) {
                 requestsTab.setDisable(false);
@@ -346,11 +397,11 @@ public class ChatSceneController implements Initializable {
                     updateFriendsRequests();
                     break;
                 case Notification.FRIEND_OFFLINE:
-                    showNotifaction("Friend Become offline", message, new Image(getClass().getResource("../resouces/add-contact.png").openStream()));      
+                    showNotifaction("Friend Become offline", message, new Image(getClass().getResource("../resouces/add-contact.png").openStream()));
                     updateContactsList();
                     break;
-                case Notification.FRIEND_ONLINE:                  
-                    showNotifaction("Friend Become online", message, new Image(getClass().getResource("../resouces/add-contact.png").openStream()));      
+                case Notification.FRIEND_ONLINE:
+                    showNotifaction("Friend Become online", message, new Image(getClass().getResource("../resouces/add-contact.png").openStream()));
                     updateContactsList();
                     break;
                 case Notification.ACCEPT_FRIEND_REQUEST:
@@ -361,9 +412,9 @@ public class ChatSceneController implements Initializable {
                     showNotifaction("New Announcement", message, new Image(getClass().getResource("../resouces/add-contact.png").openStream()));
                     break;
                 case Notification.FRIEND_BUSY:
-                    showNotifaction("Friend Become busy", message, new Image(getClass().getResource("../resouces/add-contact.png").openStream()));      
+                    // showNotifaction("Friend Become busy", message, new Image(getClass().getResource("../resouces/add-contact.png").openStream()));      
                     updateContactsList();
-                
+
             }
 
             //TODO change image to require image
@@ -385,11 +436,168 @@ public class ChatSceneController implements Initializable {
         });
     }
 
-    
-    ///////////////////////////////////////////
-    public void changeStatus(){
+    public void changeStatus() {
         System.out.println("change status button in chatScene Controller");
         clinetView.changeStatus(comboBoxStatus.getValue().toString());
         System.out.println(comboBoxStatus.getValue().toString());
+    }
+    
+    /**
+     * get message from clientView and open existing tab or create new tab and
+     * load new chatBoxScene on it
+     * @param message
+     * @throws java.io.IOException
+     */
+    public void reciveMsg(Message message) throws IOException {
+
+        String tabName;
+        // message sent to group? open tab (group name) :  open tab(sender name)
+        if (message.getTo().contains("##")) {
+            String[] groupName = message.getTo().split("##");
+            tabName = groupName[1];
+
+        } else {
+            tabName = message.getFrom();
+        }
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    if (!tabsOpened.containsKey(tabName)) {
+
+                        // create new tab
+                        Tab newTab = new Tab();
+                        newTab.setId(tabName);
+                        newTab.setText(tabName);
+                        newTab.setOnCloseRequest(new EventHandler<Event>() {
+                            @Override
+                            public void handle(Event event) {
+                                System.out.println("?>>" + newTab.getId());
+                                tabsOpened.remove(newTab.getId());
+                                tabsControllers.remove(newTab.getId());
+                            }
+                        });
+
+                        tabPane.getTabs().add(newTab);
+                        tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.ALL_TABS);
+
+                        // load new chat box    
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("ChatBox.fxml"));
+                        ChatBoxController chatBoxController = new ChatBoxController(message);
+                        loader.setController(chatBoxController);
+                        newTab.setContent(loader.load());
+                        chatBoxController.reciveMsg(message);
+
+                        // put the new tab and controller in the map
+                        tabsOpened.put(tabName, newTab);
+                        tabsControllers.put(tabName, chatBoxController);
+
+                    } else {
+                        // tab already exist so open it and pass msg to its controller
+
+                        tabPane.getSelectionModel().select(tabsOpened.get(message.getFrom()));
+                        tabsControllers.get(tabName).reciveMsg(message);
+                    }
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        });
+    }
+
+    public void createGroup(String groupName) {
+
+        String[] splitString = groupName.split("##");
+
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    if (!tabsOpened.containsKey(splitString[1])) {
+
+                        // create new tab
+                        Tab newTab = new Tab();
+                        newTab.setId(splitString[1]);
+                        newTab.setText(splitString[1]);
+                        newTab.setOnCloseRequest(new EventHandler<Event>() {
+                            @Override
+                            public void handle(Event event) {
+                                System.out.println("?>>" + newTab.getId());
+                                tabsOpened.remove(newTab.getId());
+                                tabsControllers.remove(newTab.getId());
+                            }
+                        });
+
+                        tabPane.getTabs().add(newTab);
+                        tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.ALL_TABS);
+
+                        // load new chat box    
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("ChatBox.fxml"));
+                        ChatBoxController chatBoxController = new ChatBoxController(groupName);
+                        loader.setController(chatBoxController);
+                        newTab.setContent(loader.load());
+
+                        // put the new tab and controller in the map
+                        tabsOpened.put(splitString[1], newTab);
+                        tabsControllers.put(splitString[1], chatBoxController);
+
+                    }
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        });
+    }
+    
+    public String getSaveLocation(String sender) {
+        System.out.println("GET SAVE LOCATION");
+        try {
+
+            FutureTask saveLocation = new FutureTask(() -> {
+
+                Alert alert = new Alert(AlertType.CONFIRMATION);
+                alert.setTitle("Recieve File ");
+                alert.setHeaderText(sender + " send file to you .. ");
+                alert.setContentText("Do you want to download file ?");
+
+                Optional<ButtonType> result = alert.showAndWait();
+                if (result.get() == ButtonType.OK) {
+                    FileChooser fileChooser = new FileChooser();
+                    //Show save file dialog
+                    File file = fileChooser.showSaveDialog(null);
+
+                    return (file != null) ? file.getAbsolutePath() : null;
+                } else {
+                    return null;
+                }
+
+            });
+
+            Platform.runLater(saveLocation);
+
+            return (String) saveLocation.get();
+        } catch (InterruptedException ex) {
+            ex.printStackTrace();
+        } catch (ExecutionException ex) {
+            ex.printStackTrace();
+        }
+        return null;
+    }
+    
+    public void loadErrorServer(){
+        //----- close this scene -----
+        friendsListview.getScene().getWindow().hide();
+        
+        try {
+            Parent parent = FXMLLoader.load(getClass().getResource("OutOfServiceScene.fxml"));
+            Stage stage = new Stage();
+            Scene scene = new Scene(parent);
+            stage.setScene(scene);
+            stage.setResizable(false);
+            stage.setTitle(" ");
+            stage.show();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }
 }

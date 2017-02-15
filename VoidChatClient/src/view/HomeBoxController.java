@@ -1,5 +1,8 @@
 package view;
 
+import java.io.ByteArrayInputStream;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -17,6 +20,7 @@ import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
@@ -44,6 +48,8 @@ public class HomeBoxController implements Initializable {
     private Label labelUserName;
     @FXML
     private Text serverMessage;
+    @FXML
+    private ImageView sponser;
 
     private ClientView clinetView;
 
@@ -144,5 +150,11 @@ public class HomeBoxController implements Initializable {
      
      public void receiveAnnouncement(String message){
          serverMessage.setText("Void Chat Server : "+message);
+     }
+     
+     public void reciveSponser(byte[] data, int dataLength){
+         System.out.println("hzhzhzhzh");
+         InputStream myInputStream = new ByteArrayInputStream(data); 
+         sponser.setImage(new Image(myInputStream));
      }
 }

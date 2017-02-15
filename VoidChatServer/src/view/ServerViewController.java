@@ -1,8 +1,15 @@
 package view;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -21,8 +28,12 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.Tab;
 import javafx.scene.control.Tooltip;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import model.User;
 /**
  * FXML Controller class
@@ -54,7 +65,9 @@ public class ServerViewController implements Initializable {
 
     @FXML
     private ServerView serverView;
-
+    
+    @FXML ImageView sponser ; 
+    
     @FXML
     private Button SendButton;
 
@@ -71,16 +84,25 @@ public class ServerViewController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
-        serverView = ServerView.getInstance();
-        serverView.setServerViewController(this);
-        
-        ObservableList<PieChart.Data> data = FXCollections.observableArrayList(
-                new PieChart.Data("Online", 50),
-                 new PieChart.Data("Offline", 30),
-                 new PieChart.Data("Busy", 20));
-        System.out.println("chart");
-        pieChart.setData(data);
-        pieChart.setLegendSide(Side.LEFT);
+       
+            serverView = ServerView.getInstance();
+            serverView.setServerViewController(this);
+            
+        try {
+            //set sponser
+            sponser.setImage(new Image(getClass().getResource("..//resources//Voidlogo.png").openStream()));
+        } catch (IOException ex) {
+            Logger.getLogger(ServerViewController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            
+            ObservableList<PieChart.Data> data = FXCollections.observableArrayList(
+                    new PieChart.Data("Online", 50),
+                    new PieChart.Data("Offline", 30),
+                    new PieChart.Data("Busy", 20));
+            System.out.println("chart");
+            pieChart.setData(data);
+            pieChart.setLegendSide(Side.LEFT);
+     
     }
     
     private void addTooltipToChartSlice(PieChart chart){
@@ -154,6 +176,47 @@ public class ServerViewController implements Initializable {
         alert.setTitle("Success");
         alert.setHeaderText("Announcement send to all online users");
         alert.showAndWait();
+    }
+    
+    public void setSponser(ActionEvent event){
+        try {
+            Stage st = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg")
+            );
+            
+            //Show save file dialog
+            File file = fileChooser.showOpenDialog(st);
+            
+            //no file choosen
+            if (file == null) {
+                return;
+            }
+            
+            
+            
+            if(file.length() > 1024 * 1024){
+                System.out.println("So big File");
+                return;
+            }
+            
+            sponser.setImage(new Image(file.toURI().toURL().toExternalForm()));
+                
+            //send to server controller
+            FileInputStream in = new FileInputStream(file);
+            byte[] data = new byte[1024 * 1024];
+            int dataLength = in.read(data);
+
+            serverView.sendSponser(data , dataLength);
+            
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(ServerViewController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(ServerViewController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(ServerViewController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
     }
 
 }

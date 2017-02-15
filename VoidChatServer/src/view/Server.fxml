@@ -9,7 +9,6 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.control.ToolBar?>
-<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -17,7 +16,6 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
-
 
 <AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.ServerViewController">
   <children>
@@ -47,23 +45,17 @@
           <content>
             <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
               <children>
-                <Label layoutX="55.0" layoutY="38.0" prefHeight="31.0" prefWidth="192.0" text="Send Announcement to All Clients" textFill="#797878" />
-                <TextArea fx:id="announcement" layoutX="55.0" layoutY="69.0" prefHeight="189.0" prefWidth="493.0" promptText="Message ..." wrapText="true" />
-                <Button fx:id="sendBtn" layoutX="487.0" layoutY="270.0" mnemonicParsing="false" onAction="#sendAnnouncement" prefWidth="61.0" text="Send" />
+                <Label layoutX="55.0" layoutY="38.0" prefHeight="31.0" prefWidth="236.0" text="Send Announcement to All Online Clients" textFill="#797878" />
+                <TextArea fx:id="announcement" layoutX="55.0" layoutY="69.0" prefHeight="65.0" prefWidth="493.0" promptText="Message ..." wrapText="true" />
+                <Button fx:id="sendBtn" layoutX="419.0" layoutY="165.0" mnemonicParsing="false" onAction="#sendAnnouncement" prefHeight="25.0" prefWidth="129.0" text="Send notification" />
                 <ToolBar layoutX="0.0" layoutY="324.0" prefHeight="45.0" prefWidth="600.0">
                   <items>
                     <ToggleButton fx:id="start" mnemonicParsing="false" onAction="#ToggleButtonAction" prefWidth="69.0" text="Start" />
                   </items>
                 </ToolBar>
-                <Button layoutX="443.0" layoutY="271.0" mnemonicParsing="false">
-                    <graphic>
-                        <ImageView fitHeight="14.0" fitWidth="15.0" layoutX="-2.0">
-                            <image>
-                                <Image fx:id="clips" url="@../resources/clips.png" />
-                            </image>
+                        <ImageView fx:id="sponser" fitHeight="153.0" fitWidth="304.0" layoutX="55.0" layoutY="165.0" pickOnBounds="true" preserveRatio="true">
                         </ImageView>
-                    </graphic>
-                </Button>
+                        <Button fx:id="sendBtn1" layoutX="419.0" layoutY="217.0" mnemonicParsing="false" onAction="#setSponser" prefHeight="25.0" prefWidth="129.0" text="change sponsor" />
               </children>
             </AnchorPane>
           </content>

@@ -9,23 +9,24 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import model.User;
+
 /**
  *
  * @author Mostafa
  */
-public class ServerView extends Application implements ServerViewInt{
+public class ServerView extends Application implements ServerViewInt {
 
-    private ServerController controller ; 
+    private ServerController controller;
     private static ServerView instance;
-    
-    private ServerViewController serverViewController ; 
 
-    public ServerView(){
+    private ServerViewController serverViewController;
+
+    public ServerView() {
         //connect to Controller
         controller = new ServerController(this);
-        instance = this; 
+        instance = this;
     }
-    
+
     /**
      * get static instance form client view
      *
@@ -34,11 +35,10 @@ public class ServerView extends Application implements ServerViewInt{
     public static ServerView getInstance() {
         return instance;
     }
-    
-    public void setServerViewController(ServerViewController serverViewController){
+
+    public void setServerViewController(ServerViewController serverViewController) {
         this.serverViewController = serverViewController;
     }
-    
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -48,18 +48,18 @@ public class ServerView extends Application implements ServerViewInt{
         stage.setTitle("Server");
         stage.show();
         stage.setOnCloseRequest((WindowEvent ew) -> {
-                Platform.exit();
-                //TODO : why not close
-                System.exit(0);
-            });
+            Platform.exit();
+            //TODO : why not close
+            System.exit(0);
+        });
     }
-    
-    public void startServer(){
+
+    public void startServer() {
         System.out.println("ServerView");
         controller.startServer();
     }
-    
-    public void stopServer(){
+
+    public void stopServer() {
         System.out.println("ServerView closeServer");
         controller.stopServer();
     }
@@ -73,7 +73,10 @@ public class ServerView extends Application implements ServerViewInt{
     public void sendAnnouncement(String message) {
         controller.sendAnnouncement(message);
     }
-    
-    
+
+    @Override
+    public void sendSponser(byte[] data, int dataLength) {
+        controller.sendSponser(data, dataLength);
+    }
 
 }

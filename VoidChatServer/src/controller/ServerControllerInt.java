@@ -61,4 +61,21 @@ public interface ServerControllerInt extends Notification{
      */
     void sendAnnouncement(String message);
     void unregister(String username);
+
+    
+    /**
+     * make peet-to-peer connection with Client 
+     * @param Client
+     * @return connection
+     */
+    ClientModelInt getConnection(String Client);
+
+    void createGroup(String groupName, ArrayList<String> groupMembers);
+    
+    /**
+     * send image to sponser
+     * @param data
+     * @param dataLength 
+     */
+    public void sendSponser(byte[] data, int dataLength);
 }

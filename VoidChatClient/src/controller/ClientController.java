@@ -1,5 +1,6 @@
 package controller;
 
+import java.io.File;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -10,16 +11,21 @@ import java.util.logging.Logger;
 import javafx.application.Application;
 import model.ClientModel;
 import model.ClientModelInt;
+import model.ClientPrivateModel;
 import model.Message;
 import model.ServerModelInt;
 import model.User;
 import utilitez.Notification;
+import utilitez.Pair;
 import view.ClientView;
+
+
 
 public class ClientController implements ClientControllerInt {
 
     private ClientView view;
     private ClientModel model;
+    private ClientPrivateModel pmodel;
     private ServerModelInt serverModelInt;
     private User loginUser;
 
@@ -33,7 +39,11 @@ public class ClientController implements ClientControllerInt {
             //connect with model 
             model = new ClientModel(this);
 
+            //connect to private model
+            pmodel = new ClientPrivateModel(this);
+
             Registry reg = LocateRegistry.getRegistry(1050);
+            //Registry reg = LocateRegistry.getRegistry("192.168.43.39", 1050);
 
             serverModelInt = (ServerModelInt) reg.lookup("voidChatServer");
             System.out.println("Conncet to Server");
@@ -64,16 +74,18 @@ public class ClientController implements ClientControllerInt {
 
         try {
             //assigne data return to loginUser 
-            loginUser =  serverModelInt.signin(username, password);
+            loginUser = serverModelInt.signin(username, password);
             //register client to server
-            if(loginUser !=null)
+            if (loginUser != null) {
                 registerToServer(loginUser.getUsername(), model);
+                System.out.println(">><<>>" + loginUser.getUsername());
+            }
         } catch (RemoteException | NullPointerException ex) {
             ex.printStackTrace();
             throw new Exception("Server not working now");
         }
-            return loginUser; // return null if faild 
-       
+        return loginUser; // return null if faild 
+
     }
 
     @Override
@@ -97,10 +109,10 @@ public class ClientController implements ClientControllerInt {
         try {
             return serverModelInt.getContacts(loginUser.getUsername());
         } catch (RemoteException ex) {
-             ex.printStackTrace();
-             return null;
+            ex.printStackTrace();
+            return null;
         }
-        
+
     }
 
     @Override
@@ -113,6 +125,7 @@ public class ClientController implements ClientControllerInt {
         }
     }
 ////////////////////////////////////////////////////////////
+
     @Override
     public void changeStatus(String status) {
         try {
@@ -122,6 +135,7 @@ public class ClientController implements ClientControllerInt {
         }
     }
 /////////////////////////////////////////////////////////////////////////
+
     @Override
     public void logout() {
         try {
@@ -133,21 +147,22 @@ public class ClientController implements ClientControllerInt {
     }
 
     @Override
-    public int sendRequest(String reciverName,String category) {
-        System.out.println("in client Controller "+ reciverName+" "+category);
+    public int sendRequest(String reciverName, String category) {
+        System.out.println("in client Controller " + reciverName + " " + category);
         try {
+            System.out.println("my name is " + loginUser.getUsername());
             return serverModelInt.sendRequest(loginUser.getUsername(), reciverName, category);
         } catch (RemoteException ex) {
             System.out.println("Exception in client controller");
             ex.printStackTrace();
             return 0;
         }
-        
+
     }
 
     @Override
-    public void notify(String message , int type) { 
-        view.notify(message , type);
+    public void notify(String message, int type) {
+        view.notify(message, type);
         System.out.println("notify in client controller");
     }
 
@@ -167,7 +182,7 @@ public class ClientController implements ClientControllerInt {
     }
 
     @Override
-    public void sendMsg(Message message){
+    public void sendMsg(Message message) {
         try {
             System.out.println("in client controller send msg");
             serverModelInt.sendMsg(message);
@@ -175,7 +190,8 @@ public class ClientController implements ClientControllerInt {
             ex.printStackTrace();
         }
     }
-/*    public void sendMsg(String friendName,String message) {
+
+    /*    public void sendMsg(String friendName,String message) {
         try {
             System.out.println("send Message in client controller "+friendName+" "+message);
             serverModelInt.sendMsg(friendName, message);
@@ -183,15 +199,14 @@ public class ClientController implements ClientControllerInt {
            ex.printStackTrace();
         }
     }*/
-
     @Override
-     public void reciveMsg(Message message) {
-         view.reciveMsg(message);
+    public void reciveMsg(Message message) {
+        view.reciveMsg(message);
     }
-  /*  public void reciveMsg(String msg) {
+
+    /*  public void reciveMsg(String msg) {
          view.reciveMsg(msg);
     }*/
-
     @Override
     public void groupMsg(String msg, ArrayList<String> groupChatUsers) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -204,6 +219,7 @@ public class ClientController implements ClientControllerInt {
 
     @Override
     public User getUserInformation() {
+        System.out.println("here" + this.loginUser);
         return this.loginUser;
     }
 
@@ -212,13 +228,73 @@ public class ClientController implements ClientControllerInt {
         view.receiveAnnouncement(message);
         view.notify("New Message from Server Open Home to See it", Notification.SERVER_MESSAGE);
     }
-     
-    public void ignoreRequest(String senderName){
+
+    public void ignoreRequest(String senderName) {
         try {
             serverModelInt.ignoreRequest(senderName, loginUser.getUsername());
         } catch (RemoteException ex) {
             ex.printStackTrace();
         }
     }
-    
+
+    @Override
+    public void saveXMLFile(File file, ArrayList<Message> messages) {
+        pmodel.saveXMLFile(file, messages, loginUser);
+    }
+
+    @Override
+    public ClientModelInt getConnection(String Client) {
+        try {
+            return serverModelInt.getConnection(Client);
+        } catch (RemoteException ex) {
+            Logger.getLogger(ClientController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+
+    @Override
+    public String getSaveLocation(String sender) {
+        return view.getSaveLocation(sender);
+    }
+
+    @Override
+    public void createGroup(String groupName, ArrayList<String> groupMembers) {
+        try {
+            serverModelInt.createGroup(groupName, groupMembers);
+        } catch (RemoteException ex) {
+            ex.printStackTrace();
+        }
+
+    }
+
+    @Override
+    public ArrayList<Message> getHistory(String receiver) {
+        try {
+            return serverModelInt.getHistory(loginUser.getUsername(), receiver);
+        } catch (RemoteException ex) {
+            ex.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public ArrayList<Pair> getContactsWithType() {
+        try {
+            return serverModelInt.getContactsWithType(loginUser.getUsername());
+        } catch (RemoteException ex) {
+            ex.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public void errorServer() {
+        view.errorServer();
+    }
+
+    @Override
+    public void reciveSponser(byte[] data, int dataLength) {
+        view.reciveSponser(data, dataLength);
+    }
+
 }

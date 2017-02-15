@@ -15,6 +15,7 @@ import javafx.stage.WindowEvent;
 import model.ClientModelInt;
 import model.Message;
 import model.User;
+import utilitez.Pair;
 
 /**
  *
@@ -242,5 +243,10 @@ public class ClientView extends Application implements ClientViewInt {
     @Override
     public ArrayList<Message> getHistory(String receiver) {
         return controller.getHistory(receiver);
+    }
+    
+    @Override
+    public ArrayList<Pair> getContactsWithType() {
+        return controller.getContactsWithType();
     }
 }

@@ -1,9 +1,10 @@
 package model;
 
-import XML.ModleXML.FontFamily;
-import XML.ModleXML.HistoryType;
-import XML.ModleXML.MessageType;
-import XML.ModleXML.ObjectFactory;
+
+import XMLModle.FontFamily;
+import XMLModle.HistoryType;
+import XMLModle.MessageType;
+import XMLModle.ObjectFactory;
 import controller.ClientController;
 import controller.ClientControllerInt;
 import java.io.File;
@@ -38,7 +39,7 @@ public class ClientPrivateModel {
     public void saveXMLFile(File file, ArrayList<Message> messages, User user) {
         try {
 
-            JAXBContext context = JAXBContext.newInstance("XML.ModleXML");
+            JAXBContext context = JAXBContext.newInstance("XMLModle");
 
             ObjectFactory factory = new ObjectFactory();
 
@@ -103,7 +104,6 @@ public class ClientPrivateModel {
                 int readByte;
                 while ((readByte = fr.read()) != -1) {
                     fw.write(readByte);
-                    System.out.println("in loop>>>");
                 }
 
             } catch (FileNotFoundException ex) {

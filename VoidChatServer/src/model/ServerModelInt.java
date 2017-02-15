@@ -4,6 +4,7 @@ package model;
 import java.rmi.*;
 import java.util.ArrayList;
 import utilitez.Notification;
+import utilitez.Pair;
 
 public interface ServerModelInt extends Remote , Notification {
     
@@ -128,4 +129,6 @@ public interface ServerModelInt extends Remote , Notification {
     void createGroup(String groupName, ArrayList<String> groupMembers) throws RemoteException;
     
     ArrayList<Message> getHistory(String sender, String receiver) throws RemoteException;
+    
+    public ArrayList<Pair> getContactsWithType(String userName)throws RemoteException;
 }

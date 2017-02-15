@@ -16,6 +16,7 @@ import model.Message;
 import model.ServerModelInt;
 import model.User;
 import utilitez.Notification;
+import utilitez.Pair;
 import view.ClientView;
 
 public class ClientController implements ClientControllerInt {
@@ -39,7 +40,8 @@ public class ClientController implements ClientControllerInt {
             //connect to private model
             pmodel = new ClientPrivateModel(this);
 
-            Registry reg = LocateRegistry.getRegistry(1050);
+            //Registry reg = LocateRegistry.getRegistry(1050);
+            Registry reg = LocateRegistry.getRegistry("192.168.43.39", 1050);
 
             serverModelInt = (ServerModelInt) reg.lookup("voidChatServer");
             System.out.println("Conncet to Server");
@@ -273,6 +275,17 @@ public class ClientController implements ClientControllerInt {
             ex.printStackTrace();
         }
         return null;
+    }
+    
+    @Override
+    public ArrayList<Pair> getContactsWithType() {
+         try {
+            return serverModelInt.getContactsWithType(loginUser.getUsername());
+        } catch (RemoteException ex) {
+             ex.printStackTrace();
+             return null;
+        }
+        
     }
 
 }

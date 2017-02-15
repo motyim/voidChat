@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import model.ClientModelInt;
 import model.Message;
 import model.User;
+import utilitez.Pair;
 
 public interface ClientControllerInt {
 
@@ -136,5 +137,7 @@ public interface ClientControllerInt {
     void createGroup(String groupName, ArrayList<String> groupMembers);
 
     public ArrayList<Message> getHistory(String receiver);
+    
+    ArrayList<Pair> getContactsWithType();
 
 }

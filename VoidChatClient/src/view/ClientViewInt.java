@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import model.ClientModelInt;
 import model.Message;
 import model.User;
+import utilitez.Pair;
 
 /**
  *
@@ -97,4 +98,6 @@ public interface ClientViewInt {
     void createGroup(String groupName, ArrayList<String> groupMembers);
 
     ArrayList<Message> getHistory(String receiver);
+    
+    ArrayList<Pair> getContactsWithType();
 }

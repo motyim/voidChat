@@ -56,12 +56,12 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
      */
     private void closeResources() {
         try {
-            //  if (!isClosed) {
+            if (!isClosed) {
             //resultSet.close();
             statement.close();
             connection.close();
             isClosed = true;
-            // }
+            }
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
@@ -213,7 +213,7 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
-        // closeResources();
+        closeResources();
     }
 
     @Override
@@ -508,6 +508,54 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
         }
         closeResources();
         return messages.size() == 0 ? null : messages;
+    }
+    
+    
+    @Override
+    public ArrayList<Pair> getContactsWithType(String userName) throws RemoteException {
+        ArrayList<String> friendsNames = new ArrayList<String>();
+        ArrayList<String> type = new ArrayList<String>();
+        ArrayList<Pair> friendPair = new ArrayList<Pair>();
+
+        try {
+            getConnection();
+            query = "select * from Relationship where user = '" + userName + "' or friend = '" + userName + "'";
+            statement = connection.createStatement();
+            resultSet = statement.executeQuery(query);
+            while (resultSet.next()) {
+                if (!resultSet.getString("friend").equals(userName)) {
+                    friendsNames.add(resultSet.getString("friend"));
+                    type.add(resultSet.getString("type"));
+                } else {
+                    friendsNames.add(resultSet.getString("user"));
+                    type.add(resultSet.getString("type"));
+                }
+            }
+
+            for (int i = 0; i < friendsNames.size(); i++) {
+                query = "select * from UserTable where username = '" + friendsNames.get(i) + "'";
+                resultSet = statement.executeQuery(query);
+                while (resultSet.next()) {
+                    Pair mypair = new Pair();
+                    String username = resultSet.getString("username");
+                    String email = resultSet.getString("email");
+                    String fname = resultSet.getString("fname");
+                    String lname = resultSet.getString("lname");
+                    String password = "";
+                    String gender = resultSet.getString("gender");
+                    String status = resultSet.getString("status");
+                    String country = resultSet.getString("country");
+                    User user = new User(username, email, fname, lname, password, gender, country, status);
+                    mypair.setFirst(user);
+                    mypair.setSecond(type.get(i));
+                    friendPair.add(mypair);
+                }
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        closeResources();
+        return friendPair.size() == 0 ? null : friendPair;
     }
 
 }

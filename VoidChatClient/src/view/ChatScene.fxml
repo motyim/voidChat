@@ -55,25 +55,36 @@
                         <Font name="System Bold" size="24.0" />
                     </font>
                <BorderPane.margin>
-                  <Insets left="15.0" />
+                  <Insets left="41.0" />
                </BorderPane.margin>
                 </Text>
             </center>
             <right>
                 <HBox prefHeight="65.0" prefWidth="99.0" BorderPane.alignment="CENTER">
                     <children>
+                  <ImageView fx:id="iconAddNewFriend" fitHeight="29.0" fitWidth="30.0" onMouseClicked="#iconAddNewFriendAction" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../resouces/addFriend.png" />
+                     </image>
+                     <HBox.margin>
+                        <Insets right="15.0" />
+                     </HBox.margin>
+                  </ImageView>
                         <ImageView fx:id="iconCreateGroup" fitHeight="29.0" fitWidth="30.0" onMouseClicked="#iconCreateGroupAction" pickOnBounds="true" preserveRatio="true">
                             <image>
                                 <Image url="@../resouces/group.png" />
                             </image>
                             <HBox.margin>
-                                <Insets right="20.0" />
+                                <Insets right="15.0" />
                             </HBox.margin>
                         </ImageView>
                         <ImageView fx:id="iconLogout" fitHeight="29.0" fitWidth="28.0" onMouseClicked="#iconLogoutAction" pickOnBounds="true" preserveRatio="true">
                             <image>
                                 <Image url="@../resouces/logout.png" />
                             </image>
+                     <HBox.margin>
+                        <Insets right="15.0" />
+                     </HBox.margin>
                         </ImageView>
                     </children>
                     <BorderPane.margin>

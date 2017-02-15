@@ -5,6 +5,8 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleButton?>
@@ -53,7 +55,7 @@
                     <ToggleButton fx:id="start" mnemonicParsing="false" onAction="#ToggleButtonAction" prefWidth="69.0" text="Start" />
                   </items>
                 </ToolBar>
-                        <ImageView fx:id="sponser" fitHeight="153.0" fitWidth="304.0" layoutX="55.0" layoutY="165.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="sponser" fitHeight="100.0" fitWidth="200.0" layoutX="115.0" layoutY="167.0" pickOnBounds="true" preserveRatio="true">
                         </ImageView>
                         <Button fx:id="sendBtn1" layoutX="419.0" layoutY="217.0" mnemonicParsing="false" onAction="#setSponser" prefHeight="25.0" prefWidth="129.0" text="change sponsor" />
               </children>
@@ -75,6 +77,29 @@
                                 
                             </children>
                         </AnchorPane>
+                     </children>
+                  </AnchorPane>
+              </content>
+            </Tab>
+            <Tab text="Administrator">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <TableView fx:id="tableView" editable="true" layoutX="11.0" layoutY="47.0" prefHeight="309.0" prefWidth="578.0">
+                          <columns>
+                            <TableColumn fx:id="userNameCol" prefWidth="93.0" text="User Name" />
+                            <TableColumn fx:id="firstNameCol" prefWidth="88.0" text="First Name" />
+                              <TableColumn fx:id="lastNameCol" prefWidth="93.0" text="Last Name" />
+                              <TableColumn fx:id="emailCol" prefWidth="170.0" text="Email" />
+                              <TableColumn fx:id="genderCol" prefWidth="59.0" text="Gender" />
+                              <TableColumn fx:id="countryCol" prefWidth="73.0" text="Country" />
+                          </columns>
+                        </TableView>
+                        <Text layoutX="14.0" layoutY="34.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Users Data" wrappingWidth="180.21875">
+                           <font>
+                              <Font name="System Bold" size="24.0" />
+                           </font>
+                        </Text>
                      </children>
                   </AnchorPane>
               </content>

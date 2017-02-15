@@ -15,6 +15,7 @@ import model.Message;
 import model.ServerModel;
 import model.ServerPrivateModel;
 import model.User;
+import model.UserFx;
 import view.ServerView;
 
 public class ServerController implements ServerControllerInt {
@@ -208,5 +209,17 @@ public class ServerController implements ServerControllerInt {
                 Logger.getLogger(ServerController.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
+    }
+    
+    public ArrayList<User> getAllUsers(){
+         if(model.getAllUsers() != null)
+            return model.getAllUsers();
+         return null;
+     }
+    public void updateUser(User user){
+        model.updateUser(user);
+    }
+    public void GenerateUserFX(UserFx user){
+        view.GenerateUserFX(user);
     }
 }

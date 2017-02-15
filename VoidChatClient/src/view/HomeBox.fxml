@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -15,27 +14,15 @@
 
 <VBox fx:id="homeBox" prefHeight="352.0" prefWidth="400.0" BorderPane.alignment="CENTER" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.HomeBoxController">
     <children>
-        <Button fx:id="btnNewFriend" alignment="BOTTOM_RIGHT" mnemonicParsing="false" onAction="#btnNewFriendAction" prefHeight="33.0" prefWidth="105.0" text="New Friend" textAlignment="CENTER" textFill="#5e5d5d">
-            <graphic>
-                <ImageView fitHeight="24.0" fitWidth="25.0" layoutX="-2.0" nodeOrientation="INHERIT">
-                    <image>
-                        <Image fx:id="clips" url="@../resouces/addFriend.png" />
-                    </image>
-                </ImageView>
-            </graphic>
-            <VBox.margin>
-                <Insets left="285.0" top="12.0" />
-            </VBox.margin>
-         <font>
-            <Font size="11.0" />
-         </font>
-        </Button>
-        <HBox prefHeight="56.0" prefWidth="400.0">
-            <children>
+      <HBox prefHeight="64.0" prefWidth="400.0">
+         <children>
                 <Label text="WELCOME" textFill="#f8756c">
                     <font>
                         <Font name="System Bold" size="24.0" />
                     </font>
+               <HBox.margin>
+                  <Insets left="10.0" top="40.0" />
+               </HBox.margin>
                 </Label>
                 <Label fx:id="labelUserName" text="User Name">
                     <font>
@@ -44,18 +31,15 @@
                     <padding>
                         <Insets left="15.0" top="4.0" />
                     </padding>
+               <HBox.margin>
+                  <Insets top="40.0" />
+               </HBox.margin>
                 </Label>
-            </children>
-            <padding>
-                <Insets left="15.0" top="15.0" />
-            </padding>
-            <VBox.margin>
-                <Insets top="35.0" />
-            </VBox.margin>
-        </HBox>
-      <Pane prefHeight="217.0" prefWidth="400.0">
+         </children>
+      </HBox>
+      <Pane prefHeight="242.0" prefWidth="400.0">
          <children>
-              <TextFlow fx:id="txtFlowServerMsg" layoutX="16.0" prefHeight="79.0" prefWidth="373.0">
+              <TextFlow fx:id="txtFlowServerMsg" maxHeight="80.0" maxWidth="370.0" prefHeight="80.0" prefWidth="370.0">
                   <children>
                       <Text fx:id="serverMessage" strokeType="OUTSIDE" strokeWidth="0.0" text="Server message: void chat team yor7b beek :D" wrappingWidth="296.375">
                           <font>
@@ -63,10 +47,20 @@
                           </font>
                       </Text>
                   </children>
+               <padding>
+                  <Insets left="10.0" />
+               </padding>
               </TextFlow>
-            <ImageView id="sponser" fx:id="sponser" fitHeight="130.0" fitWidth="325.0" layoutX="26.0" layoutY="73.0" pickOnBounds="true" preserveRatio="true" />
-            <Text layoutX="140.0" layoutY="66.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Brought to You By :" wrappingWidth="108.00000131130219" />
+            <ImageView id="sponser" fx:id="sponser" fitHeight="50.0" fitWidth="150.0" layoutX="26.0" layoutY="142.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../resouces/Voidlogo.png" />
+               </image>
+            </ImageView>
+            <Text layoutX="26.0" layoutY="134.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Brought to You By :" wrappingWidth="177.00000131130219" />
          </children>
+         <VBox.margin>
+            <Insets left="5.0" right="5.0" top="25.0" />
+         </VBox.margin>
       </Pane>
     </children>
 </VBox>

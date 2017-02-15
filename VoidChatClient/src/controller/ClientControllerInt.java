@@ -41,8 +41,9 @@ public interface ClientControllerInt {
      *
      * @param username
      * @param obj
+     * @throws java.lang.Exception
      */
-    void registerToServer(String username, ClientModelInt obj);
+    void registerToServer(String username, ClientModelInt obj) throws Exception;
 
     /**
      * call get Contacts in SM

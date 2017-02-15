@@ -122,8 +122,8 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
     }
 
     @Override
-    public void register(String username, ClientModelInt obj) throws RemoteException {
-        controller.register(username, obj);
+    public boolean register(String username, ClientModelInt obj) throws RemoteException {
+        return controller.register(username, obj);
     }
 
     @Override

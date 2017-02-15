@@ -21,13 +21,16 @@ public class ServerController implements ServerControllerInt {
 
     private HashMap<String, ClientModelInt> onlineUsers = new HashMap<>();
     private HashMap<String, ArrayList<String>> groups = new HashMap<String, ArrayList<String>>();
-    
+
     private ServerModel model;
     private ServerView view;
 
     private Registry reg;
 
     private ServerPrivateModel privateModel;
+
+    private byte[] sponserImage;
+    private String serverNotifaction;
 
     public ServerController(ServerView view) {
         try {
@@ -42,6 +45,9 @@ public class ServerController implements ServerControllerInt {
 
             //upload to registry
             reg = LocateRegistry.createRegistry(1050);
+            
+            serverNotifaction = "Void Chat Team Yor7b bekom :) ";
+            
         } catch (RemoteException ex) {
             ex.printStackTrace();
         }
@@ -100,21 +106,22 @@ public class ServerController implements ServerControllerInt {
         if ((reciever.contains("##"))) {
             if (groups.containsKey(reciever)) {
                 ArrayList<String> chatMembers = groups.get(reciever);
-               
+
                 for (int i = 0; i < chatMembers.size(); i++) {
                     System.out.println(chatMembers.get(i));
-                    if(!chatMembers.get(i).equals(message.getFrom())){
-                    if (onlineUsers.containsKey(chatMembers.get(i))) {
-                        System.out.println(chatMembers.get(i) + " is online and group msg chat will send");
-                        try {
-                            
-                            ClientModelInt clientObject = onlineUsers.get(chatMembers.get(i));
-                            
-                            clientObject.reciveMsg(message);
-                        } catch (RemoteException ex) {
-                            ex.printStackTrace();
+                    if (!chatMembers.get(i).equals(message.getFrom())) {
+                        if (onlineUsers.containsKey(chatMembers.get(i))) {
+                            System.out.println(chatMembers.get(i) + " is online and group msg chat will send");
+                            try {
+
+                                ClientModelInt clientObject = onlineUsers.get(chatMembers.get(i));
+
+                                clientObject.reciveMsg(message);
+                            } catch (RemoteException ex) {
+                                ex.printStackTrace();
+                            }
                         }
-                    }}
+                    }
                 }
             }
         } else if (onlineUsers.containsKey(reciever)) {
@@ -128,34 +135,19 @@ public class ServerController implements ServerControllerInt {
         }
     }
 
-    /* public boolean sendMsg(String reciver, String msg) {
-        System.out.println("send message in server controller");
-        System.out.println("size of online " + onlineUsers.size());
-        if (onlineUsers.containsKey(reciver)) {
-            System.out.println("User is online before try");
-            ClientModelInt clientObject = onlineUsers.get(reciver);
-            try {
-
-                clientObject.reciveMsg(msg);
-                System.out.println("User is online");
-                return true;
-            } catch (RemoteException ex) {
-                ex.printStackTrace();
-                System.out.println("Exception Happen");
-            }
-        }
-        return false;
-
-    }*/
     @Override
     public void groupMsg(String msg, ArrayList<String> groupChatUsers) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void register(String username, ClientModelInt obj) {
+    public boolean register(String username, ClientModelInt obj) {
+        if(onlineUsers.containsKey(username))
+            return false ;
         onlineUsers.put(username, obj);
+        sendServerNotifcation(obj); //update message and sponcer in recently login user
         System.out.println("-- user login --" + onlineUsers.size());
+        return true;
     }
 
     @Override
@@ -165,6 +157,10 @@ public class ServerController implements ServerControllerInt {
 
     @Override
     public void sendAnnouncement(String message) {
+
+        //save on local 
+        serverNotifaction = message;
+
         Set<String> onlineSet = onlineUsers.keySet();
         onlineSet.forEach((user) -> {
             try {
@@ -185,28 +181,62 @@ public class ServerController implements ServerControllerInt {
 
     @Override
     public ClientModelInt getConnection(String Client) {
-        
-            if (onlineUsers.containsKey(Client)) {
-                return onlineUsers.get(Client);
-            }
-            
-            return null;
+
+        if (onlineUsers.containsKey(Client)) {
+            return onlineUsers.get(Client);
+        }
+
+        return null;
     }
-    
+
     @Override
     public void createGroup(String groupName, ArrayList<String> groupMembers) {
         groups.put(groupName, groupMembers);
     }
-    
+
     @Override
-    public void sendSponser(byte[] data, int dataLength){
+    public void sendSponser(byte[] data, int dataLength) {
+        sponserImage = new byte[dataLength];
+
+        //copy bytes in local array
+        for (int i = 0; i < dataLength; i++) {
+            sponserImage[i] = data[i];
+        }
+
+        //get all online users
         Set<String> onlineSet = onlineUsers.keySet();
         onlineSet.forEach((user) -> {
             try {
-                onlineUsers.get(user).reciveSponser(data, dataLength);
+                onlineUsers.get(user).reciveSponser(sponserImage, dataLength);
             } catch (RemoteException ex) {
                 Logger.getLogger(ServerController.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
+    }
+
+    private void sendServerNotifcation(ClientModelInt obj) {
+        Thread tr = new Thread() {
+            @Override
+            public void run() {
+                
+                try {
+                    Thread.sleep(5000); //wait untile chatbox load 
+                    
+                    obj.receiveAnnouncement(serverNotifaction);
+                    
+                    if(sponserImage!=null)
+                        obj.reciveSponser(sponserImage, sponserImage.length);
+                } catch (RemoteException ex) {
+                    Logger.getLogger(ServerController.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(ServerController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+
+        };
+        
+        tr.start();
+        
+
     }
 }

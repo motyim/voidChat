@@ -14,9 +14,9 @@ public interface ServerControllerInt extends Notification{
      * save object on hash table in server
      * @param username
      * @param obj 
-     * @throws java.rmi.RemoteException 
+     * @return  false if user already login 
      */
-    void register(String username , ClientModelInt obj);
+    boolean register(String username , ClientModelInt obj);
     /**
      * notify user with status
      * @param reciver

@@ -29,9 +29,10 @@ public interface ServerModelInt extends Remote , Notification {
      * save object on hash table in server
      * @param username
      * @param obj 
+     * @return  false if user already login
      * @throws java.rmi.RemoteException 
      */
-    void register(String username , ClientModelInt obj) throws RemoteException;
+    boolean register(String username , ClientModelInt obj) throws RemoteException;
     
     /**
      * 

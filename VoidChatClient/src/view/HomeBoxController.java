@@ -1,7 +1,7 @@
 package view;
 
 import java.io.ByteArrayInputStream;
-import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.Optional;
@@ -67,7 +67,13 @@ public class HomeBoxController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        updatePageInfo();
+        try {
+            updatePageInfo();
+            //set sponser
+            sponser.setImage(new Image(getClass().getResource("..//resouces//Voidlogo.png").openStream()));
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }
 
     @FXML

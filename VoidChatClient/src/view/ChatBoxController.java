@@ -120,17 +120,16 @@ public class ChatBoxController implements Initializable {
     public ChatBoxController(Message message) {
         this();
         this.message = message;
-        
-        if (!message.getTo().contains("##")){
-           receiver = message.getFrom();
-           conFlag = true;
-        } 
-         
+
+        if (!message.getTo().contains("##")) {
+            receiver = message.getFrom();
+            conFlag = true;
+        }
+
     }
 
 //    Boolean sendFlag = true;
 //    Boolean recFlag = true;
-
     /**
      * Initializes the controller class.
      *
@@ -168,32 +167,8 @@ public class ChatBoxController implements Initializable {
             File file = fileChooser.showSaveDialog(st);
 
             if (file != null && !file.isFile()) {
-                //TODO take messages files
-                ArrayList<Message> list = new ArrayList<>();
-                Message msg = new Message();
-                msg.setBody("body one");
-                msg.setFontColor("red");
-                msg.setFontFamily("cursive");
-                msg.setFontStyle("sad");
-                msg.setFontWeight("asa");
-                msg.setFontsSize(13);
-                msg.setFrom("ahmed");
-                msg.setTo("motyim");
-
-                Message msg2 = new Message();
-                msg2.setBody("body one");
-                msg2.setFontColor("red");
-                msg2.setFontFamily("cursive");
-                msg2.setFontStyle("sad");
-                msg2.setFontWeight("asa");
-                msg2.setFontsSize(13);
-                msg2.setFrom("ahmed");
-                msg2.setTo("motyim");
-
-                list.add(msg);
-                list.add(msg2);
-
-                clientView.saveXMLFile(file, list);
+                ArrayList<Message> history = clientView.getHistory(receiver);
+                clientView.saveXMLFile(file, history);
             }
 
         });
@@ -232,7 +207,7 @@ public class ChatBoxController implements Initializable {
                 FileInputStream in = null;
 
                 //get path to save file on other user
-                String path = peer.getSaveLocation(clientView.getLoginUser().getUsername());
+                String path = peer.getSaveLocation(clientView.getUserInformation().getUsername());
                 //other client refuse file transfare
                 if (path == null) {
 
@@ -340,13 +315,13 @@ public class ChatBoxController implements Initializable {
     }
 
     public void reciveMsg(Message message) throws IOException {
-       
+
         // Msg received in initialize don't send it again
-        if(conFlag){
-           conFlag = false;
-           return;
-       }
-       
+        if (conFlag) {
+            conFlag = false;
+            return;
+        }
+
         Boolean groupFlag = false;
         // hey there is new received msg, you will send the next msg with image 
         recMsgFlag = true;

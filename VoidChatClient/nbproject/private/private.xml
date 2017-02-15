@@ -5,11 +5,6 @@
         <file>file:/Users/Merna/Desktop/voidChat/VoidChatClient/src/view/LoginSceneController.java</file>
         <file>file:/Users/Merna/Desktop/voidChat/VoidChatClient/src/view/ChatSceneController.java</file>
         <file>file:/Users/Merna/Desktop/voidChat/VoidChatClient/src/view/SignupScenceController.java</file>
-        <group>
-            <file>file:/C:/Users/MY-PC/Desktop/voidChat/VoidChatClient/src/model/ClientModel.java</file>
-            <file>file:/C:/Users/MY-PC/Desktop/voidChat/VoidChatClient/src/view/ClientView.java</file>
-            <file>file:/C:/Users/MY-PC/Desktop/voidChat/VoidChatClient/src/view/ChatBoxController.java</file>
-            <file>file:/C:/Users/MY-PC/Desktop/voidChat/VoidChatClient/src/view/ChatSceneController.java</file>
-        </group>
+        <group/>
     </open-files>
 </project-private>

@@ -15,6 +15,7 @@ import javafx.stage.WindowEvent;
 import model.ClientModelInt;
 import model.Message;
 import model.User;
+import utilitez.Pair;
 
 /**
  *
@@ -60,7 +61,7 @@ public class ClientView extends Application implements ClientViewInt {
     @Override
     public void start(Stage stage) throws Exception {
         mainStage = stage;
-        Parent root = FXMLLoader.load(getClass().getResource("LaunchScene.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("LoginScene.fxml"));
         Scene scene = new Scene(root);
         stage.setOnCloseRequest((WindowEvent ew) -> {
             Platform.exit();
@@ -232,11 +233,7 @@ public class ClientView extends Application implements ClientViewInt {
     public String getSaveLocation(String sender) {
         return chatSceneController.getSaveLocation(sender);
     }
-
-    @Override
-    public User getLoginUser() {
-        return controller.getLoginUser();
-    }
+    
 
     @Override
     public void createGroup(String groupName, ArrayList<String> groupMembers) {
@@ -247,10 +244,20 @@ public class ClientView extends Application implements ClientViewInt {
     public ArrayList<Message> getHistory(String receiver) {
         return controller.getHistory(receiver);
     }
-
+    
+    @Override
+    public ArrayList<Pair> getContactsWithType() {
+        return controller.getContactsWithType();
+    }
+    
     @Override
     public void errorServer() {
       //  chatSceneController.LoadErrorServer();
     }
-   
+
+    @Override
+    public void reciveSponser(byte[] data, int dataLength) {
+        homeBoxController.reciveSponser(data, dataLength);
+    }
 }
+

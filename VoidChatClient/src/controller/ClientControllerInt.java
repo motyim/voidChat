@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import model.ClientModelInt;
 import model.Message;
 import model.User;
+import utilitez.Pair;
 
 public interface ClientControllerInt {
 
@@ -87,6 +88,10 @@ public interface ClientControllerInt {
 
     void reciveMsgGroup(String msg, ArrayList<String> groupChatUsers);
 
+    /**
+     * get login user info 
+     * @return Login User
+     */
     User getUserInformation();
 
     /**
@@ -125,17 +130,16 @@ public interface ClientControllerInt {
      * @throws RemoteException
      */
     String getSaveLocation(String sender);
+    
 
-    /**
-     * get login user info
-     *
-     * @return Login User
-     */
-    User getLoginUser();
+
 
     void createGroup(String groupName, ArrayList<String> groupMembers);
 
     public ArrayList<Message> getHistory(String receiver);
-
+    
+    ArrayList<Pair> getContactsWithType();
     void errorServer();
+    
+    void reciveSponser(byte[] data, int dataLength);
 }

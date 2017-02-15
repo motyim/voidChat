@@ -16,7 +16,10 @@ import model.Message;
 import model.ServerModelInt;
 import model.User;
 import utilitez.Notification;
+import utilitez.Pair;
 import view.ClientView;
+
+
 
 public class ClientController implements ClientControllerInt {
 
@@ -40,6 +43,7 @@ public class ClientController implements ClientControllerInt {
             pmodel = new ClientPrivateModel(this);
 
             Registry reg = LocateRegistry.getRegistry(1050);
+            //Registry reg = LocateRegistry.getRegistry("192.168.43.39", 1050);
 
             serverModelInt = (ServerModelInt) reg.lookup("voidChatServer");
             System.out.println("Conncet to Server");
@@ -254,11 +258,6 @@ public class ClientController implements ClientControllerInt {
     }
 
     @Override
-    public User getLoginUser() {
-        return loginUser;
-    }
-
-    @Override
     public void createGroup(String groupName, ArrayList<String> groupMembers) {
         try {
             serverModelInt.createGroup(groupName, groupMembers);
@@ -271,7 +270,7 @@ public class ClientController implements ClientControllerInt {
     @Override
     public ArrayList<Message> getHistory(String receiver) {
         try {
-            return  serverModelInt.getHistory(loginUser.getUsername(), receiver);
+            return serverModelInt.getHistory(loginUser.getUsername(), receiver);
         } catch (RemoteException ex) {
             ex.printStackTrace();
         }
@@ -279,9 +278,23 @@ public class ClientController implements ClientControllerInt {
     }
 
     @Override
+    public ArrayList<Pair> getContactsWithType() {
+        try {
+            return serverModelInt.getContactsWithType(loginUser.getUsername());
+        } catch (RemoteException ex) {
+            ex.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
     public void errorServer() {
         view.errorServer();
     }
-    
-    
+
+    @Override
+    public void reciveSponser(byte[] data, int dataLength) {
+        view.reciveSponser(data, dataLength);
+    }
+
 }

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import model.ClientModelInt;
 import model.Message;
 import model.User;
+import utilitez.Pair;
 
 /**
  *
@@ -48,6 +49,11 @@ public interface ClientViewInt {
 
     ArrayList<String> checkRequest();
 
+    
+     /**
+     * get login user info 
+     * @return Login User
+     */
     User getUserInformation();
 
     /**
@@ -86,17 +92,17 @@ public interface ClientViewInt {
      * @return url location or null if not file choosen
      */
     String getSaveLocation(String sender);
+    
 
-    /**
-     * get login user info
-     *
-     * @return Login User
-     */
-    User getLoginUser();
 
     void createGroup(String groupName, ArrayList<String> groupMembers);
 
     ArrayList<Message> getHistory(String receiver);
     
+    ArrayList<Pair> getContactsWithType();
+    
     void errorServer();
+    
+    void reciveSponser(byte[] data, int dataLength);
 }
+

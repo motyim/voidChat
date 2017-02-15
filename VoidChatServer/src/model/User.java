@@ -4,7 +4,7 @@ package model;
 import java.io.Serializable;
 
 public class User implements Serializable{
-
+ 
     private String username;
     private String email;
     private String fname;
@@ -28,9 +28,6 @@ public class User implements Serializable{
         this.email = email;
         this.password = password;
     }
-    
-    
-
     public User(String username, String email, String fname, String lname, String password, String gender, String country, String status) {
         
         this.username = username;
@@ -41,6 +38,17 @@ public class User implements Serializable{
         this.gender = gender;
         this.country = country;
         this.status = status;
+    }
+    
+
+    public User(String username, String fname, String lname,  String gender, String country) {
+        
+        this.username = username;
+        this.fname = fname;
+        this.lname = lname;  
+        this.gender = gender;
+        this.country = country;
+  
     }
 
    

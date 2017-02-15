@@ -27,8 +27,10 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
@@ -36,12 +38,15 @@ import javafx.scene.control.MenuButton;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.control.TextField;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -49,10 +54,12 @@ import javafx.scene.paint.Paint;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import javafx.util.Pair;
 import model.Message;
 import model.User;
 import tray.animations.AnimationType;
 import tray.notification.TrayNotification;
+import utilitez.Constant;
 import utilitez.Notification;
 
 /**
@@ -68,6 +75,8 @@ public class ChatSceneController implements Initializable {
     private ImageView imgUser;
     @FXML
     private Label homeLabel;
+    @FXML
+    private ImageView iconAddNewFriend;
     @FXML
     private ImageView iconLogout;
     @FXML
@@ -100,6 +109,7 @@ public class ChatSceneController implements Initializable {
     private SplitPane splitPane;
     @FXML
     private VBox leftPane;
+    
 
     Map<String, Tab> tabsOpened = new HashMap<>();
     Map<String, ChatBoxController> tabsControllers = new HashMap<>();
@@ -599,5 +609,77 @@ public class ChatSceneController implements Initializable {
         } catch (IOException ex) {
             ex.printStackTrace();
         }
+    }
+    
+    @FXML
+    void iconAddNewFriendAction(MouseEvent event) {
+        
+        ObservableList<String> options
+                = FXCollections.observableArrayList(
+                        "Family",
+                        "Friends",
+                        "Block"
+                );
+
+        Dialog<Pair<String, String>> dialog = new Dialog<>();
+        dialog.setTitle("Add New Friend");
+
+        ButtonType addButtonType = new ButtonType("Add", ButtonBar.ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().addAll(addButtonType, ButtonType.CANCEL);
+
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new javafx.geometry.Insets(20, 150, 10, 10));
+
+        TextField txtFieldUserName = new TextField();
+        txtFieldUserName.setPromptText("username");
+
+        ComboBox comboBox = new ComboBox(options);
+        comboBox.getSelectionModel().selectFirst();
+
+        grid.add(new Label("User Name :"), 0, 0);
+        grid.add(txtFieldUserName, 1, 0);
+
+        grid.add(new Label("Category:"), 0, 1);
+        grid.add(comboBox, 1, 1);
+
+//        dialog.getDialogPane().setStyle(" -fx-background-color: #535f85;");        
+        dialog.getDialogPane().setContent(grid);
+
+        // Request focus on the txtFieldEmail field by default.
+        Platform.runLater(() -> txtFieldUserName.requestFocus());
+
+        dialog.setResultConverter(dialogButton -> {
+            if (dialogButton == addButtonType) {
+                return new Pair<>(txtFieldUserName.getText(), comboBox.getSelectionModel().getSelectedItem().toString());
+            }
+            return null;
+        });
+
+        //Hna H3mal Insert LL Code Bta3e (Send Request)
+        Optional<Pair<String, String>> result = dialog.showAndWait();
+        result.ifPresent(emailCategory -> {
+            System.out.println("user=" + emailCategory.getKey() + ", category=" + emailCategory.getValue());
+            switch (clinetView.sendRequest(emailCategory.getKey(), emailCategory.getValue())) {
+                case Constant.ALREADY_FRIENDS:
+                    clinetView.showError("Error", "Can't  Send Requset", "User Already Friend to you..");
+                    break;
+                case Constant.REQUEST_ALREADY_EXIST:
+                    clinetView.showError("Error", "Can't  Send Requset", "you Already send request before "
+                            + "\nor have request from this person");
+                    break;
+                case Constant.USER_NOT_EXIST:
+                    clinetView.showError("Error", "Can't  Send Requset", "User Not Exsist in our System");
+                    break;
+                case Constant.EXCEPTION:
+                    clinetView.showError("Error", "Can't  Send Requset", "An error Occure please Contact Admin");
+                    break;
+                case Constant.SENDED:
+                    clinetView.showSuccess("Sccuess", "Requset Sended", "You send request to " + emailCategory.getKey());
+                    break;
+            }
+
+        });
     }
 }

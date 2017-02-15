@@ -57,10 +57,10 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
     private void closeResources() {
         try {
             if (!isClosed) {
-            //resultSet.close();
-            statement.close();
-            connection.close();
-            isClosed = true;
+                //resultSet.close();
+                statement.close();
+                connection.close();
+                isClosed = true;
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -82,7 +82,10 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
                         + "','" + user.getEmail() + "','" + user.getFname() + "','" + user.getLname() + "','" + SHA.encrypt(user.getPassword()) + "','"
                         + user.getGender() + "','" + user.getCountry() + "')";
                 statement.executeUpdate(query);
+                //add in table
+                GenerateUserFX(user);
                 System.out.println("Done");
+                
                 closeResources();
                 return true;
             }
@@ -111,6 +114,7 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
                 String status = resultSet.getString("status");
                 String country = resultSet.getString("country");
                 user = new User(name, email, fname, lname, pw, gender, country, status);
+ 
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -200,16 +204,17 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
             statement.executeUpdate(query);
 
             ArrayList<User> userFriends = userFriends = getContacts(username);
-            for (int i = 0; i < userFriends.size(); i++) {
-                if (status.equalsIgnoreCase("online")) {
-                    notify(userFriends.get(i).getUsername(), username + " Become online ", Notification.FRIEND_ONLINE);
-                } else if (status.equalsIgnoreCase("offline")) {
-                    notify(userFriends.get(i).getUsername(), username + " Become offline ", Notification.FRIEND_OFFLINE);
-                } else if (status.equalsIgnoreCase("busy")) {
-                    notify(userFriends.get(i).getUsername(), username + " Become busy ", Notification.FRIEND_BUSY);
+            if (userFriends != null) {
+                for (int i = 0; i < userFriends.size(); i++) {
+                    if (status.equalsIgnoreCase("online")) {
+                        notify(userFriends.get(i).getUsername(), username + " Become online ", Notification.FRIEND_ONLINE);
+                    } else if (status.equalsIgnoreCase("offline")) {
+                        notify(userFriends.get(i).getUsername(), username + " Become offline ", Notification.FRIEND_OFFLINE);
+                    } else if (status.equalsIgnoreCase("busy")) {
+                        notify(userFriends.get(i).getUsername(), username + " Become busy ", Notification.FRIEND_BUSY);
+                    }
                 }
             }
-
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
@@ -229,7 +234,6 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
         System.out.println("sendMsg in server model");
         return controller.sendMsg(reciver, msg);
     }*/
-
     @Override
     public void groupMsg(String msg, ArrayList<String> groupChatUsers) throws RemoteException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -509,8 +513,7 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
         closeResources();
         return messages.size() == 0 ? null : messages;
     }
-    
-    
+
     @Override
     public ArrayList<Pair> getContactsWithType(String userName) throws RemoteException {
         ArrayList<String> friendsNames = new ArrayList<String>();
@@ -558,4 +561,50 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
         return friendPair.size() == 0 ? null : friendPair;
     }
 
+    public ArrayList<User> getAllUsers() {
+        ArrayList<User> users = new ArrayList<User>();
+        try {
+            getConnection();
+            query = "select * from UserTable";
+            statement = connection.createStatement();
+            resultSet = statement.executeQuery(query);
+            while (resultSet.next()) {
+                String username = resultSet.getString("username");
+                String email = resultSet.getString("email");
+                String fname = resultSet.getString("fname");
+                String lname = resultSet.getString("lname");
+                String password = "";
+                String gender = resultSet.getString("gender");
+                String status = resultSet.getString("status");
+                String country = resultSet.getString("country");
+                User user = new User(username, email, fname, lname, password, gender, country, status);
+                users.add(user);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        closeResources();
+        return users.size() == 0 ? null : users;
+    }
+    
+    public void updateUser(User user) {
+        try {
+            getConnection();
+            String query = "update UserTable set fname='" + user.getFname()
+                    + "',lname='" + user.getLname() + "',gender='" + user.getGender() + "',country='" + user.getCountry() + "' where username= '" + user.getUsername() + "'";
+            System.out.println(query);
+            statement = connection.createStatement();
+            statement.executeUpdate(query);
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+          closeResources();
+    }
+    
+    public void GenerateUserFX(User user){
+        UserFx userFx= new UserFx(user.getUsername(), user.getEmail(), user.getFname()
+                , user.getLname(), user.getGender(), user.getCountry());
+        controller.GenerateUserFX(userFx);
+    }
 }

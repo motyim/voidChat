@@ -67,6 +67,10 @@ public class HomeBoxController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        
+        sponser.maxWidth(150);
+        sponser.maxHeight(150);
+        
         updatePageInfo();
     }
 

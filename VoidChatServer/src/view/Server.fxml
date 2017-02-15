@@ -53,7 +53,7 @@
                     <ToggleButton fx:id="start" mnemonicParsing="false" onAction="#ToggleButtonAction" prefWidth="69.0" text="Start" />
                   </items>
                 </ToolBar>
-                        <ImageView fx:id="sponser" fitHeight="153.0" fitWidth="304.0" layoutX="55.0" layoutY="165.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="sponser" fitHeight="100.0" fitWidth="200.0" layoutX="115.0" layoutY="167.0" pickOnBounds="true" preserveRatio="true">
                         </ImageView>
                         <Button fx:id="sendBtn1" layoutX="419.0" layoutY="217.0" mnemonicParsing="false" onAction="#setSponser" prefHeight="25.0" prefWidth="129.0" text="change sponsor" />
               </children>

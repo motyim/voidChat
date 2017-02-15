@@ -3,13 +3,14 @@ package view;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -35,6 +36,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import model.User;
+
 /**
  * FXML Controller class
  *
@@ -65,15 +67,15 @@ public class ServerViewController implements Initializable {
 
     @FXML
     private ServerView serverView;
-    
-    @FXML ImageView sponser ; 
-    
+
+    @FXML
+    ImageView sponser;
+
     @FXML
     private Button SendButton;
 
     @FXML
     private ToggleButton start;
-
 
     /**
      * Initializes the controller class.
@@ -84,48 +86,59 @@ public class ServerViewController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
-       
-            serverView = ServerView.getInstance();
-            serverView.setServerViewController(this);
-            
+        serverView = ServerView.getInstance();
+        serverView.setServerViewController(this);
+
         try {
             //set sponser
             sponser.setImage(new Image(getClass().getResource("..//resources//Voidlogo.png").openStream()));
         } catch (IOException ex) {
             Logger.getLogger(ServerViewController.class.getName()).log(Level.SEVERE, null, ex);
         }
-            
-            ObservableList<PieChart.Data> data = FXCollections.observableArrayList(
-                    new PieChart.Data("Online", 50),
-                    new PieChart.Data("Offline", 30),
-                    new PieChart.Data("Busy", 20));
-            System.out.println("chart");
-            pieChart.setData(data);
-            pieChart.setLegendSide(Side.LEFT);
-     
+
+        ObservableList<PieChart.Data> data = FXCollections.observableArrayList(
+                new PieChart.Data("Online", 50),
+                new PieChart.Data("Offline", 30),
+                new PieChart.Data("Busy", 20));
+        System.out.println("chart");
+        pieChart.setData(data);
+        pieChart.setLegendSide(Side.LEFT);
+        
+        /*
+         * limit number of charachters, you can write in textArea 
+         */
+        announcement.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(final ObservableValue<? extends String> ov, final String oldValue, final String newValue) {
+                if (announcement.getText().length() > 100) {
+                    String s = announcement.getText().substring(0, 100);
+                    announcement.setText(s);
+                }
+            }
+        });
+        
+        // max size for image (200*100)
+        sponser.maxWidth(200);
+        sponser.maxHeight(100);
+
     }
-    
-    private void addTooltipToChartSlice(PieChart chart){
+
+    private void addTooltipToChartSlice(PieChart chart) {
         double total = 0;
-        for(PieChart.Data d : chart.getData()){
+        for (PieChart.Data d : chart.getData()) {
             total += d.getPieValue();
         }
-        for(PieChart.Data d : chart.getData()){
+        for (PieChart.Data d : chart.getData()) {
             Node slice = d.getNode();
             double sliceValue = d.getPieValue();
-            double precent = (sliceValue / total)* 100;
-            
-            String tip = d.getName() + "=" +String.format("%.2f", precent)+ "%";
-            
+            double precent = (sliceValue / total) * 100;
+
+            String tip = d.getName() + "=" + String.format("%.2f", precent) + "%";
+
             Tooltip tt = new Tooltip(tip);
             Tooltip.install(slice, tt);
         }
     }
-
-
-       
-
-    
 
     @FXML
     private void ToggleButtonAction(ActionEvent event) {
@@ -177,38 +190,36 @@ public class ServerViewController implements Initializable {
         alert.setHeaderText("Announcement send to all online users");
         alert.showAndWait();
     }
-    
-    public void setSponser(ActionEvent event){
+
+    public void setSponser(ActionEvent event) {
         try {
             Stage st = (Stage) ((Node) event.getSource()).getScene().getWindow();
             FileChooser fileChooser = new FileChooser();
             fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg")
             );
-            
+
             //Show save file dialog
             File file = fileChooser.showOpenDialog(st);
-            
+
             //no file choosen
             if (file == null) {
                 return;
             }
-            
-            
-            
-            if(file.length() > 1024 * 1024){
+
+            if (file.length() > 1024 * 1024) {
                 System.out.println("So big File");
                 return;
             }
-            
+
             sponser.setImage(new Image(file.toURI().toURL().toExternalForm()));
-                
+
             //send to server controller
             FileInputStream in = new FileInputStream(file);
             byte[] data = new byte[1024 * 1024];
             int dataLength = in.read(data);
 
-            serverView.sendSponser(data , dataLength);
-            
+            serverView.sendSponser(data, dataLength);
+
         } catch (MalformedURLException ex) {
             Logger.getLogger(ServerViewController.class.getName()).log(Level.SEVERE, null, ex);
         } catch (FileNotFoundException ex) {
@@ -216,7 +227,7 @@ public class ServerViewController implements Initializable {
         } catch (IOException ex) {
             Logger.getLogger(ServerViewController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
     }
 
 }

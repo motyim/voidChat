@@ -55,7 +55,7 @@
         </HBox>
       <Pane prefHeight="217.0" prefWidth="400.0">
          <children>
-              <TextFlow fx:id="txtFlowServerMsg" layoutX="16.0" prefHeight="79.0" prefWidth="373.0">
+              <TextFlow fx:id="txtFlowServerMsg" layoutX="16.0" maxHeight="80.0" maxWidth="370.0" prefHeight="80.0" prefWidth="370.0">
                   <children>
                       <Text fx:id="serverMessage" strokeType="OUTSIDE" strokeWidth="0.0" text="Server message: void chat team yor7b beek :D" wrappingWidth="296.375">
                           <font>
@@ -64,8 +64,11 @@
                       </Text>
                   </children>
               </TextFlow>
-            <ImageView id="sponser" fx:id="sponser" fitHeight="130.0" fitWidth="325.0" layoutX="26.0" layoutY="73.0" pickOnBounds="true" preserveRatio="true" />
-            <Text layoutX="140.0" layoutY="66.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Brought to You By :" wrappingWidth="108.00000131130219" />
+            <ImageView id="sponser" fx:id="sponser" fitHeight="50.0" fitWidth="150.0" layoutX="26.0" layoutY="113.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../resouces/Voidlogo.png" />
+               </image></ImageView>
+            <Text layoutX="26.0" layoutY="105.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Brought to You By :" wrappingWidth="177.00000131130219" />
          </children>
       </Pane>
     </children>

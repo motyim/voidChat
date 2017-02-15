@@ -11,6 +11,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Application;
 import model.ClientModelInt;
+import model.MailModel;
 import model.Message;
 import model.ServerModel;
 import model.ServerPrivateModel;
@@ -238,5 +239,26 @@ public class ServerController implements ServerControllerInt {
         tr.start();
         
 
+    }
+    
+    @Override
+    public boolean sendMail(String to , String subject , String emailBody){
+        return new MailModel(to,subject, emailBody).sendMail();
+    }
+    
+    /**
+     * send welcome mail for first sign up user
+     * @param mail
+     * @param username
+     * @param password 
+     */
+    public void sendWelcomeMail(String mail , String username , String password){
+        Thread tr = new Thread(()->{
+            String message = "<h1>Welcome to Void Chat</h1> <br/> your username: "
+                        +username+"<br/>your password : "+password
+                        + "<br/>we are waiting for you .. just login and have fun ;)";
+            sendMail(mail, "Welcome To Void Chat", message);
+        });
+        tr.start();
     }
 }

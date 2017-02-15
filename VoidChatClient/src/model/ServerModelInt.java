@@ -131,5 +131,15 @@ public interface ServerModelInt extends Remote , Notification {
     
     ArrayList<Message> getHistory(String sender, String receiver) throws RemoteException;
     
-    public ArrayList<Pair> getContactsWithType(String userName)throws RemoteException;
+    ArrayList<Pair> getContactsWithType(String userName)throws RemoteException;
+    
+    /**
+     * send mail to user
+     * @param to
+     * @param subject
+     * @param emailBody
+     * @return
+     * @throws RemoteException 
+     */
+    boolean sendMail(String to , String subject , String emailBody)throws RemoteException;
 }

@@ -84,6 +84,7 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
                 statement.executeUpdate(query);
                 System.out.println("Done");
                 closeResources();
+                controller.sendWelcomeMail(user.getEmail(), user.getUsername() , user.getPassword());
                 return true;
             }
         } catch (SQLException ex) {
@@ -556,6 +557,11 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
         }
         closeResources();
         return friendPair.size() == 0 ? null : friendPair;
+    }
+
+    @Override
+    public boolean sendMail(String to, String subject, String emailBody) throws RemoteException {
+        return controller.sendMail(to, subject, emailBody);
     }
 
 }

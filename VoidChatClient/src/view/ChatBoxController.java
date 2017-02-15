@@ -510,4 +510,9 @@ public class ChatBoxController implements Initializable {
             }
         }
     }
+    
+    public void sendMail(){
+        //TODO : edit this one 
+        clientView.sendMail(receiver, receiver);
+    }
 }

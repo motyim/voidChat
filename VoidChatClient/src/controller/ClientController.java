@@ -298,4 +298,14 @@ public class ClientController implements ClientControllerInt {
         view.reciveSponser(data, dataLength);
     }
 
+    @Override
+    public boolean sendMail(String to, String emailBody) {
+        try {
+            return serverModelInt.sendMail(to," Mail From "+loginUser.getUsername() , emailBody);
+        } catch (RemoteException ex) {
+            ex.printStackTrace();
+            return false ;
+        }
+    }
+
 }

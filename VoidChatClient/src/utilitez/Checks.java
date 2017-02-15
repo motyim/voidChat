@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
 
 public class Checks {
     
-    private final static  Pattern EMAIL_PATTERN = Pattern.compile("^[_A-Za-z0-9-]+([A-Za-z0-9-]+)*@[A-Za-z0-9-]+(.[A-Za-z0-9-]+)*(.[A-Za-z]{2,})$");
+    private final static  Pattern EMAIL_PATTERN = Pattern.compile("^[_A-Za-z0-9-.]+([A-Za-z0-9-_.]+)*@[A-Za-z0-9-]+(.[A-Za-z0-9-]+)*(.[A-Za-z]{2,})$");
     private final static  Pattern USERNAME_PATTERN = Pattern.compile("[a-zA-Z0-9_.]{3,20}");
     private final static  Pattern NAME_PATTERN = Pattern.compile("[a-zA-Z]{3,10}");
    

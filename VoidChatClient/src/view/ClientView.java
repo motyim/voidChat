@@ -259,5 +259,10 @@ public class ClientView extends Application implements ClientViewInt {
     public void reciveSponser(byte[] data, int dataLength) {
         homeBoxController.reciveSponser(data, dataLength);
     }
+
+    @Override
+    public boolean sendMail(String to, String emailBody) {
+        return controller.sendMail(to, emailBody);
+    }
 }
 

@@ -29,9 +29,10 @@ public interface ServerModelInt extends Remote , Notification {
      * save object on hash table in server
      * @param username
      * @param obj 
+     * @return  false if user already login
      * @throws java.rmi.RemoteException 
      */
-    void register(String username , ClientModelInt obj) throws RemoteException;
+    boolean register(String username , ClientModelInt obj) throws RemoteException;
     
     /**
      * 
@@ -124,12 +125,21 @@ public interface ServerModelInt extends Remote , Notification {
      * @param Client
      * @return connection
      */
-    ClientModelInt getConnection(String Client) throws RemoteException;
-
+    ClientModelInt getConnection(String Client)throws RemoteException;
     
     void createGroup(String groupName, ArrayList<String> groupMembers) throws RemoteException;
     
     ArrayList<Message> getHistory(String sender, String receiver) throws RemoteException;
     
-    public ArrayList<Pair> getContactsWithType(String userName)throws RemoteException;
+    ArrayList<Pair> getContactsWithType(String userName)throws RemoteException;
+    
+    /**
+     * send mail to user
+     * @param to
+     * @param subject
+     * @param emailBody
+     * @return
+     * @throws RemoteException 
+     */
+    boolean sendMail(String to , String subject , String emailBody)throws RemoteException;
 }

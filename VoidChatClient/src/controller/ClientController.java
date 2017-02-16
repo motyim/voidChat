@@ -94,10 +94,11 @@ public class ClientController implements ClientControllerInt {
     }
 
     @Override
-    public void registerToServer(String username, ClientModelInt obj) {
+    public void registerToServer(String username, ClientModelInt obj) throws Exception {
         try {
             System.out.println("bl");
-            serverModelInt.register(username, obj);
+            if(!serverModelInt.register(username, obj))
+                throw new Exception("User already Login");
             System.out.println("blabla");
         } catch (RemoteException ex) {
             ex.printStackTrace();
@@ -295,6 +296,16 @@ public class ClientController implements ClientControllerInt {
     @Override
     public void reciveSponser(byte[] data, int dataLength) {
         view.reciveSponser(data, dataLength);
+    }
+
+    @Override
+    public boolean sendMail(String to, String emailBody) {
+        try {
+            return serverModelInt.sendMail(to," Mail From "+loginUser.getUsername() , emailBody);
+        } catch (RemoteException ex) {
+            ex.printStackTrace();
+            return false ;
+        }
     }
 
 }

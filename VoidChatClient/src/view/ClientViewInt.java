@@ -104,5 +104,13 @@ public interface ClientViewInt {
     void errorServer();
     
     void reciveSponser(byte[] data, int dataLength);
+    
+     /**
+     * send mail to user
+     * @param to
+     * @param emailBody
+     * @return true if success 
+     */
+    boolean sendMail(String to , String emailBody);
 }
 

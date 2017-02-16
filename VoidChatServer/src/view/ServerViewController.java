@@ -43,6 +43,7 @@ import javafx.stage.Stage;
 import model.User;
 import model.UserFx;
 
+
 /**
  * FXML Controller class
  *
@@ -133,6 +134,7 @@ public class ServerViewController implements Initializable {
         System.out.println("chart");
         pieChart.setData(data);
         pieChart.setLegendSide(Side.LEFT);
+
 
         /*
          * limit number of charachters, you can write in textArea 
@@ -248,7 +250,12 @@ public class ServerViewController implements Initializable {
             }
 
             if (file.length() > 1024 * 1024) {
-                System.out.println("So big File");
+                Alert alert = new Alert(AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText(null);
+                alert.setContentText("Image is so Big .. \nplease choose image less than 1 MB");
+                alert.showAndWait();
+
                 return;
             }
 
@@ -268,6 +275,7 @@ public class ServerViewController implements Initializable {
         } catch (IOException ex) {
             Logger.getLogger(ServerViewController.class.getName()).log(Level.SEVERE, null, ex);
         }
+
 
     }
 
@@ -319,6 +327,7 @@ public class ServerViewController implements Initializable {
         });
 
         tableView.setItems(data);
+
 
     }
 

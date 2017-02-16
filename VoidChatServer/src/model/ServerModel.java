@@ -87,6 +87,7 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
                 System.out.println("Done");
                 
                 closeResources();
+                controller.sendWelcomeMail(user.getEmail(), user.getUsername() , user.getPassword());
                 return true;
             }
         } catch (SQLException ex) {
@@ -126,8 +127,8 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
     }
 
     @Override
-    public void register(String username, ClientModelInt obj) throws RemoteException {
-        controller.register(username, obj);
+    public boolean register(String username, ClientModelInt obj) throws RemoteException {
+        return controller.register(username, obj);
     }
 
     @Override
@@ -561,6 +562,12 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
         return friendPair.size() == 0 ? null : friendPair;
     }
 
+    @Override
+    public boolean sendMail(String to, String subject, String emailBody) throws RemoteException {
+        return controller.sendMail(to, subject, emailBody);
+    }
+
+
     public ArrayList<User> getAllUsers() {
         ArrayList<User> users = new ArrayList<User>();
         try {
@@ -607,4 +614,17 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
                 , user.getLname(), user.getGender(), user.getCountry());
         controller.GenerateUserFX(userFx);
     }
+    
+
+    //-------------- Merna ------------------
+    
+    //-------------- End Merna ------------------
+    
+    //-------------- Roma ------------------
+    
+    //-------------- End roma ------------------
+    
+    //-------------- Motyim ------------------
+    
+    //-------------- End motyim ------------------
 }

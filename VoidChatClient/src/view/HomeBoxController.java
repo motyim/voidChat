@@ -1,6 +1,7 @@
 package view;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -53,11 +54,16 @@ public class HomeBoxController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        
-        sponser.maxWidth(150);
+        try {
+            updatePageInfo();
+            //set sponser
+            sponser.setImage(new Image(getClass().getResource("..//resouces//Voidlogo.png").openStream()));
+            sponser.maxWidth(150);
         sponser.maxHeight(150);
-        
-        updatePageInfo();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+
     }
     
     public void updatePageInfo() {

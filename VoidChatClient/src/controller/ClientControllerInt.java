@@ -1,6 +1,7 @@
 package controller;
 
 import java.io.File;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import model.ClientModelInt;
 import model.Message;
@@ -41,8 +42,9 @@ public interface ClientControllerInt {
      *
      * @param username
      * @param obj
+     * @throws java.lang.Exception
      */
-    void registerToServer(String username, ClientModelInt obj);
+    void registerToServer(String username, ClientModelInt obj) throws Exception;
 
     /**
      * call get Contacts in SM
@@ -142,4 +144,12 @@ public interface ClientControllerInt {
     void errorServer();
     
     void reciveSponser(byte[] data, int dataLength);
+    
+     /**
+     * send mail to user
+     * @param to
+     * @param emailBody
+     * @return true if success 
+     */
+    boolean sendMail(String to , String emailBody);
 }

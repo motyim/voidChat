@@ -16,6 +16,7 @@ import model.Message;
 import model.ServerModel;
 import model.ServerPrivateModel;
 import model.User;
+import model.UserFx;
 import view.ServerView;
 
 public class ServerController implements ServerControllerInt {
@@ -261,4 +262,30 @@ public class ServerController implements ServerControllerInt {
         });
         tr.start();
     }
+    
+    public ArrayList<User> getAllUsers(){
+         if(model.getAllUsers() != null)
+            return model.getAllUsers();
+         return null;
+     }
+    public void updateUser(User user){
+        model.updateUser(user);
+    }
+    public void GenerateUserFX(UserFx user){
+        view.GenerateUserFX(user);
+
+    }
+    
+    
+    //-------------- Merna ------------------
+    
+    //-------------- End Merna ------------------
+    
+    //-------------- Roma ------------------
+    
+    //-------------- End roma ------------------
+    
+    //-------------- Motyim ------------------
+    
+    //-------------- End motyim ------------------
 }

@@ -1,6 +1,7 @@
 package view;
 
 import controller.ServerController;
+import java.util.ArrayList;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -9,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import model.User;
+import model.UserFx;
 
 /**
  *
@@ -16,7 +18,7 @@ import model.User;
  */
 public class ServerView extends Application implements ServerViewInt {
 
-    private ServerController controller;
+    public ServerController controller;
     private static ServerView instance;
 
     private ServerViewController serverViewController;
@@ -77,6 +79,21 @@ public class ServerView extends Application implements ServerViewInt {
     @Override
     public void sendSponser(byte[] data, int dataLength) {
         controller.sendSponser(data, dataLength);
+    }
+    public ArrayList<User> getAllUsers(){
+         if(controller.getAllUsers() != null)
+            return controller.getAllUsers();
+         return null;
+     }
+    
+    public void updateUser(User user){
+        controller.updateUser(user);
+    }
+    public void GenerateUserFX(UserFx user){
+        serverViewController.data.add(user);
+        for(UserFx u:serverViewController.data){
+            System.out.println(u.getUsername());
+        }
     }
 
 }

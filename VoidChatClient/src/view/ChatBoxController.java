@@ -32,6 +32,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -147,6 +148,9 @@ public class ChatBoxController implements Initializable {
             System.out.println("");
             loadHistory(clientView.getHistory(receiver));
         }
+        
+        btnSendAttach.setTooltip(new Tooltip("Send attachment"));
+        saveBtn.setTooltip(new Tooltip("Save Message"));
     }
 
     @FXML

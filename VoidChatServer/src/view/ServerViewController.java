@@ -3,13 +3,15 @@ package view;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -27,7 +29,11 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.Tab;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.Tooltip;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
@@ -35,6 +41,8 @@ import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import model.User;
+import model.UserFx;
+
 
 /**
  * FXML Controller class
@@ -76,6 +84,30 @@ public class ServerViewController implements Initializable {
     @FXML
     private ToggleButton start;
 
+    @FXML
+    private TableView<UserFx> tableView;
+
+    @FXML
+    private TableColumn<UserFx, String> userNameCol;
+
+    @FXML
+    private TableColumn<UserFx, String> firstNameCol;
+
+    @FXML
+    private TableColumn<UserFx, String> lastNameCol;
+
+    @FXML
+    private TableColumn<UserFx, String> emailCol;
+
+    @FXML
+    private TableColumn<UserFx, String> genderCol;
+
+    @FXML
+    private TableColumn<UserFx, String> countryCol;
+    
+    public ArrayList<UserFx> users;
+    public ObservableList<UserFx> data;
+
     /**
      * Initializes the controller class.
      *
@@ -102,6 +134,35 @@ public class ServerViewController implements Initializable {
         System.out.println("chart");
         pieChart.setData(data);
         pieChart.setLegendSide(Side.LEFT);
+
+
+        /*
+         * limit number of charachters, you can write in textArea 
+         */
+        announcement.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(final ObservableValue<? extends String> ov, final String oldValue, final String newValue) {
+                if (announcement.getText().length() > 100) {
+                    String s = announcement.getText().substring(0, 100);
+                    announcement.setText(s);
+                }
+            }
+        });
+
+        // max size for image (200*100)
+        sponser.maxWidth(200);
+        sponser.maxHeight(100);
+
+        // load tableView with users data 
+        users = new ArrayList<>();
+        if (serverView.getAllUsers() != null) {
+            for (User user : serverView.getAllUsers()) {
+                users.add(new UserFx(user.getUsername(), user.getEmail(),
+                         user.getFname(), user.getLname(), user.getGender(),
+                         user.getCountry()));
+            }
+            LoadTableData(users);
+        }
 
     }
 
@@ -194,6 +255,7 @@ public class ServerViewController implements Initializable {
                 alert.setHeaderText(null);
                 alert.setContentText("Image is so Big .. \nplease choose image less than 1 MB");
                 alert.showAndWait();
+
                 return;
             }
 
@@ -213,6 +275,59 @@ public class ServerViewController implements Initializable {
         } catch (IOException ex) {
             Logger.getLogger(ServerViewController.class.getName()).log(Level.SEVERE, null, ex);
         }
+
+
+    }
+
+    public void LoadTableData(ArrayList<UserFx> users) {
+
+         data = FXCollections.observableArrayList(users);
+
+        tableView.setEditable(true);
+
+        userNameCol.setCellValueFactory(new PropertyValueFactory<>("username"));
+
+        firstNameCol.setCellValueFactory(new PropertyValueFactory<>("fname"));
+        firstNameCol.setCellFactory(TextFieldTableCell.forTableColumn());
+        firstNameCol.setOnEditCommit((TableColumn.CellEditEvent<UserFx, String> event) -> {
+            UserFx user = ((UserFx) event.getTableView().getItems().get(event.getTablePosition().getRow()));
+            user.setFname(event.getNewValue());
+            serverView.updateUser(new User(user.getUsername(), user.getFname(),
+                     user.getLname(), user.getGender(), user.getCountry()));
+        });
+
+        lastNameCol.setCellValueFactory(new PropertyValueFactory<>("lname"));
+        lastNameCol.setCellFactory(TextFieldTableCell.forTableColumn());
+        lastNameCol.setOnEditCommit((TableColumn.CellEditEvent<UserFx, String> event) -> {
+            UserFx user = ((UserFx) event.getTableView().getItems().get(event.getTablePosition().getRow()));
+            user.setLname(event.getNewValue());
+            serverView.updateUser(new User(user.getUsername(), user.getFname(),
+                     user.getLname(), user.getGender(), user.getCountry()));
+        });
+
+        emailCol.setCellValueFactory(new PropertyValueFactory<>("email"));
+
+        genderCol.setCellValueFactory(new PropertyValueFactory<>("gender"));
+        genderCol.setCellFactory(TextFieldTableCell.forTableColumn());
+        genderCol.setOnEditCommit((TableColumn.CellEditEvent<UserFx, String> event) -> {
+            UserFx user = ((UserFx) event.getTableView().getItems().get(event.getTablePosition().getRow()));
+            user.setGender(event.getNewValue());
+            serverView.updateUser(new User(user.getUsername(), user.getFname(),
+                     user.getLname(), user.getGender(), user.getCountry()));
+        });
+
+        countryCol.setCellValueFactory(new PropertyValueFactory<>("country"));
+        countryCol.setCellFactory(TextFieldTableCell.forTableColumn());
+        countryCol.setOnEditCommit((TableColumn.CellEditEvent<UserFx, String> event) -> {
+            UserFx user = ((UserFx) event.getTableView().getItems().get(event.getTablePosition().getRow()));
+            user.setGender(event.getNewValue());
+            serverView.updateUser(new User(user.getUsername(), user.getFname(),
+                     user.getLname(), user.getGender(), user.getCountry()));
+
+        });
+
+        tableView.setItems(data);
+
 
     }
 

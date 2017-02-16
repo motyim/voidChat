@@ -139,7 +139,7 @@ public interface ClientControllerInt {
     public ArrayList<Message> getHistory(String receiver);
     
     ArrayList<Pair> getContactsWithType();
-    void errorServer();
+    void loadErrorServer();
     
     void reciveSponser(byte[] data, int dataLength);
 }

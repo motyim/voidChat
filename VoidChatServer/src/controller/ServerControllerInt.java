@@ -78,4 +78,5 @@ public interface ServerControllerInt extends Notification{
      * @param dataLength 
      */
     public void sendSponser(byte[] data, int dataLength);
+    void loadErrorServer();
 }

@@ -139,6 +139,7 @@ public class ServerViewController implements Initializable {
             start.setText("Start");
             System.out.println("serverViewController stop");
             serverView.stopServer();
+            serverView.loadErrorServer();
         }
 
     }

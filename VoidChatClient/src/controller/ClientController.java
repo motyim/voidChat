@@ -288,8 +288,8 @@ public class ClientController implements ClientControllerInt {
     }
 
     @Override
-    public void errorServer() {
-        view.errorServer();
+    public void loadErrorServer() {
+        view.loadErrorServer();
     }
 
     @Override

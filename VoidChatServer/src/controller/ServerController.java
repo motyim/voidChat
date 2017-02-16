@@ -209,4 +209,16 @@ public class ServerController implements ServerControllerInt {
             }
         });
     }
+
+    @Override
+    public void loadErrorServer() {
+        for(String key : onlineUsers.keySet()){
+             ClientModelInt clientObject=onlineUsers.get(key);
+             try {
+                    clientObject.loadErrorServer();
+            } catch (RemoteException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
 }

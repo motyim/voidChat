@@ -47,5 +47,5 @@ public interface ClientModelInt extends Remote{
      * @param dataLength 
      */
     void reciveSponser(byte[] data, int dataLength)throws RemoteException;
-
+    void loadErrorServer()throws RemoteException;
 }

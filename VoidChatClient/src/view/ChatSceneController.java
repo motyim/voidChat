@@ -441,10 +441,11 @@ public class ChatSceneController implements Initializable {
         clinetView.changeStatus(comboBoxStatus.getValue().toString());
         System.out.println(comboBoxStatus.getValue().toString());
     }
-    
+
     /**
      * get message from clientView and open existing tab or create new tab and
      * load new chatBoxScene on it
+     *
      * @param message
      * @throws java.io.IOException
      */
@@ -548,7 +549,7 @@ public class ChatSceneController implements Initializable {
             }
         });
     }
-    
+
     public String getSaveLocation(String sender) {
         System.out.println("GET SAVE LOCATION");
         try {
@@ -583,21 +584,27 @@ public class ChatSceneController implements Initializable {
         }
         return null;
     }
-    
-    public void loadErrorServer(){
+
+    public void loadErrorServer() {
         //----- close this scene -----
-        friendsListview.getScene().getWindow().hide();
-        
-        try {
-            Parent parent = FXMLLoader.load(getClass().getResource("OutOfServiceScene.fxml"));
-            Stage stage = new Stage();
-            Scene scene = new Scene(parent);
-            stage.setScene(scene);
-            stage.setResizable(false);
-            stage.setTitle(" ");
-            stage.show();
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                friendsListview.getScene().getWindow().hide();
+
+                try {
+                    Parent parent = FXMLLoader.load(getClass().getResource("OutOfServiceScene.fxml"));
+                    Stage stage = new Stage();
+                    Scene scene = new Scene(parent);
+                    stage.setScene(scene);
+                    stage.setResizable(false);
+                    stage.setTitle(" ");
+                    stage.show();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        });
+
     }
 }

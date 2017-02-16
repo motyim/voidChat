@@ -251,8 +251,8 @@ public class ClientView extends Application implements ClientViewInt {
     }
     
     @Override
-    public void errorServer() {
-      //  chatSceneController.LoadErrorServer();
+    public void loadErrorServer() {
+       chatSceneController.loadErrorServer();
     }
 
     @Override

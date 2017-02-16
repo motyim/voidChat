@@ -79,4 +79,9 @@ public class ServerView extends Application implements ServerViewInt {
         controller.sendSponser(data, dataLength);
     }
 
+    @Override
+    public void loadErrorServer() {
+        controller.loadErrorServer();
+    }
+
 }

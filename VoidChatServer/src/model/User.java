@@ -1,10 +1,9 @@
-
 package model;
 
 import java.io.Serializable;
 
 public class User implements Serializable{
- 
+
     private String username;
     private String email;
     private String fname;
@@ -28,19 +27,7 @@ public class User implements Serializable{
         this.email = email;
         this.password = password;
     }
-    public User(String username, String email, String fname, String lname, String password, String gender, String country, String status) {
-        
-        this.username = username;
-        this.email = email;
-        this.fname = fname;
-        this.lname = lname;
-        this.password = password;
-        this.gender = gender;
-        this.country = country;
-        this.status = status;
-    }
     
-
     public User(String username, String fname, String lname,  String gender, String country) {
         
         this.username = username;
@@ -51,8 +38,16 @@ public class User implements Serializable{
   
     }
 
-    User() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public User(String username, String email, String fname, String lname, String password, String gender, String country, String status) {
+        
+        this.username = username;
+        this.email = email;
+        this.fname = fname;
+        this.lname = lname;
+        this.password = password;
+        this.gender = gender;
+        this.country = country;
+        this.status = status;
     }
 
    

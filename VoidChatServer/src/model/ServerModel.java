@@ -116,7 +116,8 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
                 String status = resultSet.getString("status");
                 String country = resultSet.getString("country");
                 user = new User(name, email, fname, lname, pw, gender, country, status);
-
+                System.out.println("what here");
+                System.out.println(user.getUsername()+">>><<<????");
             }
         } catch (SQLException ex) {
             ex.printStackTrace();

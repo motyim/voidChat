@@ -14,9 +14,9 @@ public interface ServerControllerInt extends Notification{
      * save object on hash table in server
      * @param username
      * @param obj 
-     * @throws java.rmi.RemoteException 
+     * @return  false if user already login 
      */
-    void register(String username , ClientModelInt obj);
+    boolean register(String username , ClientModelInt obj);
     /**
      * notify user with status
      * @param reciver
@@ -78,5 +78,17 @@ public interface ServerControllerInt extends Notification{
      * @param dataLength 
      */
     public void sendSponser(byte[] data, int dataLength);
+
+    
+    /**
+     * send email to user 
+     * @param to
+     * @param subject
+     * @param emailBody
+     * @return true if success
+     */
+    boolean sendMail(String to , String subject , String emailBody);
+
     void loadErrorServer();
+
 }

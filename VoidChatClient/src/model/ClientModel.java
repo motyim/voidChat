@@ -83,7 +83,13 @@ public class ClientModel extends UnicastRemoteObject implements ClientModelInt, 
     }
 
     @Override
+    public boolean isOnline() throws RemoteException {
+        return true ; 
+    }
+
+  
     public void loadErrorServer() throws RemoteException {
         controller.loadErrorServer();
     }
+
 }

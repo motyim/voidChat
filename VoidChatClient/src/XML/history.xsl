@@ -301,7 +301,7 @@
                     <div class="back">
                         <img src="http://i.imgur.com/DY6gND0.png" draggable="false" />
                     </div>
-                    <div class="name">Alex</div>
+                    <div class="name"><xsl:value-of select="message/to"/></div>
                     <div class="logo">Void Chat</div>
                 </div>
                 <ol class="chat">

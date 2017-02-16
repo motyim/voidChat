@@ -61,7 +61,7 @@ public class ClientView extends Application implements ClientViewInt {
     @Override
     public void start(Stage stage) throws Exception {
         mainStage = stage;
-        Parent root = FXMLLoader.load(getClass().getResource("LoginScene.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("LaunchScene.fxml"));
         Scene scene = new Scene(root);
         stage.setOnCloseRequest((WindowEvent ew) -> {
             Platform.exit();
@@ -251,6 +251,7 @@ public class ClientView extends Application implements ClientViewInt {
     }
     
     @Override
+
     public void loadErrorServer() {
        chatSceneController.loadErrorServer();
     }
@@ -258,6 +259,16 @@ public class ClientView extends Application implements ClientViewInt {
     @Override
     public void reciveSponser(byte[] data, int dataLength) {
         homeBoxController.reciveSponser(data, dataLength);
+    }
+
+    @Override
+    public boolean sendMail(String to, String emailBody) {
+        return controller.sendMail(to, emailBody);
+    }
+
+    @Override
+    public boolean conncetToServer(String host) {
+        return controller.conncetToServer(host);
     }
 }
 

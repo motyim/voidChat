@@ -12,6 +12,13 @@ import utilitez.Pair;
  * @author MotYim
  */
 public interface ClientViewInt {
+    
+     /**
+     * connect to server by host ip
+     * @param host
+     * @return 
+     */
+    public boolean conncetToServer(String host);
 
     boolean signup(User user) throws Exception;
 
@@ -104,5 +111,13 @@ public interface ClientViewInt {
     void loadErrorServer();
     
     void reciveSponser(byte[] data, int dataLength);
+    
+     /**
+     * send mail to user
+     * @param to
+     * @param emailBody
+     * @return true if success 
+     */
+    boolean sendMail(String to , String emailBody);
 }
 

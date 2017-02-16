@@ -19,6 +19,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import utilitez.Checks;
 
 /**
  * FXML Controller class
@@ -33,12 +34,10 @@ public class LaunchSceneController implements Initializable {
     private Button btnConnect;
 
     ClientView clinetView;
+
     public LaunchSceneController() {
         clinetView = ClientView.getInstance();
     }
-    
-    
-    
 
     /**
      * Initializes the controller class.
@@ -46,11 +45,23 @@ public class LaunchSceneController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-    }    
+    }
+
     @FXML
     void btnConnectAction(ActionEvent event) {
-        
-        System.out.println("IP: "+txtFieldHostIP.getText());
+
+        System.out.println("IP: " + txtFieldHostIP.getText());
+        String ip = txtFieldHostIP.getText();
+
+        if (!ip.equals("localhost") && !Checks.checkIP(ip)) {
+            clinetView.showError("Error", "Wrong Ip address", "please enter a valid ip address");
+            return;
+        }
+
+        if (!clinetView.conncetToServer(ip)) {
+            clinetView.showError("Error", "Server not Exsist", "Server not work or not Exsist on this ip address");
+            return;
+        }
         try {
             Parent parent = FXMLLoader.load(getClass().getResource("LoginScene.fxml"));
             Stage stage = clinetView.getMainStage();

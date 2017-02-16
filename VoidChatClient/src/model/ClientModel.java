@@ -81,4 +81,11 @@ public class ClientModel extends UnicastRemoteObject implements ClientModelInt, 
     public void reciveSponser(byte[] data, int dataLength) throws RemoteException {
         controller.reciveSponser(data, dataLength);
     }
+
+    @Override
+    public boolean isOnline() throws RemoteException {
+        return true ; 
+    }
+
+   
 }

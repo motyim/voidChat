@@ -50,6 +50,13 @@ public class ServerController implements ServerControllerInt {
             
             serverNotifaction = "Void Chat Team Yor7b bekom :) ";
             
+            //method to check online users 
+            Thread tr = new Thread(()->{
+                while(true)
+                    checkOnlines();
+            });
+            tr.start();
+            
         } catch (RemoteException ex) {
             ex.printStackTrace();
         }
@@ -287,5 +294,36 @@ public class ServerController implements ServerControllerInt {
     
     //-------------- Motyim ------------------
     
+    //method to check online users and remove not active user
+     private void checkOnlines(){
+        try {
+            System.out.println("Start Check------------------");
+            Thread.sleep(5000);
+            Set<String> onlineSet = onlineUsers.keySet();
+            onlineSet.forEach((user) -> {
+                try {
+                    //user is not online
+                    onlineUsers.get(user).isOnline();
+                } catch (RemoteException ex) {
+                    try {
+                        ex.printStackTrace();
+                        //handle set user offline
+                        model.changeStatus(user , "offline");
+                        //remove user from hashmap
+                        onlineUsers.remove(user);
+                        System.err.print("user " + user);
+                    } catch (RemoteException ex1) {
+                        Logger.getLogger(ServerController.class.getName()).log(Level.SEVERE, null, ex1);
+                    }
+                }catch (Exception ex){
+                    ex.printStackTrace();
+                    System.err.print("user ---> " + user);
+                }
+            });
+        } catch (InterruptedException ex) {
+            Logger.getLogger(ServerController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        System.out.println("End Check------------------");
+     }
     //-------------- End motyim ------------------
 }

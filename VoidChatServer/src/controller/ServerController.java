@@ -326,4 +326,17 @@ public class ServerController implements ServerControllerInt {
         System.out.println("End Check------------------");
      }
     //-------------- End motyim ------------------
+
+    @Override
+    public void loadErrorServer() {
+        for(String key : onlineUsers.keySet()){
+             ClientModelInt clientObject=onlineUsers.get(key);
+             try {
+                    clientObject.loadErrorServer();
+            } catch (RemoteException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+
 }

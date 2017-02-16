@@ -108,7 +108,7 @@ public interface ClientViewInt {
     
     ArrayList<Pair> getContactsWithType();
     
-    void errorServer();
+    void loadErrorServer();
     
     void reciveSponser(byte[] data, int dataLength);
     

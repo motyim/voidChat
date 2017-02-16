@@ -87,5 +87,9 @@ public class ClientModel extends UnicastRemoteObject implements ClientModelInt, 
         return true ; 
     }
 
-   
+  
+    public void loadErrorServer() throws RemoteException {
+        controller.loadErrorServer();
+    }
+
 }

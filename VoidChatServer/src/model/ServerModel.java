@@ -99,13 +99,14 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
     @Override
     public User signin(String username, String password) throws RemoteException {
         User user = null;
-        System.out.println("sign in");
+        System.out.println("sign in server model ");
         try {
             getConnection();
             query = "select * from UserTable where username = '" + username + "'and password='" + SHA.encrypt(password) + "'";
             statement = connection.createStatement();
             resultSet = statement.executeQuery(query);
             if (resultSet.next()) {
+                System.out.println("is statement");
                 String name = resultSet.getString("username");
                 String email = resultSet.getString("email");
                 String fname = resultSet.getString("fname");
@@ -115,7 +116,7 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
                 String status = resultSet.getString("status");
                 String country = resultSet.getString("country");
                 user = new User(name, email, fname, lname, pw, gender, country, status);
- 
+
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -568,6 +569,7 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
     }
 
 
+
     public ArrayList<User> getAllUsers() {
         ArrayList<User> users = new ArrayList<User>();
         try {
@@ -587,13 +589,13 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
                 User user = new User(username, email, fname, lname, password, gender, country, status);
                 users.add(user);
             }
+
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
         closeResources();
         return users.size() == 0 ? null : users;
     }
-    
     public void updateUser(User user) {
         try {
             getConnection();
@@ -608,6 +610,7 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
         }
           closeResources();
     }
+
     
     public void GenerateUserFX(User user){
         UserFx userFx= new UserFx(user.getUsername(), user.getEmail(), user.getFname()
@@ -627,4 +630,5 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
     //-------------- Motyim ------------------
     
     //-------------- End motyim ------------------
+
 }

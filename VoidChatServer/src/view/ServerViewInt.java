@@ -27,4 +27,5 @@ public interface ServerViewInt {
      * @param dataLength 
      */
     public void sendSponser(byte[] data, int dataLength);
+    void loadErrorServer();
 }

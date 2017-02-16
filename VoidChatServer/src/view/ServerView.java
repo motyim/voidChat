@@ -96,4 +96,9 @@ public class ServerView extends Application implements ServerViewInt {
         }
     }
 
+    @Override
+    public void loadErrorServer() {
+        controller.loadErrorServer();
+    }
+
 }

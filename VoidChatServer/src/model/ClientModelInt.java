@@ -47,6 +47,7 @@ public interface ClientModelInt extends Remote{
      * @param dataLength 
      */
     void reciveSponser(byte[] data, int dataLength)throws RemoteException;
+
     
     /**
      * check to online or not by server
@@ -54,5 +55,7 @@ public interface ClientModelInt extends Remote{
      * @throws RemoteException 
      */
     boolean isOnline()throws RemoteException;
+
+    void loadErrorServer()throws RemoteException;
 
 }

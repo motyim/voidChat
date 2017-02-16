@@ -19,8 +19,6 @@ import utilitez.Notification;
 import utilitez.Pair;
 import view.ClientView;
 
-
-
 public class ClientController implements ClientControllerInt {
 
     private ClientView view;
@@ -42,18 +40,28 @@ public class ClientController implements ClientControllerInt {
             //connect to private model
             pmodel = new ClientPrivateModel(this);
 
-            Registry reg = LocateRegistry.getRegistry(1050);
-            //Registry reg = LocateRegistry.getRegistry("192.168.43.39", 1050);
-
-            serverModelInt = (ServerModelInt) reg.lookup("voidChatServer");
-            System.out.println("Conncet to Server");
-        } catch (RemoteException | NotBoundException ex) {
+        } catch (RemoteException ex) {
             ex.printStackTrace();
         }
     }
 
     public static void main(String[] args) {
         Application.launch(ClientView.class, args);
+
+    }
+
+    @Override
+    public boolean conncetToServer(String host) {
+        try {
+            Registry reg = LocateRegistry.getRegistry(host, 1050);
+
+            serverModelInt = (ServerModelInt) reg.lookup("voidChatServer");
+            System.out.println("Conncet to Server");
+            return true;
+        } catch (RemoteException | NotBoundException ex) {
+            ex.printStackTrace();
+            return false;
+        }
 
     }
 
@@ -97,8 +105,9 @@ public class ClientController implements ClientControllerInt {
     public void registerToServer(String username, ClientModelInt obj) throws Exception {
         try {
             System.out.println("bl");
-            if(!serverModelInt.register(username, obj))
+            if (!serverModelInt.register(username, obj)) {
                 throw new Exception("User already Login");
+            }
             System.out.println("blabla");
         } catch (RemoteException ex) {
             ex.printStackTrace();
@@ -301,10 +310,10 @@ public class ClientController implements ClientControllerInt {
     @Override
     public boolean sendMail(String to, String emailBody) {
         try {
-            return serverModelInt.sendMail(to," Mail From "+loginUser.getUsername() , emailBody);
+            return serverModelInt.sendMail(to, " Mail From " + loginUser.getUsername(), emailBody);
         } catch (RemoteException ex) {
             ex.printStackTrace();
-            return false ;
+            return false;
         }
     }
 

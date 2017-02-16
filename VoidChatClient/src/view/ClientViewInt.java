@@ -12,6 +12,13 @@ import utilitez.Pair;
  * @author MotYim
  */
 public interface ClientViewInt {
+    
+     /**
+     * connect to server by host ip
+     * @param host
+     * @return 
+     */
+    public boolean conncetToServer(String host);
 
     boolean signup(User user) throws Exception;
 

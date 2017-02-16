@@ -13,7 +13,8 @@
             <Font name="System Bold" size="34.0" />
          </font>
       </Text>
-      <TextField fx:id="txtFieldHostIP" layoutX="114.0" layoutY="180.0" promptText="Host IP" />
-      <Button fx:id="btnConnect" layoutX="163.0" layoutY="237.0" mnemonicParsing="false" onAction="#btnConnectAction" text="connect" />
+      <TextField fx:id="txtFieldHostIP" layoutX="124.0" layoutY="200.0" promptText="Host IP" />
+      <Button fx:id="btnConnect" layoutX="173.0" layoutY="237.0" mnemonicParsing="false" onAction="#btnConnectAction" text="connect" />
+      <Text fill="#e4e4e4" layoutX="129.0" layoutY="189.0" strokeType="OUTSIDE" strokeWidth="0.0" text="type host ip to connect on" />
    </children>
 </AnchorPane>

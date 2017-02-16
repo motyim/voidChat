@@ -9,6 +9,13 @@ import model.User;
 import utilitez.Pair;
 
 public interface ClientControllerInt {
+    
+    /**
+     * connect to server by host ip
+     * @param host
+     * @return 
+     */
+    public boolean conncetToServer(String host);
 
     /**
      * validate & create user obj send to server Model

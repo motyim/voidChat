@@ -85,9 +85,9 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
                 //add in table
                 GenerateUserFX(user);
                 System.out.println("Done");
-                
+
                 closeResources();
-                controller.sendWelcomeMail(user.getEmail(), user.getUsername() , user.getPassword());
+                controller.sendWelcomeMail(user.getEmail(), user.getUsername(), user.getPassword());
                 return true;
             }
         } catch (SQLException ex) {
@@ -115,7 +115,7 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
                 String status = resultSet.getString("status");
                 String country = resultSet.getString("country");
                 user = new User(name, email, fname, lname, pw, gender, country, status);
- 
+
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -371,6 +371,7 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
             ex.printStackTrace();
         }
         closeResources();
+        System.out.println(users.get(0) + "<---->" + users.get(1));
         return users;
     }
 
@@ -567,7 +568,6 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
         return controller.sendMail(to, subject, emailBody);
     }
 
-
     public ArrayList<User> getAllUsers() {
         ArrayList<User> users = new ArrayList<User>();
         try {
@@ -593,7 +593,7 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
         closeResources();
         return users.size() == 0 ? null : users;
     }
-    
+
     public void updateUser(User user) {
         try {
             getConnection();
@@ -606,25 +606,23 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
-          closeResources();
+        closeResources();
     }
-    
-    public void GenerateUserFX(User user){
-        UserFx userFx= new UserFx(user.getUsername(), user.getEmail(), user.getFname()
-                , user.getLname(), user.getGender(), user.getCountry());
+
+    public void GenerateUserFX(User user) {
+        UserFx userFx = new UserFx(user.getUsername(), user.getEmail(), user.getFname(),
+                 user.getLname(), user.getGender(), user.getCountry());
         controller.GenerateUserFX(userFx);
     }
-    
 
     //-------------- Merna ------------------
-    
+    public ArrayList<Pair> getUpdatedCountries() {
+        return getCountries();
+    }
     //-------------- End Merna ------------------
-    
+
     //-------------- Roma ------------------
-    
     //-------------- End roma ------------------
-    
     //-------------- Motyim ------------------
-    
     //-------------- End motyim ------------------
 }

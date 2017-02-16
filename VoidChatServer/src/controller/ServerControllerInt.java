@@ -6,6 +6,7 @@ import model.ClientModelInt;
 import model.Message;
 import model.User;
 import utilitez.Notification;
+import utilitez.Pair;
 
 
 public interface ServerControllerInt extends Notification{
@@ -87,4 +88,6 @@ public interface ServerControllerInt extends Notification{
      * @return true if success
      */
     boolean sendMail(String to , String subject , String emailBody);
+    
+    public ArrayList<Pair> getUpdatedCountries();
 }

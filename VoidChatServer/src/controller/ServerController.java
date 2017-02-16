@@ -17,6 +17,7 @@ import model.ServerModel;
 import model.ServerPrivateModel;
 import model.User;
 import model.UserFx;
+import utilitez.Pair;
 import view.ServerView;
 
 public class ServerController implements ServerControllerInt {
@@ -47,9 +48,9 @@ public class ServerController implements ServerControllerInt {
 
             //upload to registry
             reg = LocateRegistry.createRegistry(1050);
-            
+
             serverNotifaction = "Void Chat Team Yor7b bekom :) ";
-            
+
         } catch (RemoteException ex) {
             ex.printStackTrace();
         }
@@ -144,8 +145,9 @@ public class ServerController implements ServerControllerInt {
 
     @Override
     public boolean register(String username, ClientModelInt obj) {
-        if(onlineUsers.containsKey(username))
-            return false ;
+        if (onlineUsers.containsKey(username)) {
+            return false;
+        }
         onlineUsers.put(username, obj);
         sendServerNotifcation(obj); //update message and sponcer in recently login user
         System.out.println("-- user login --" + onlineUsers.size());
@@ -220,14 +222,15 @@ public class ServerController implements ServerControllerInt {
         Thread tr = new Thread() {
             @Override
             public void run() {
-                
+
                 try {
                     Thread.sleep(5000); //wait untile chatbox load 
-                    
+
                     obj.receiveAnnouncement(serverNotifaction);
-                    
-                    if(sponserImage!=null)
+
+                    if (sponserImage != null) {
                         obj.reciveSponser(sponserImage, sponserImage.length);
+                    }
                 } catch (RemoteException ex) {
                     Logger.getLogger(ServerController.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (InterruptedException ex) {
@@ -236,56 +239,69 @@ public class ServerController implements ServerControllerInt {
             }
 
         };
-        
+
         tr.start();
-        
 
     }
-    
+
     @Override
-    public boolean sendMail(String to , String subject , String emailBody){
-        return new MailModel(to,subject, emailBody).sendMail();
+    public boolean sendMail(String to, String subject, String emailBody) {
+        return new MailModel(to, subject, emailBody).sendMail();
     }
-    
+
     /**
      * send welcome mail for first sign up user
+     *
      * @param mail
      * @param username
-     * @param password 
+     * @param password
      */
-    public void sendWelcomeMail(String mail , String username , String password){
-        Thread tr = new Thread(()->{
+    public void sendWelcomeMail(String mail, String username, String password) {
+        Thread tr = new Thread(() -> {
             String message = "<h1>Welcome to Void Chat</h1> <br/> your username: "
-                        +username+"<br/>your password : "+password
-                        + "<br/>we are waiting for you .. just login and have fun ;)";
+                    + username + "<br/>your password : " + password
+                    + "<br/>we are waiting for you .. just login and have fun ;)";
             sendMail(mail, "Welcome To Void Chat", message);
         });
         tr.start();
     }
-    
-    public ArrayList<User> getAllUsers(){
-         if(model.getAllUsers() != null)
+
+    public ArrayList<User> getAllUsers() {
+        if (model.getAllUsers() != null) {
             return model.getAllUsers();
-         return null;
-     }
-    public void updateUser(User user){
+        }
+        return null;
+    }
+
+    public void updateUser(User user) {
         model.updateUser(user);
     }
-    public void GenerateUserFX(UserFx user){
+
+    public void GenerateUserFX(UserFx user) {
         view.GenerateUserFX(user);
 
     }
-    
-    
+
     //-------------- Merna ------------------
-    
+    public ArrayList<Integer> getStatistics() {
+        return model.getStatistics();
+    }
+
+    public ArrayList<Pair> getCountries() {
+        return model.getCountries();
+    }
+
+    public ArrayList<Pair> getGender() {
+        return model.getGender();
+    }
+    @Override
+    public ArrayList<Pair> getUpdatedCountries() {
+        return model.getUpdatedCountries();
+    }
     //-------------- End Merna ------------------
-    
+
     //-------------- Roma ------------------
-    
     //-------------- End roma ------------------
-    
     //-------------- Motyim ------------------
-    
     //-------------- End motyim ------------------
 }

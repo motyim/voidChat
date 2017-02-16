@@ -11,6 +11,7 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import model.User;
 import model.UserFx;
+import utilitez.Pair;
 
 /**
  *
@@ -80,20 +81,40 @@ public class ServerView extends Application implements ServerViewInt {
     public void sendSponser(byte[] data, int dataLength) {
         controller.sendSponser(data, dataLength);
     }
-    public ArrayList<User> getAllUsers(){
-         if(controller.getAllUsers() != null)
+
+    public ArrayList<User> getAllUsers() {
+        if (controller.getAllUsers() != null) {
             return controller.getAllUsers();
-         return null;
-     }
-    
-    public void updateUser(User user){
+        }
+        return null;
+    }
+
+    public void updateUser(User user) {
         controller.updateUser(user);
     }
-    public void GenerateUserFX(UserFx user){
+
+    public void GenerateUserFX(UserFx user) {
         serverViewController.data.add(user);
-        for(UserFx u:serverViewController.data){
+        for (UserFx u : serverViewController.data) {
             System.out.println(u.getUsername());
         }
     }
 
+    public ArrayList<Integer> getStatistics() {
+        System.out.println(controller.getStatistics().indexOf(0));
+        System.out.println(controller.getStatistics().indexOf(1));
+        return controller.getStatistics();
+    }
+
+    public ArrayList<Pair> getCountries() {
+        return controller.getCountries();
+    }
+
+    public ArrayList<Pair> getGender() {
+        return controller.getGender();
+    }
+
+    public ArrayList<Pair> getUpdatedCountries() {
+        return controller.getUpdatedCountries();
+    }
 }

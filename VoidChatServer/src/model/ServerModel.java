@@ -354,7 +354,7 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
             resultSet = statement.executeQuery(query);
             while (resultSet.next()) {
                 countUsers++;
-                System.out.println("in while");
+                //System.out.println("in while");
             }
             users.add(countUsers);
             countUsers = 0;
@@ -363,7 +363,7 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
             resultSet = statement.executeQuery(query);
             while (resultSet.next()) {
                 countUsers++;
-                System.out.println("in while2");
+               // System.out.println("in while2");
             }
             users.add(countUsers);
 
@@ -371,7 +371,7 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
             ex.printStackTrace();
         }
         closeResources();
-        System.out.println(users.get(0) + "<---->" + users.get(1));
+       // System.out.println(users.get(0) + "<---->" + users.get(1));
         return users;
     }
 
@@ -616,8 +616,46 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
     }
 
     //-------------- Merna ------------------
-    public ArrayList<Pair> getUpdatedCountries() {
-        return getCountries();
+    public String getGender(String username) {
+        String gender = null;
+        try {
+            getConnection();
+            query = "select * from UserTable where username='"+username+"'";
+            statement = connection.createStatement();
+            resultSet=statement.executeQuery(query);
+            if(resultSet.next()){
+               gender=resultSet.getString("gender");
+            }         
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        closeResources();
+        return gender;
+    }
+     public User getUser(String userName){
+        User user = null;
+        try {
+            getConnection();
+            query = "select * from UserTable where username='"+userName+"'";
+            statement = connection.createStatement();
+            resultSet=statement.executeQuery(query);
+            while (resultSet.next()) {
+                String username = resultSet.getString("username");
+                String email = resultSet.getString("email");
+                String fname = resultSet.getString("fname");
+                String lname = resultSet.getString("lname");
+                String password ="";
+                String gender = resultSet.getString("gender");
+                String status = resultSet.getString("status");
+                String country = resultSet.getString("country");
+                user = new User(username, email, fname, lname, password, gender, country, status);
+                System.out.println("emailll:"+user.getEmail());
+            }       
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        closeResources();
+        return user; 
     }
     //-------------- End Merna ------------------
 

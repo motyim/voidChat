@@ -112,9 +112,6 @@ public class ServerViewController implements Initializable {
     @FXML
     private TableColumn<UserFx, String> genderCol;
 
-    @FXML
-    private TableColumn<UserFx, String> countryCol;
-
     public ArrayList<UserFx> users;
     public ObservableList<UserFx> data;
     //-------- merna -----------
@@ -124,12 +121,6 @@ public class ServerViewController implements Initializable {
     private CategoryAxis x;
     @FXML
     private NumberAxis y;
-    @FXML
-    private BarChart<?, ?> BarCharCountry;
-    @FXML
-    private CategoryAxis xcountry;
-    @FXML
-    private NumberAxis ycountry;
     @FXML
     private BarChart<?, ?> BarCharUserGender;
     @FXML
@@ -142,7 +133,6 @@ public class ServerViewController implements Initializable {
     private Pagination pagination;
     BarChart<String, Number> bc;
     BarChart<String, Number> gender;
-    BarChart<String, Number> country;
 
     public int itemsPerPage() {
         return 1;
@@ -160,17 +150,17 @@ public class ServerViewController implements Initializable {
 
         serverView = ServerView.getInstance();
         serverView.setServerViewController(this);
-        
+
         // load Charts Pane
         loadChartsPane();
-        
+
         try {
             //set sponser
             sponser.setImage(new Image(getClass().getResource("..//resources//Voidlogo.png").openStream()));
         } catch (IOException ex) {
             Logger.getLogger(ServerViewController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         /*
          * limit number of charachters, you can write in textArea 
          */
@@ -198,7 +188,7 @@ public class ServerViewController implements Initializable {
             }
             LoadTableData(users);
         }
-        
+
     }
 
     private void addTooltipToChartSlice(PieChart chart) {
@@ -346,18 +336,9 @@ public class ServerViewController implements Initializable {
         genderCol.setOnEditCommit((TableColumn.CellEditEvent<UserFx, String> event) -> {
             UserFx user = ((UserFx) event.getTableView().getItems().get(event.getTablePosition().getRow()));
             user.setGender(event.getNewValue());
+            System.out.println("gender -->>" + event.getNewValue() + ",from obj-->>" + user.getGender());
             serverView.updateUser(new User(user.getUsername(), user.getFname(),
                     user.getLname(), user.getGender(), user.getCountry()));
-        });
-
-        countryCol.setCellValueFactory(new PropertyValueFactory<>("country"));
-        countryCol.setCellFactory(TextFieldTableCell.forTableColumn());
-        countryCol.setOnEditCommit((TableColumn.CellEditEvent<UserFx, String> event) -> {
-            UserFx user = ((UserFx) event.getTableView().getItems().get(event.getTablePosition().getRow()));
-            user.setGender(event.getNewValue());
-            serverView.updateUser(new User(user.getUsername(), user.getFname(),
-                    user.getLname(), user.getGender(), user.getCountry()));
-
         });
 
         tableView.setItems(data);
@@ -378,18 +359,12 @@ public class ServerViewController implements Initializable {
             element.getChildren().add(gender);
             box.getChildren().add(element);
         }
-        if (page == 2) {
-            serverView.getUpdatedCountries();
-            VBox element = new VBox();
-            element.getChildren().add(country);
-            box.getChildren().add(element);
-
-        }
         return box;
     }
+
     public void loadChartsPane() {
 
-        pagination = new Pagination(3, 0);
+        pagination = new Pagination(2, 0);
         pagination.getStyleClass().add(Pagination.STYLE_CLASS_BULLET);
         pagination.setPageFactory(new Callback<Integer, Node>() {
 
@@ -476,40 +451,6 @@ public class ServerViewController implements Initializable {
         t2.setCycleCount(Animation.INDEFINITE);
         t2.play();
 
-        //chart3 --- country --- 
-        final NumberAxis CountryyAxis = new NumberAxis();
-        final CategoryAxis CountryxAxis = new CategoryAxis();
-        country = new BarChart<String, Number>(CountryxAxis, CountryyAxis);
-        country.setTitle("Country Status");
-        CountryxAxis.setLabel("Value");
-        country.setPrefSize(250, 200);
-
-        XYChart.Series series2;
-        series2 = new XYChart.Series();
-        for (int i = 0; i < serverView.getCountries().size(); i++) {
-            series2.getData().add(new XYChart.Data((String) serverView.getUpdatedCountries().get(i).getFirst(), (Number) serverView.getUpdatedCountries().get(i).getSecond()));
-        }
-
-        Timeline t3 = new Timeline();
-        t3.getKeyFrames().add(new KeyFrame(Duration.millis(500),
-                new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-
-                for (XYChart.Series<String, Number> series : country.getData()) {
-                    for (int i = 0; i < serverView.getCountries().size(); i++) {
-                        for (XYChart.Data<String, Number> data : series.getData()) {
-                            data.setXValue((String) serverView.getCountries().get(i).getFirst());
-                            System.out.println((String) serverView.getCountries().get(i).getFirst());
-                            data.setYValue((Number) serverView.getCountries().get(i).getSecond());
-                            System.out.println((Number) serverView.getCountries().get(i).getSecond());
-
-                        }
-                    }
-                }
-            }
-        }));
-        country.getData().add(series2);
     }
     //------ end merna ------
 }

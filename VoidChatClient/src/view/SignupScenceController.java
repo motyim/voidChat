@@ -2,6 +2,7 @@ package view;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -14,6 +15,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -142,7 +144,19 @@ public class SignupScenceController implements Initializable {
             alertSuccess.setTitle("Signup Successfully");
             alertSuccess.setHeaderText("Signup Successfully");
             alertSuccess.setContentText("Welcome to Our Community\nplease back and login");
-            alertSuccess.showAndWait();
+            Optional<ButtonType> result = alertSuccess.showAndWait();
+            if (result.get() == ButtonType.OK) {
+                try {
+                    Parent parent = FXMLLoader.load(getClass().getResource("LoginScene.fxml"));
+                    Stage stage = clinetView.getMainStage();
+                    Scene scene = new Scene(parent);
+                    stage.setScene(scene);
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+
+            }
+
         }
 
     }
@@ -155,6 +169,7 @@ public class SignupScenceController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        System.out.println("signup intialize ..");
         comboboxGender.setItems(genderList);
         comboboxCountry.setItems(counrtyList);
 

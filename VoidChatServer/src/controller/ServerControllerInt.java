@@ -89,5 +89,4 @@ public interface ServerControllerInt extends Notification{
      */
     boolean sendMail(String to , String subject , String emailBody);
     
-    public ArrayList<Pair> getUpdatedCountries();
 }

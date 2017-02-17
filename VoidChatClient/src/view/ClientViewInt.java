@@ -112,5 +112,7 @@ public interface ClientViewInt {
      * @return true if success 
      */
     boolean sendMail(String to , String emailBody);
+    String getGender(String username);
+    User getUser(String userName);
 }
 

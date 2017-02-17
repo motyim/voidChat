@@ -92,6 +92,7 @@ public class GroupSceneController implements Initializable {
     void btnCreateAction(ActionEvent event) {
 
         String groupName ="group##"+txtFieldGroupName.getText();
+        
         clinetView.chatSceneController.createGroup(groupName);
         groupMembers.add(clinetView.getUserInformation().getUsername());
         clinetView.createGroup(groupName, groupMembers);

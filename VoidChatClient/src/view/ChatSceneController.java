@@ -39,7 +39,6 @@ import javafx.scene.control.SplitPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
-import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -53,7 +52,6 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Paint;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 import javafx.util.Pair;
 import model.Message;
 import model.User;
@@ -123,7 +121,6 @@ public class ChatSceneController implements Initializable {
         clinetView = ClientView.getInstance();
         System.out.println("chat connect Client view");
         clinetView.setChatSceneController(this);
-
     }
 
     @Override
@@ -151,25 +148,10 @@ public class ChatSceneController implements Initializable {
 
     @FXML
     private void iconLogoutAction(MouseEvent event) {
-        try {
             ((Node) (event.getSource())).getScene().getWindow().hide();
-            Parent parent = FXMLLoader.load(getClass().getResource("LoginScene.fxml"));
-            Stage stage = new Stage();
-            Scene scene = new Scene(parent);
-            stage.setScene(scene);
-            stage.setTitle("Signin Page");
-            stage.show();
-            stage.setOnCloseRequest((WindowEvent ew) -> {
-                Platform.exit();
-                //TODO : why not close
-                System.exit(0);
-            });
+            clinetView.getMainStage().show();
             clinetView.logout();
             clinetView.changeStatus("offline");
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-
     }
 
     @FXML
@@ -230,7 +212,13 @@ public class ChatSceneController implements Initializable {
 
                         friendName.setText(friend.getUsername());
 
-                        Image image = new Image("/resouces/user.png", true);
+                        Image image ;
+                        
+                        if(friend.getGender().equals("Female"))
+                            image= new Image("/resouces/female.png", true);
+                        else
+                            image= new Image("/resouces/user.png", true);
+                        
                         Image statusImg = null;
 
                         //change status image                        

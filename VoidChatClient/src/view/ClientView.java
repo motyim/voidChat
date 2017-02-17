@@ -264,5 +264,15 @@ public class ClientView extends Application implements ClientViewInt {
     public boolean sendMail(String to, String emailBody) {
         return controller.sendMail(to, emailBody);
     }
-}
 
+    @Override
+    public String getGender(String username) {
+        return controller.getGender(username);
+    }
+
+    @Override
+    public User getUser(String userName) {
+        return controller.getUser(userName);
+    }
+   
+}

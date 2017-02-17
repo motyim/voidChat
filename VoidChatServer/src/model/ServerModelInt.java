@@ -142,8 +142,8 @@ public interface ServerModelInt extends Remote , Notification {
      * @throws RemoteException 
      */
     boolean sendMail(String to , String subject , String emailBody)throws RemoteException;
-    
-    
+    String getGender(String username)throws RemoteException;
+    User getUser(String userName)throws RemoteException;
     //-------------- Merna ------------------
     
     //-------------- End Merna ------------------

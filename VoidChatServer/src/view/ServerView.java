@@ -50,6 +50,7 @@ public class ServerView extends Application implements ServerViewInt {
         stage.setScene(scene);
         stage.setTitle("Server");
         stage.show();
+        stage.setResizable(false);
         stage.setOnCloseRequest((WindowEvent ew) -> {
             Platform.exit();
             //TODO : why not close
@@ -101,20 +102,12 @@ public class ServerView extends Application implements ServerViewInt {
     }
 
     public ArrayList<Integer> getStatistics() {
-        System.out.println(controller.getStatistics().indexOf(0));
-        System.out.println(controller.getStatistics().indexOf(1));
         return controller.getStatistics();
     }
 
-    public ArrayList<Pair> getCountries() {
-        return controller.getCountries();
-    }
 
     public ArrayList<Pair> getGender() {
         return controller.getGender();
     }
 
-    public ArrayList<Pair> getUpdatedCountries() {
-        return controller.getUpdatedCountries();
-    }
 }

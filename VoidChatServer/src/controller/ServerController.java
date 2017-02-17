@@ -111,10 +111,10 @@ public class ServerController implements ServerControllerInt {
                 ArrayList<String> chatMembers = groups.get(reciever);
 
                 for (int i = 0; i < chatMembers.size(); i++) {
-                    System.out.println(chatMembers.get(i));
+                   // System.out.println(chatMembers.get(i));
                     if (!chatMembers.get(i).equals(message.getFrom())) {
                         if (onlineUsers.containsKey(chatMembers.get(i))) {
-                            System.out.println(chatMembers.get(i) + " is online and group msg chat will send");
+                           // System.out.println(chatMembers.get(i) + " is online and group msg chat will send");
                             try {
 
                                 ClientModelInt clientObject = onlineUsers.get(chatMembers.get(i));
@@ -150,7 +150,7 @@ public class ServerController implements ServerControllerInt {
         }
         onlineUsers.put(username, obj);
         sendServerNotifcation(obj); //update message and sponcer in recently login user
-        System.out.println("-- user login --" + onlineUsers.size());
+      //  System.out.println("-- user login --" + onlineUsers.size());
         return true;
     }
 
@@ -178,9 +178,9 @@ public class ServerController implements ServerControllerInt {
 
     @Override
     public void unregister(String username) {
-        System.out.println(onlineUsers.size());
+       // System.out.println(onlineUsers.size());
         onlineUsers.remove(username);
-        System.out.println(onlineUsers.size());
+       // System.out.println(onlineUsers.size());
     }
 
     @Override
@@ -293,10 +293,6 @@ public class ServerController implements ServerControllerInt {
 
     public ArrayList<Pair> getGender() {
         return model.getGender();
-    }
-    @Override
-    public ArrayList<Pair> getUpdatedCountries() {
-        return model.getUpdatedCountries();
     }
     //-------------- End Merna ------------------
 

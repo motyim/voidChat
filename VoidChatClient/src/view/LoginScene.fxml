@@ -15,9 +15,19 @@
             <Font name="System Bold" size="34.0" />
          </font>
       </Text>
-      <PasswordField fx:id="txtPassword" layoutX="108.0" layoutY="192.0" prefHeight="27.0" prefWidth="179.0" promptText="********" />
-      <Button fx:id="btnLogin" layoutX="111.0" layoutY="249.0" mnemonicParsing="false" onAction="#btnLoginAction" prefHeight="27.0" prefWidth="173.0" text="Login" />
-      <Hyperlink fx:id="linkCreateAccount" layoutX="136.0" layoutY="292.0" onAction="#linkCreatAccountAction" prefHeight="25.0" prefWidth="131.0" text="Create an account " textAlignment="CENTER" textFill="#ebebeb" />
       <TextField fx:id="txtUserName" layoutX="107.0" layoutY="143.0" prefHeight="27.0" prefWidth="179.0" promptText="username" />
+      <PasswordField fx:id="txtPassword" layoutX="108.0" layoutY="210.0" prefHeight="27.0" prefWidth="179.0" promptText="********" />
+      <Button fx:id="btnLogin" layoutX="111.0" layoutY="269.0" mnemonicParsing="false" onAction="#btnLoginAction" prefHeight="27.0" prefWidth="173.0" text="Login" />
+      <Hyperlink fx:id="linkCreateAccount" layoutX="136.0" layoutY="312.0" onAction="#linkCreatAccountAction" prefHeight="25.0" prefWidth="131.0" text="Create an account " textAlignment="CENTER" textFill="#ebebeb" />
+      <Text fill="#9a9696" layoutX="111.0" layoutY="135.0" strokeType="OUTSIDE" strokeWidth="0.0" text="User Name">
+         <font>
+            <Font size="11.0" />
+         </font>
+      </Text>
+      <Text fill="#9a9696" layoutX="111.0" layoutY="203.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Password">
+         <font>
+            <Font size="11.0" />
+         </font>
+      </Text>
    </children>
 </AnchorPane>

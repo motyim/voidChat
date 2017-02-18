@@ -21,10 +21,13 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.ComboBox;
@@ -37,7 +40,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -66,8 +68,6 @@ public class ChatBoxController implements Initializable {
     @FXML
     private Label labelFriendStatus;
     @FXML
-    private ImageView iconCloseChat;
-    @FXML
     private TextField txtFieldMsg;
     @FXML
     private Button btnSendAttach;
@@ -75,8 +75,6 @@ public class ChatBoxController implements Initializable {
     private Image clips;
     @FXML
     private ListView<HBox> listviewChat;
-    @FXML
-    private Button btnSendMsg;
     @FXML
     private Button saveBtn;
     @FXML
@@ -129,8 +127,6 @@ public class ChatBoxController implements Initializable {
 
     }
 
-//    Boolean sendFlag = true;
-//    Boolean recFlag = true;
     /**
      * Initializes the controller class.
      *
@@ -153,11 +149,7 @@ public class ChatBoxController implements Initializable {
         saveBtn.setTooltip(new Tooltip("Save Message"));
     }
 
-    @FXML
-    private void iconCloseChatAction(MouseEvent event) {
-
-    }
-
+ 
     @FXML
     void saveBtnAction(ActionEvent event) {
         Platform.runLater(() -> {
@@ -242,10 +234,12 @@ public class ChatBoxController implements Initializable {
     }
 
     private void sendMessageAction() {
-
+       if(!txtFieldMsg.getText().trim().equals(""))  {
         sendMsgFlag = true;
 
-        String color = "#" + Integer.toHexString(colorPicker.getValue().hashCode());
+//        String color = "#" + Integer.toHexString(colorPicker.getValue().hashCode());
+        String color = toRGBCode(colorPicker.getValue());
+        System.out.println(color);
         String weight = (boldToggleBtn.isSelected()) ? "Bold" : "normal";
         String size = fontSizeComboBox.getSelectionModel().getSelectedItem();
         String style = (italicTogglebtn.isSelected()) ? "italic" : "normal";
@@ -263,7 +257,7 @@ public class ChatBoxController implements Initializable {
         msg.setTo(receiver);
         msg.setDate(getXMLGregorianCalendarNow());
         msg.setUnderline(underline);
-
+        
         clientView.sendMsg(msg);
 
         File f = new File("src/resouces/chatBoxStyle.css");
@@ -273,8 +267,13 @@ public class ChatBoxController implements Initializable {
 
             HBox cell = new HBox();
             VBox vbox = new VBox();
+            
+            ImageView img;
+            if(clientView.getUserInformation().getGender().equals("Female"))
+                img = new ImageView(new Image(getClass().getResource("..//resouces//female_32.png").openStream()));
+            else
+                img = new ImageView(new Image(getClass().getResource("..//resouces//user_32.png").openStream()));
 
-            ImageView img = new ImageView(new Image(getClass().getResource("..//resouces//user_32.png").openStream()));
             Label sendLabel = new Label(txtFieldMsg.getText());
             sendLabel.setMaxWidth(300);
             sendLabel.setWrapText(true);
@@ -311,7 +310,8 @@ public class ChatBoxController implements Initializable {
             ex.printStackTrace();
         }
         System.out.println("btnSendMsg Action");
-
+       }
+       System.out.println("empty message");
     }
 
     public void reciveMsg(Message message) throws IOException {
@@ -336,8 +336,13 @@ public class ChatBoxController implements Initializable {
         if (message != null) {
             HBox cell = new HBox();
             VBox vbox = new VBox();
-
-            ImageView img = new ImageView(new Image(getClass().getResource("..//resouces//user_32.png").openStream()));
+            
+           ImageView img;
+            //check here ,, need method get receiver object to know type ..
+           if(clientView.getGender(receiver).equals("Female"))
+                img = new ImageView(new Image(getClass().getResource("..//resouces//female_32.png").openStream()));
+            else
+                img = new ImageView(new Image(getClass().getResource("..//resouces//user_32.png").openStream()));
 
             Text recName = new Text(message.getFrom());
             recName.setStyle("-fx-font: 10 arial;");
@@ -397,7 +402,23 @@ public class ChatBoxController implements Initializable {
             sendMessageAction();
         }
     }
-
+    
+    @FXML
+    void btnSendEmailAction(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("SendEmailScene.fxml"));
+            String to=clientView.getUser(receiver).getEmail();
+            loader.setController(new SendEmailSceneController(clientView.getUserInformation().getEmail(),to));
+            Parent parent = loader.load();
+            Stage stage = new Stage();
+            Scene scene = new Scene(parent);
+            stage.setScene(scene);
+            stage.setTitle("Send Email");
+            stage.show();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
     /*
      *customize Editor pane with styles  (bold,italic,font,size ..) 
      */
@@ -514,5 +535,13 @@ public class ChatBoxController implements Initializable {
     public void sendMail(){
         //TODO : edit this one 
         clientView.sendMail(receiver, receiver);
+    }
+    
+    public static String toRGBCode( Color color )
+    {
+        return String.format( "#%02X%02X%02X",
+            (int)( color.getRed() * 255 ),
+            (int)( color.getGreen() * 255 ),
+            (int)( color.getBlue() * 255 ) );
     }
 }

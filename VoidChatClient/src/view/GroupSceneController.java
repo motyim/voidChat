@@ -99,6 +99,7 @@ public class GroupSceneController implements Initializable {
          String groupName = "group##" + new Date().toString() + "##" + txtFieldGroupName.getText();
 ///////////////////        
 
+
         clinetView.chatSceneController.createGroup(groupName);
         groupMembers.add(clinetView.getUserInformation().getUsername());
         if (!clinetView.chatSceneController.tabsOpened.containsKey(groupName)) {

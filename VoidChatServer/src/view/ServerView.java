@@ -11,6 +11,7 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import model.User;
 import model.UserFx;
+import utilitez.Pair;
 
 /**
  *
@@ -49,6 +50,7 @@ public class ServerView extends Application implements ServerViewInt {
         stage.setScene(scene);
         stage.setTitle("Server");
         stage.show();
+        stage.setResizable(false);
         stage.setOnCloseRequest((WindowEvent ew) -> {
             controller.loadErrorServer();
             Platform.exit();
@@ -82,25 +84,37 @@ public class ServerView extends Application implements ServerViewInt {
     public void sendSponser(byte[] data, int dataLength) {
         controller.sendSponser(data, dataLength);
     }
-    public ArrayList<User> getAllUsers(){
-         if(controller.getAllUsers() != null)
+
+    public ArrayList<User> getAllUsers() {
+        if (controller.getAllUsers() != null) {
             return controller.getAllUsers();
-         return null;
-     }
-    
-    public void updateUser(User user){
+        }
+        return null;
+    }
+
+    public void updateUser(User user) {
         controller.updateUser(user);
     }
-    public void GenerateUserFX(UserFx user){
+
+    public void GenerateUserFX(UserFx user) {
         serverViewController.data.add(user);
-        for(UserFx u:serverViewController.data){
+        for (UserFx u : serverViewController.data) {
             System.out.println(u.getUsername());
         }
     }
 
+
     @Override
     public void loadErrorServer() {
         controller.loadErrorServer();
+    }
+    public ArrayList<Integer> getStatistics() {
+        return controller.getStatistics();
+    }
+
+
+    public ArrayList<Pair> getGender() {
+        return controller.getGender();
     }
 
 }

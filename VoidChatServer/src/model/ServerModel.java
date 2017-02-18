@@ -116,8 +116,6 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
                 String status = resultSet.getString("status");
                 String country = resultSet.getString("country");
                 user = new User(name, email, fname, lname, pw, gender, country, status);
-                System.out.println("what here");
-                System.out.println(user.getUsername() + ">>><<<????");
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -356,7 +354,7 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
             resultSet = statement.executeQuery(query);
             while (resultSet.next()) {
                 countUsers++;
-                System.out.println("in while");
+                //System.out.println("in while");
             }
             users.add(countUsers);
             countUsers = 0;
@@ -365,7 +363,7 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
             resultSet = statement.executeQuery(query);
             while (resultSet.next()) {
                 countUsers++;
-                System.out.println("in while2");
+               // System.out.println("in while2");
             }
             users.add(countUsers);
 
@@ -373,6 +371,7 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
             ex.printStackTrace();
         }
         closeResources();
+       // System.out.println(users.get(0) + "<---->" + users.get(1));
         return users;
     }
 
@@ -613,10 +612,12 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
 
     public void GenerateUserFX(User user) {
         UserFx userFx = new UserFx(user.getUsername(), user.getEmail(), user.getFname(), user.getLname(), user.getGender(), user.getCountry());
+
         controller.GenerateUserFX(userFx);
     }
 
     //-------------- Merna ------------------
+
     //-------------- End Merna ------------------
     //-------------- Roma ------------------
     //-------------- End roma ------------------
@@ -640,9 +641,8 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
         closeResources();
     }
 
-    //-------------- End motyim ------------------
-
-    String getGender(String username) {
+    @Override
+    public String getGender(String username) {
         String gender = null;
         try {
             getConnection();
@@ -658,8 +658,7 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
         closeResources();
         return gender;
     }
-    
-    User getUser(String userName){
+     public User getUser(String userName){
         User user = null;
         try {
             getConnection();
@@ -676,6 +675,7 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
                 String status = resultSet.getString("status");
                 String country = resultSet.getString("country");
                 user = new User(username, email, fname, lname, password, gender, country, status);
+                System.out.println("emailll:"+user.getEmail());
             }       
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -683,5 +683,14 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
         closeResources();
         return user; 
     }
+    //-------------- End Merna ------------------
+
+    //-------------- Roma ------------------
+    //-------------- End roma ------------------
+    //-------------- Motyim ------------------
+
+    //-------------- End motyim ------------------
+
+   
 
 }

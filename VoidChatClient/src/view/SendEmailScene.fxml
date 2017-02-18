@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane id="AnchorPane" prefHeight="426.0" prefWidth="336.0" style="-fx-background-color: #535f85;" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+    <Line endX="240.0" fill="#e8e8e8" layoutX="95.0" layoutY="26.0" opacity="0.15" startX="-95.0" stroke="#dddddd" />
+      <Label layoutX="32.0" layoutY="28.0" prefHeight="17.0" prefWidth="116.0" textFill="#e4e4e4">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+   <Text fill="#e4e4e4" layoutX="18.0" layoutY="52.0" strokeType="OUTSIDE" strokeWidth="0.0" text="From" />
+   <Text fill="#e4e4e4" layoutX="18.0" layoutY="94.0" strokeType="OUTSIDE" strokeWidth="0.0" text="To" />
+   <Line endX="240.0" fill="#e8e8e8" layoutX="95.0" layoutY="68.0" opacity="0.15" startX="-95.0" stroke="#dddddd" />
+   <Line endX="240.0" fill="#e8e8e8" layoutX="95.0" layoutY="110.0" opacity="0.15" startX="-95.0" stroke="#dddddd" />
+   <TextArea fx:id="txtAreaEmail" layoutX="21.0" layoutY="175.0" prefHeight="196.0" prefWidth="293.0" promptText="Compose email ..." />
+   <Label fx:id="txtFrom" layoutX="65.0" layoutY="39.0" prefHeight="17.0" prefWidth="227.0" text="merna108@gmail.com" />
+   <Label fx:id="txtTo" layoutX="65.0" layoutY="80.0" prefHeight="17.0" prefWidth="227.0" text="Roma108@gmail.com" />
+   <TextField fx:id="txtFieldSubject" layoutX="21.0" layoutY="129.0" prefHeight="27.0" prefWidth="227.0" promptText="Subject" />
+   <Button fx:id="btnSend" layoutX="259.0" layoutY="129.0" mnemonicParsing="false" onAction="#btnSendAction" text="Send" />
+</AnchorPane>

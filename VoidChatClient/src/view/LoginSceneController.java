@@ -111,6 +111,7 @@ public class LoginSceneController implements Initializable {
         try {
             Parent parent = FXMLLoader.load(getClass().getResource("SignupScence.fxml"));
             Stage stage = clinetView.getMainStage();
+            System.out.println("stage >>" + stage);
             Scene scene = new Scene(parent);
             stage.setScene(scene);
             stage.setTitle("Create an account");
@@ -122,7 +123,7 @@ public class LoginSceneController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // Request focus on the txtUserName field by default.
-        Platform.runLater(() -> txtUserName.requestFocus());
+//        Platform.runLater(() -> txtUserName.requestFocus());
     }
 
 }

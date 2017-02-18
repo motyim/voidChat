@@ -161,4 +161,8 @@ public interface ServerModelInt extends Remote , Notification {
      */
      boolean isOnline() throws RemoteException;
     //-------------- End motyim ------------------
+
+    String getGender(String username)throws RemoteException;
+    User getUser(String userName)throws RemoteException;
+
 }

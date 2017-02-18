@@ -99,7 +99,7 @@ public class UserFx implements Serializable{
     }
 
     public void setGender(String gender) {
-        this.gender.get();
+        this.gender.set(gender);
     }
 
     public String getCountry() {

@@ -19,13 +19,13 @@
          </font>
       </Text>
       <TextField fx:id="txtLName" layoutX="209.0" layoutY="82.0" prefHeight="27.0" prefWidth="132.0" promptText="Last Name" />
-      <TextField fx:id="txtEmail" layoutX="43.0" layoutY="226.0" prefHeight="27.0" prefWidth="303.0" promptText="Email" />
-      <PasswordField fx:id="txtPassword" layoutX="43.0" layoutY="275.0" prefHeight="27.0" prefWidth="303.0" promptText="Password" />
-      <TextField fx:id="txtUserName" layoutX="43.0" layoutY="179.0" prefHeight="27.0" prefWidth="303.0" promptText="User name" />
-      <Button fx:id="btnSignup" layoutX="105.0" layoutY="338.0" mnemonicParsing="false" onAction="#btnSignupAction" prefHeight="27.0" prefWidth="173.0" text="Sign up" />
       <ComboBox fx:id="comboboxGender" layoutX="50.0" layoutY="128.0" prefHeight="27.0" prefWidth="132.0" promptText="Gender" />
       <ComboBox fx:id="comboboxCountry" layoutX="209.0" layoutY="128.0" prefHeight="27.0" prefWidth="132.0" promptText="Country" />
-      <ImageView fx:id="btnBack" fitHeight="27.0" fitWidth="24.0" layoutX="13.0" layoutY="15.0" onMouseClicked="#btnBackAction" pickOnBounds="true" preserveRatio="true">
+      <TextField fx:id="txtUserName" layoutX="43.0" layoutY="179.0" prefHeight="27.0" prefWidth="303.0" promptText="User name" />
+      <TextField fx:id="txtEmail" layoutX="43.0" layoutY="226.0" prefHeight="27.0" prefWidth="303.0" promptText="Email" />
+      <PasswordField fx:id="txtPassword" layoutX="43.0" layoutY="275.0" prefHeight="27.0" prefWidth="303.0" promptText="Password" />
+      <Button fx:id="btnSignup" layoutX="105.0" layoutY="338.0" mnemonicParsing="false" onAction="#btnSignupAction" prefHeight="27.0" prefWidth="173.0" text="Sign up" />
+            <ImageView fx:id="btnBack" fitHeight="27.0" fitWidth="24.0" layoutX="13.0" layoutY="15.0" onMouseClicked="#btnBackAction" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../resouces/back.png" />
          </image>

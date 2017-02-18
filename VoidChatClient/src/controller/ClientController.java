@@ -340,4 +340,26 @@ public class ClientController implements ClientControllerInt {
         }
      }
 
+    @Override
+    public String getGender(String username) {
+        try {
+            return serverModelInt.getGender(username);
+        } catch (RemoteException ex) {
+            ex.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public User getUser(String userName) {
+        try {
+            
+            return  serverModelInt.getUser(userName);
+        } catch (RemoteException ex) {
+            ex.printStackTrace();
+            return null;
+        }
+    }
+    
+
 }

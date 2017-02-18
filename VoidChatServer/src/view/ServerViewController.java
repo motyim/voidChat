@@ -10,20 +10,28 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.Side;
 import javafx.scene.Node;
+import javafx.scene.chart.BarChart;
+import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.PieChart;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.Pagination;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
@@ -38,11 +46,13 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.util.Callback;
+import javafx.util.Duration;
 import model.User;
 import model.UserFx;
-
 
 /**
  * FXML Controller class
@@ -102,11 +112,32 @@ public class ServerViewController implements Initializable {
     @FXML
     private TableColumn<UserFx, String> genderCol;
 
-    @FXML
-    private TableColumn<UserFx, String> countryCol;
-    
     public ArrayList<UserFx> users;
     public ObservableList<UserFx> data;
+    //-------- merna -----------
+    @FXML
+    private BarChart<?, ?> BarCharOnline;
+    @FXML
+    private CategoryAxis x;
+    @FXML
+    private NumberAxis y;
+    @FXML
+    private BarChart<?, ?> BarCharUserGender;
+    @FXML
+    private CategoryAxis xGender;
+    @FXML
+    private NumberAxis yGender;
+    @FXML
+    private AnchorPane analysisPane;
+
+    private Pagination pagination;
+    BarChart<String, Number> bc;
+    BarChart<String, Number> gender;
+
+    public int itemsPerPage() {
+        return 1;
+    }
+    //-------- end merna -----------
 
     /**
      * Initializes the controller class.
@@ -120,21 +151,15 @@ public class ServerViewController implements Initializable {
         serverView = ServerView.getInstance();
         serverView.setServerViewController(this);
 
+        // load Charts Pane
+        loadChartsPane();
+
         try {
             //set sponser
             sponser.setImage(new Image(getClass().getResource("..//resources//Voidlogo.png").openStream()));
         } catch (IOException ex) {
             Logger.getLogger(ServerViewController.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-        ObservableList<PieChart.Data> data = FXCollections.observableArrayList(
-                new PieChart.Data("Online", 50),
-                new PieChart.Data("Offline", 30),
-                new PieChart.Data("Busy", 20));
-        System.out.println("chart");
-        pieChart.setData(data);
-        pieChart.setLegendSide(Side.LEFT);
-
 
         /*
          * limit number of charachters, you can write in textArea 
@@ -158,8 +183,8 @@ public class ServerViewController implements Initializable {
         if (serverView.getAllUsers() != null) {
             for (User user : serverView.getAllUsers()) {
                 users.add(new UserFx(user.getUsername(), user.getEmail(),
-                         user.getFname(), user.getLname(), user.getGender(),
-                         user.getCountry()));
+                        user.getFname(), user.getLname(), user.getGender(),
+                        user.getCountry()));
             }
             LoadTableData(users);
         }
@@ -277,12 +302,11 @@ public class ServerViewController implements Initializable {
             Logger.getLogger(ServerViewController.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-
     }
 
     public void LoadTableData(ArrayList<UserFx> users) {
 
-         data = FXCollections.observableArrayList(users);
+        data = FXCollections.observableArrayList(users);
 
         tableView.setEditable(true);
 
@@ -294,7 +318,7 @@ public class ServerViewController implements Initializable {
             UserFx user = ((UserFx) event.getTableView().getItems().get(event.getTablePosition().getRow()));
             user.setFname(event.getNewValue());
             serverView.updateUser(new User(user.getUsername(), user.getFname(),
-                     user.getLname(), user.getGender(), user.getCountry()));
+                    user.getLname(), user.getGender(), user.getCountry()));
         });
 
         lastNameCol.setCellValueFactory(new PropertyValueFactory<>("lname"));
@@ -303,7 +327,7 @@ public class ServerViewController implements Initializable {
             UserFx user = ((UserFx) event.getTableView().getItems().get(event.getTablePosition().getRow()));
             user.setLname(event.getNewValue());
             serverView.updateUser(new User(user.getUsername(), user.getFname(),
-                     user.getLname(), user.getGender(), user.getCountry()));
+                    user.getLname(), user.getGender(), user.getCountry()));
         });
 
         emailCol.setCellValueFactory(new PropertyValueFactory<>("email"));
@@ -313,23 +337,121 @@ public class ServerViewController implements Initializable {
         genderCol.setOnEditCommit((TableColumn.CellEditEvent<UserFx, String> event) -> {
             UserFx user = ((UserFx) event.getTableView().getItems().get(event.getTablePosition().getRow()));
             user.setGender(event.getNewValue());
+            System.out.println("gender -->>" + event.getNewValue() + ",from obj-->>" + user.getGender());
             serverView.updateUser(new User(user.getUsername(), user.getFname(),
-                     user.getLname(), user.getGender(), user.getCountry()));
-        });
-
-        countryCol.setCellValueFactory(new PropertyValueFactory<>("country"));
-        countryCol.setCellFactory(TextFieldTableCell.forTableColumn());
-        countryCol.setOnEditCommit((TableColumn.CellEditEvent<UserFx, String> event) -> {
-            UserFx user = ((UserFx) event.getTableView().getItems().get(event.getTablePosition().getRow()));
-            user.setGender(event.getNewValue());
-            serverView.updateUser(new User(user.getUsername(), user.getFname(),
-                     user.getLname(), user.getGender(), user.getCountry()));
-
+                    user.getLname(), user.getGender(), user.getCountry()));
         });
 
         tableView.setItems(data);
-
-
     }
 
+    //------ merna ------
+    public VBox createPage(int pageIndex) {
+
+        VBox box = new VBox(5);
+        int page = pageIndex * itemsPerPage();
+        if (page == 0) {
+            VBox element = new VBox();
+            element.getChildren().add(bc);
+            box.getChildren().add(element);
+        }
+        if (page == 1) {
+            VBox element = new VBox();
+            element.getChildren().add(gender);
+            box.getChildren().add(element);
+        }
+        return box;
+    }
+
+    public void loadChartsPane() {
+
+        pagination = new Pagination(2, 0);
+        pagination.getStyleClass().add(Pagination.STYLE_CLASS_BULLET);
+        pagination.setPageFactory(new Callback<Integer, Node>() {
+
+            @Override
+            public Node call(Integer pageIndex) {
+                return createPage(pageIndex);
+            }
+        });
+
+        analysisPane.setTopAnchor(pagination, 10.0);
+        analysisPane.setRightAnchor(pagination, 10.0);
+        analysisPane.setBottomAnchor(pagination, 10.0);
+        analysisPane.setLeftAnchor(pagination, 10.0);
+        analysisPane.getChildren().addAll(pagination);
+
+        //chart1 --- status ---  
+        final NumberAxis yAxis = new NumberAxis();
+        final CategoryAxis xAxis = new CategoryAxis();
+        bc = new BarChart<String, Number>(xAxis, yAxis);
+        bc.setTitle("Online Status");
+        yAxis.setLabel("User");
+        yAxis.setLowerBound(0);
+        yAxis.setUpperBound(serverView.getStatistics().get(0) + serverView.getStatistics().get(1));
+        bc.setPrefSize(250, 200);
+
+        XYChart.Series series1 = new XYChart.Series();
+        series1.getData().add(new XYChart.Data("online", 2));
+        series1.getData().add(new XYChart.Data("offline", 2));
+
+        Timeline tl = new Timeline();
+        tl.getKeyFrames().add(new KeyFrame(Duration.millis(500),
+                new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                for (XYChart.Series<String, Number> series : bc.getData()) {
+                    for (XYChart.Data<String, Number> data : series.getData()) {
+                        if (data.getXValue().equals("online")) {
+                            data.setYValue(serverView.getStatistics().get(0));
+                        } else if (data.getXValue().equals("offline")) {
+                            data.setYValue(serverView.getStatistics().get(1));
+                        }
+                    }
+                }
+            }
+        }));
+        bc.getData().addAll(series1);
+        tl.setCycleCount(Animation.INDEFINITE);
+        tl.play();
+
+        //chart2 --- gender ---
+        final NumberAxis genderyAxis = new NumberAxis();
+        final CategoryAxis genderxAxis = new CategoryAxis();
+        gender = new BarChart<String, Number>(genderxAxis, genderyAxis);
+        gender.setTitle("gender Status");
+        genderxAxis.setLabel("Value");
+        genderyAxis.setLowerBound(0);
+        genderyAxis.setUpperBound(serverView.getStatistics().get(0) + serverView.getStatistics().get(1));
+        genderyAxis.setLabel("User");
+        gender.setPrefSize(250, 200);
+
+        XYChart.Series series3 = new XYChart.Series();
+        series3.getData().add(new XYChart.Data("Female", 45));
+        series3.getData().add(new XYChart.Data("Male", 45));
+
+        Timeline t2 = new Timeline();
+        t2.getKeyFrames().add(new KeyFrame(Duration.millis(500),
+                new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                for (XYChart.Series<String, Number> series : gender.getData()) {
+                    for (XYChart.Data<String, Number> data : series.getData()) {
+                        if (data.getXValue().equals("Female")) {
+
+                            data.setYValue((Number) serverView.getGender().get(0).getSecond());
+                        } else if (data.getXValue().equals("Male")) {
+                            data.setYValue((Number) serverView.getGender().get(1).getSecond());
+                        }
+                    }
+                }
+            }
+        }));
+
+        gender.getData().add(series3);
+        t2.setCycleCount(Animation.INDEFINITE);
+        t2.play();
+
+    }
+    //------ end merna ------
 }

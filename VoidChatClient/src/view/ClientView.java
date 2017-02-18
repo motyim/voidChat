@@ -270,5 +270,16 @@ public class ClientView extends Application implements ClientViewInt {
     public boolean conncetToServer(String host) {
         return controller.conncetToServer(host);
     }
-}
 
+
+    @Override
+    public String getGender(String username) {
+        return controller.getGender(username);
+    }
+
+    @Override
+    public User getUser(String userName) {
+        return controller.getUser(userName);
+    }
+   
+}

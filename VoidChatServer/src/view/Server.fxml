@@ -1,110 +1,120 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.scene.chart.*?>
 <?import javafx.scene.chart.PieChart?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.*?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
 <AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.ServerViewController">
-  <children>
-    <TabPane prefHeight="400.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-      <tabs>
-        <Tab text="Analysis">
-          <content>
-            <AnchorPane id="Content" fx:id="analysisPane" blendMode="MULTIPLY" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                     <children>
-                        <GridPane prefHeight="367.0" prefWidth="600.0">
-                          <columnConstraints>
-                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                          </columnConstraints>
-                          <rowConstraints>
-                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                          </rowConstraints>
-                           <children>
-                              <PieChart fx:id="pieChart" title="status chart" />
-                           </children>
-                        </GridPane>
-                     </children></AnchorPane>
-          </content>
-        </Tab>
-        <Tab text="Control">
-          <content>
-            <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-              <children>
-                <Label layoutX="55.0" layoutY="38.0" prefHeight="31.0" prefWidth="236.0" text="Send Announcement to All Online Clients" textFill="#797878" />
-                <TextArea fx:id="announcement" layoutX="55.0" layoutY="69.0" prefHeight="65.0" prefWidth="493.0" promptText="Message ..." wrapText="true" />
-                <Button fx:id="sendBtn" layoutX="419.0" layoutY="165.0" mnemonicParsing="false" onAction="#sendAnnouncement" prefHeight="25.0" prefWidth="129.0" text="Send notification" />
-                <ToolBar layoutX="0.0" layoutY="324.0" prefHeight="45.0" prefWidth="600.0">
-                  <items>
-                    <ToggleButton fx:id="start" mnemonicParsing="false" onAction="#ToggleButtonAction" prefWidth="69.0" text="Start" />
-                  </items>
-                </ToolBar>
-                        <ImageView fx:id="sponser" fitHeight="100.0" fitWidth="200.0" layoutX="115.0" layoutY="167.0" pickOnBounds="true" preserveRatio="true">
-                        </ImageView>
-                        <Button fx:id="sendBtn1" layoutX="419.0" layoutY="217.0" mnemonicParsing="false" onAction="#setSponser" prefHeight="25.0" prefWidth="129.0" text="change sponsor" />
-              </children>
-            </AnchorPane>
-          </content>
-        </Tab>
-            <Tab text="Users ">
-              <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                     <children>
-                        <Text layoutX="157.0" layoutY="46.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Get User Information ">
-                           <font>
-                              <Font size="30.0" />
-                           </font>
-                        </Text>
-                        <TextField fx:id="username" alignment="CENTER" layoutX="154.0" layoutY="66.0" onAction="#getUserData" prefHeight="25.0" prefWidth="283.0" promptText="Enter username and press Enter " />
-                        <AnchorPane fx:id="userContent" layoutX="161.0" layoutY="120.0" prefHeight="230.0" prefWidth="366.0">
+    <children>
+        <TabPane prefHeight="400.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <tabs>
+                <Tab text="Control">
+                    <content>
+                        <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                             <children>
-                                
+                                <Label layoutX="55.0" layoutY="38.0" prefHeight="31.0" prefWidth="236.0" text="Send Announcement to All Online Clients" textFill="#797878" />
+                                <TextArea fx:id="announcement" layoutX="55.0" layoutY="69.0" prefHeight="65.0" prefWidth="493.0" promptText="Message ..." wrapText="true" />
+                                <Button fx:id="sendBtn" layoutX="419.0" layoutY="165.0" mnemonicParsing="false" onAction="#sendAnnouncement" prefHeight="25.0" prefWidth="129.0" text="Send notification" />
+                                <ToolBar layoutX="0.0" layoutY="324.0" prefHeight="45.0" prefWidth="600.0">
+                                    <items>
+                                        <ToggleButton fx:id="start" mnemonicParsing="false" onAction="#ToggleButtonAction" prefWidth="69.0" text="Start" />
+                                    </items>
+                                </ToolBar>
+                                <ImageView fx:id="sponser" fitHeight="100.0" fitWidth="200.0" layoutX="115.0" layoutY="167.0" pickOnBounds="true" preserveRatio="true">
+                                </ImageView>
+                                <Button fx:id="sendBtn1" layoutX="419.0" layoutY="217.0" mnemonicParsing="false" onAction="#setSponser" prefHeight="25.0" prefWidth="129.0" text="change sponsor" />
                             </children>
                         </AnchorPane>
-                     </children>
-                  </AnchorPane>
-              </content>
-            </Tab>
-            <Tab text="Administrator">
-              <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                     <children>
-                        <TableView fx:id="tableView" editable="true" layoutX="11.0" layoutY="47.0" prefHeight="309.0" prefWidth="578.0">
-                          <columns>
-                            <TableColumn fx:id="userNameCol" prefWidth="93.0" text="User Name" />
-                            <TableColumn fx:id="firstNameCol" prefWidth="88.0" text="First Name" />
-                              <TableColumn fx:id="lastNameCol" prefWidth="93.0" text="Last Name" />
-                              <TableColumn fx:id="emailCol" prefWidth="170.0" text="Email" />
-                              <TableColumn fx:id="genderCol" prefWidth="59.0" text="Gender" />
-                              <TableColumn fx:id="countryCol" prefWidth="73.0" text="Country" />
-                          </columns>
-                        </TableView>
-                        <Text layoutX="14.0" layoutY="34.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Users Data" wrappingWidth="180.21875">
-                           <font>
-                              <Font name="System Bold" size="24.0" />
-                           </font>
-                        </Text>
-                     </children>
-                  </AnchorPane>
-              </content>
-            </Tab>
-      </tabs>
-    </TabPane>
-  </children>
+                    </content>
+                </Tab>
+                <Tab text="Analysis">
+                    <content>
+                        <AnchorPane id="Content" fx:id="analysisPane" blendMode="MULTIPLY" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                            <children>
+                                <GridPane prefHeight="367.0" prefWidth="600.0">
+                                    <children>
+                                        <Pane fx:id="pan1" prefHeight="183.0" prefWidth="289.0" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                                        <Pane fx:id="pan2" prefHeight="184.0" prefWidth="300.0000999999975" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                                        <Pane fx:id="pan3" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                        <Pane fx:id="pan4" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                                    </children>
+                                    <columnConstraints>
+                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    </columnConstraints>
+                                    <rowConstraints>
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    </rowConstraints>
+                                </GridPane>
+                            </children>
+                        </AnchorPane>
+                    </content>
+                </Tab>
+     
+                <Tab text="Users ">
+                    <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                            <children>
+                                <Text layoutX="157.0" layoutY="46.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Get User Information ">
+                                    <font>
+                                        <Font size="30.0" />
+                                    </font>
+                                </Text>
+                                <TextField fx:id="username" alignment="CENTER" layoutX="154.0" layoutY="66.0" onAction="#getUserData" prefHeight="25.0" prefWidth="283.0" promptText="Enter username and press Enter " />
+                                <AnchorPane fx:id="userContent" layoutX="161.0" layoutY="120.0" prefHeight="230.0" prefWidth="366.0">
+                                    <children>
+                                
+                                    </children>
+                                </AnchorPane>
+                            </children>
+                        </AnchorPane>
+                    </content>
+                </Tab>
+                <Tab text="Administrator">
+                    <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                            <children>
+                                <TableView fx:id="tableView" editable="true" layoutX="11.0" layoutY="47.0" prefHeight="309.0" prefWidth="578.0">
+                                    <columns>
+                                        <TableColumn fx:id="userNameCol" prefWidth="93.0" text="User Name" />
+                                        <TableColumn fx:id="firstNameCol" prefWidth="88.0" text="First Name" />
+                                        <TableColumn fx:id="lastNameCol" prefWidth="93.0" text="Last Name" />
+                                        <TableColumn fx:id="emailCol" prefWidth="170.0" text="Email" />
+                                        <TableColumn fx:id="genderCol" prefWidth="59.0" text="Gender" />
+                                        <TableColumn fx:id="countryCol" prefWidth="73.0" text="Country" />
+                                    </columns>
+                                </TableView>
+                                <Text layoutX="14.0" layoutY="34.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Users Data" wrappingWidth="180.21875">
+                                    <font>
+                                        <Font name="System Bold" size="24.0" />
+                                    </font>
+                                </Text>
+                            </children>
+                        </AnchorPane>
+                    </content>
+                </Tab>
+            </tabs>
+        </TabPane>
+    </children>
 </AnchorPane>

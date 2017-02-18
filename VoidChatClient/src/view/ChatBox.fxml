@@ -71,7 +71,7 @@
       </FlowPane>
         <HBox prefHeight="40.0" prefWidth="400.0">
             <children>
-                <TextField fx:id="txtFieldMsg" onKeyPressed="#txtFieldOnKeyPressed" prefHeight="27.0" prefWidth="310.0" promptText="Type a Message ">
+                <TextField fx:id="txtFieldMsg" onKeyPressed="#txtFieldOnKeyPressed" prefHeight="27.0" prefWidth="279.0" promptText="Type a Message ">
                     <opaqueInsets>
                         <Insets />
                     </opaqueInsets>
@@ -79,6 +79,18 @@
                         <Insets bottom="5.0" left="5.0" top="5.0" />
                     </HBox.margin>
                 </TextField>
+            <Button fx:id="btnSendEmail" mnemonicParsing="false" onAction="#btnSendEmailAction" prefHeight="27.0" prefWidth="32.0">
+               <graphic>
+                  <ImageView fitHeight="14.0" fitWidth="15.0" layoutX="-2.0">
+                     <image>
+                        <Image fx:id="clips1" url="@../resouces/email.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <HBox.margin>
+                  <Insets left="5.0" top="5.0" />
+               </HBox.margin>
+            </Button>
             <Button fx:id="saveBtn" mnemonicParsing="false" onAction="#saveBtnAction" prefHeight="27.0" prefWidth="32.0">
                 <graphic>
                         <ImageView fitHeight="14.0" fitWidth="15.0" layoutX="-2.0">

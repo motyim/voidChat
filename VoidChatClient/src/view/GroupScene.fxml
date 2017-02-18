@@ -8,6 +8,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
 <AnchorPane id="AnchorPane" prefHeight="425.0" prefWidth="336.0" style="-fx-background-color: #535f85;" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.GroupSceneController">
     <Line endX="-72.0" fill="#e8e8e8" layoutX="95.0" layoutY="38.0" startX="-93.0" stroke="#dddddd" />
@@ -17,7 +18,7 @@
             <Font size="16.0" />
          </font>
       </Label>
-    <TextField fx:id="txtFieldGroupName" layoutX="16.0" layoutY="66.0" prefHeight="27.0" prefWidth="216.0" promptText="Group Name .." />
+    <TextField fx:id="txtFieldGroupName" layoutX="16.0" layoutY="70.0" prefHeight="27.0" prefWidth="216.0" promptText="Group Name .." />
     <Line endX="-72.0" fill="#e8e8e8" layoutX="99.0" layoutY="117.0" startX="-96.0" stroke="#dddddd" />
       <Line endX="15.0" endY="3.0" layoutX="302.0" layoutY="116.0" startX="-208.0" startY="3.0" stroke="#e8e8e8" />
       <Label layoutX="36.0" layoutY="107.0" prefHeight="17.0" prefWidth="116.0" text="Group" textFill="#e8e8e8">
@@ -30,5 +31,9 @@
          <String fx:value="list-cell" />
          <String fx:value="list-view" />
       </styleClass></ListView>
-   <Button fx:id="btnCreate" layoutX="245.0" layoutY="66.0" mnemonicParsing="false" onAction="#btnCreateAction" text="Create" />
+   <Button fx:id="btnCreate" layoutX="245.0" layoutY="71.0" mnemonicParsing="false" onAction="#btnCreateAction" text="Create" />
+   <Text fx:id="txtErrorGroupName" fill="#ff6159" layoutX="20.0" layoutY="65.0" strokeType="OUTSIDE" strokeWidth="0.0" text="already have group with this name">
+      <font>
+         <Font name="System Bold" size="12.0" />
+      </font></Text>
 </AnchorPane>

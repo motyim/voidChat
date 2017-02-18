@@ -85,9 +85,9 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
                 //add in table
                 GenerateUserFX(user);
                 System.out.println("Done");
-                
+
                 closeResources();
-                controller.sendWelcomeMail(user.getEmail(), user.getUsername() , user.getPassword());
+                controller.sendWelcomeMail(user.getEmail(), user.getUsername(), user.getPassword());
                 return true;
             }
         } catch (SQLException ex) {
@@ -117,7 +117,7 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
                 String country = resultSet.getString("country");
                 user = new User(name, email, fname, lname, pw, gender, country, status);
                 System.out.println("what here");
-                System.out.println(user.getUsername()+">>><<<????");
+                System.out.println(user.getUsername() + ">>><<<????");
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -569,8 +569,6 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
         return controller.sendMail(to, subject, emailBody);
     }
 
-
-
     public ArrayList<User> getAllUsers() {
         ArrayList<User> users = new ArrayList<User>();
         try {
@@ -597,6 +595,7 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
         closeResources();
         return users.size() == 0 ? null : users;
     }
+
     public void updateUser(User user) {
         try {
             getConnection();
@@ -609,27 +608,73 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
-          closeResources();
+        closeResources();
     }
 
-    
-    public void GenerateUserFX(User user){
-        UserFx userFx= new UserFx(user.getUsername(), user.getEmail(), user.getFname()
-                , user.getLname(), user.getGender(), user.getCountry());
+    public void GenerateUserFX(User user) {
+        UserFx userFx = new UserFx(user.getUsername(), user.getEmail(), user.getFname(), user.getLname(), user.getGender(), user.getCountry());
         controller.GenerateUserFX(userFx);
     }
-    
 
     //-------------- Merna ------------------
-    
     //-------------- End Merna ------------------
-    
     //-------------- Roma ------------------
-    
     //-------------- End roma ------------------
-    
     //-------------- Motyim ------------------
-    
     //-------------- End motyim ------------------
+    void setAllUserOffline() {
+        try {
+            getConnection();
+            query = "update UserTable set status='offline'";
+            statement = connection.createStatement();
+            statement.executeUpdate(query);
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        closeResources();
+    }
+
+    String getGender(String username) {
+        String gender = null;
+        try {
+            getConnection();
+            query = "select * from UserTable where username='"+username+"'";
+            statement = connection.createStatement();
+            resultSet=statement.executeQuery(query);
+            if(resultSet.next()){
+               gender=resultSet.getString("gender");
+            }         
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        closeResources();
+        return gender;
+    }
+    
+    User getUser(String userName){
+        User user = null;
+        try {
+            getConnection();
+            query = "select * from UserTable where username='"+userName+"'";
+            statement = connection.createStatement();
+            resultSet=statement.executeQuery(query);
+            while (resultSet.next()) {
+                String username = resultSet.getString("username");
+                String email = resultSet.getString("email");
+                String fname = resultSet.getString("fname");
+                String lname = resultSet.getString("lname");
+                String password ="";
+                String gender = resultSet.getString("gender");
+                String status = resultSet.getString("status");
+                String country = resultSet.getString("country");
+                user = new User(username, email, fname, lname, password, gender, country, status);
+            }       
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        closeResources();
+        return user; 
+    }
 
 }

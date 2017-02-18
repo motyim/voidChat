@@ -297,7 +297,7 @@ public class ServerController implements ServerControllerInt {
     //method to check online users and remove not active user
      private void checkOnlines(){
         try {
-            System.out.println("Start Check------------------");
+            
             Thread.sleep(5000);
             Set<String> onlineSet = onlineUsers.keySet();
             onlineSet.forEach((user) -> {
@@ -311,19 +311,19 @@ public class ServerController implements ServerControllerInt {
                         model.changeStatus(user , "offline");
                         //remove user from hashmap
                         onlineUsers.remove(user);
-                        System.err.print("user " + user);
+                        
                     } catch (RemoteException ex1) {
                         Logger.getLogger(ServerController.class.getName()).log(Level.SEVERE, null, ex1);
                     }
                 }catch (Exception ex){
                     ex.printStackTrace();
-                    System.err.print("user ---> " + user);
+                    
                 }
             });
         } catch (InterruptedException ex) {
             Logger.getLogger(ServerController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        System.out.println("End Check------------------");
+        
      }
     //-------------- End motyim ------------------
 

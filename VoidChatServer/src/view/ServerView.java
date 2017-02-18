@@ -50,6 +50,7 @@ public class ServerView extends Application implements ServerViewInt {
         stage.setTitle("Server");
         stage.show();
         stage.setOnCloseRequest((WindowEvent ew) -> {
+            controller.loadErrorServer();
             Platform.exit();
             //TODO : why not close
             System.exit(0);

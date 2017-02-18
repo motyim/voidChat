@@ -462,11 +462,12 @@ public class ChatSceneController implements Initializable {
     public void reciveMsg(Message message) throws IOException {
 
         String tabName;
+        String[] groupName=message.getTo().split("##");;
         // message sent to group? open tab (group name) :  open tab(sender name)
         if (message.getTo().contains("##")) {
-            String[] groupName = message.getTo().split("##");
-            tabName = groupName[1];
-
+            ////////////////////
+            tabName = message.getTo();
+/////////////////////
         } else {
             tabName = message.getFrom();
         }
@@ -479,7 +480,12 @@ public class ChatSceneController implements Initializable {
                         // create new tab
                         Tab newTab = new Tab();
                         newTab.setId(tabName);
-                        newTab.setText(tabName);
+                        
+                        if (message.getTo().contains("##"))
+                            newTab.setText(groupName[2]);
+                        else
+                            newTab.setText(tabName);
+                        
                         newTab.setOnCloseRequest(new EventHandler<Event>() {
                             @Override
                             public void handle(Event event) {
@@ -524,12 +530,12 @@ public class ChatSceneController implements Initializable {
             @Override
             public void run() {
                 try {
-                    if (!tabsOpened.containsKey(splitString[1])) {
+                    if (!tabsOpened.containsKey(groupName)) {
 
                         // create new tab
                         Tab newTab = new Tab();
-                        newTab.setId(splitString[1]);
-                        newTab.setText(splitString[1]);
+                        newTab.setId(groupName);
+                        newTab.setText(splitString[2]);
                         newTab.setOnCloseRequest(new EventHandler<Event>() {
                             @Override
                             public void handle(Event event) {
@@ -549,8 +555,8 @@ public class ChatSceneController implements Initializable {
                         newTab.setContent(loader.load());
 
                         // put the new tab and controller in the map
-                        tabsOpened.put(splitString[1], newTab);
-                        tabsControllers.put(splitString[1], chatBoxController);
+                        tabsOpened.put(groupName, newTab);
+                        tabsControllers.put(groupName, chatBoxController);
 
                     }
                 } catch (IOException ex) {

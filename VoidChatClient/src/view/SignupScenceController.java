@@ -172,7 +172,7 @@ public class SignupScenceController implements Initializable {
         System.out.println("signup intialize ..");
         comboboxGender.setItems(genderList);
         comboboxCountry.setItems(counrtyList);
-
+        btnSignup.setDefaultButton(true);
     }
 
     @FXML

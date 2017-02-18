@@ -122,8 +122,7 @@ public class LoginSceneController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // Request focus on the txtUserName field by default.
-//        Platform.runLater(() -> txtUserName.requestFocus());
+        btnLogin.setDefaultButton(true);
     }
 
 }

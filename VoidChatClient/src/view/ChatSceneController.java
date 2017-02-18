@@ -24,6 +24,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Accordion;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -39,6 +40,7 @@ import javafx.scene.control.SplitPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TitledPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -68,29 +70,11 @@ import utilitez.Notification;
 public class ChatSceneController implements Initializable {
 
     @FXML
-    private BorderPane chatBorderPane;
-    @FXML
     private ImageView imgUser;
     @FXML
     private Label homeLabel;
     @FXML
-    private ImageView iconAddNewFriend;
-    @FXML
-    private ImageView iconLogout;
-    @FXML
-    private ImageView iconCreateGroup;
-    @FXML
-    private ListView<User> friendsListview;
-    @FXML
     private ListView<String> requestsListview;
-    @FXML
-    private Pane content;
-    @FXML
-    private VBox chatBox;
-    @FXML
-    private Label friendName;
-    @FXML
-    private Image clips;
     @FXML
     private Tab requestsTab;
     @FXML
@@ -98,16 +82,25 @@ public class ChatSceneController implements Initializable {
     @FXML
     private TabPane tabPane;
     @FXML
-    private MenuButton menuBntStatus;
-    @FXML
     private ComboBox comboBoxStatus;
-    @FXML
-    private AnchorPane friendsPane;
     @FXML
     private SplitPane splitPane;
     @FXML
     private VBox leftPane;
     
+    //-----merna-----
+    @FXML
+    private TitledPane titlePaneFriends;
+
+    @FXML
+    private ListView<User> aListViewFriends;
+
+    @FXML
+    private TitledPane titlePaneFamily;
+
+    @FXML
+    private ListView<User> aListViewFamily;
+    //------end merna----
 
     Map<String, Tab> tabsOpened = new HashMap<>();
     Map<String, ChatBoxController> tabsControllers = new HashMap<>();
@@ -141,17 +134,17 @@ public class ChatSceneController implements Initializable {
             ex.printStackTrace();
         }
 
-        updateContactsList();
         updateFriendsRequests();
+        loadAccordionData();
 
     }
 
     @FXML
     private void iconLogoutAction(MouseEvent event) {
-            ((Node) (event.getSource())).getScene().getWindow().hide();
-            clinetView.getMainStage().show();
-            clinetView.logout();
-            clinetView.changeStatus("offline");
+        ((Node) (event.getSource())).getScene().getWindow().hide();
+        clinetView.getMainStage().show();
+        clinetView.logout();
+        clinetView.changeStatus("offline");
     }
 
     @FXML
@@ -168,135 +161,7 @@ public class ChatSceneController implements Initializable {
             ex.printStackTrace();
         }
     }
-
-    /**
-     * update friends contact list
-     */
-    private void updateContactsList() {
-        Platform.runLater(() -> {
-            ArrayList<User> contacts = clinetView.getContacts();
-
-            //check not empty contact list
-            if (contacts != null) {
-                System.out.println(">>><<<<" + contacts.size());
-                ObservableList<User> data = FXCollections.observableArrayList(contacts);
-                friendsListview.setItems(data);
-            } else {
-//            try {
-//                friendsPane.getChildren().clear();
-//                friendsPane.getChildren().add(FXMLLoader.load(getClass().getResource("EmptyList.fxml")));
-//            } catch (IOException ex) {
-//                ex.printStackTrace();
-//            }
-            }
-
-            friendsListview.setCellFactory(listView -> new ListCell<User>() {
-
-                private final ImageView imageView = new ImageView();
-                private final ImageView imageViewStatus = new ImageView();
-
-                @Override
-
-                public void updateItem(User friend, boolean empty) {
-                    super.updateItem(friend, empty);
-                    if (empty || friend == null) {
-                        setText(null);
-                        setGraphic(null);
-                    } else {
-
-                        FlowPane flow = new FlowPane();
-                        flow.setHgap(4);
-                        flow.setPrefWidth(1);
-
-                        Label friendName = new Label();
-
-                        friendName.setText(friend.getUsername());
-
-                        Image image ;
-                        
-                        if(friend.getGender().equals("Female"))
-                            image= new Image("/resouces/female.png", true);
-                        else
-                            image= new Image("/resouces/user.png", true);
-                        
-                        Image statusImg = null;
-
-                        //change status image                        
-                        switch (friend.getStatus()) {
-                            case "offline":
-                                statusImg = new Image("/resouces/circle.png", true);
-                                break;
-                            case "online":
-                                statusImg = new Image("/resouces/online.png", true);
-                                break;
-                            case "busy":
-                                statusImg = new Image("/resouces/busy.png", true);
-                                break;
-                        }
-
-                        imageView.setImage(image);
-                        imageView.setFitWidth(35);
-                        imageView.setFitHeight(35);
-
-                        imageViewStatus.setImage(statusImg);
-                        imageViewStatus.setFitWidth(6);
-                        imageViewStatus.setFitHeight(6);
-
-                        flow.getChildren().addAll(imageView, friendName, imageViewStatus);
-
-                        setGraphic(flow);
-
-                    }
-                }
-            });
-
-            friendsListview.setOnMouseClicked(new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent event) {
-
-                    String friendName = friendsListview.getSelectionModel().getSelectedItem().getUsername();
-                    if (!tabsOpened.containsKey(friendName)) {
-                        try {
-
-                            System.out.println("clicked on " + friendName);
-                            Tab newTab = new Tab();
-
-                            newTab.setId(friendName);
-                            newTab.setText(friendName);
-
-                            newTab.setClosable(true);
-                            newTab.setOnCloseRequest(new EventHandler<Event>() {
-                                @Override
-                                public void handle(Event event) {
-                                    System.out.println("?>>" + newTab.getId());
-                                    tabsOpened.remove(newTab.getId());
-                                    tabsControllers.remove(newTab.getId());
-                                }
-                            });
-
-                            tabPane.getTabs().add(newTab);
-                            tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.ALL_TABS);
-
-                            FXMLLoader loader = new FXMLLoader(getClass().getResource("ChatBox.fxml"));
-                            ChatBoxController chatBoxController = new ChatBoxController(friendName); //receiver
-                            loader.setController(chatBoxController);
-
-                            tabsOpened.put(friendName, newTab);
-                            tabsControllers.put(friendName, chatBoxController);
-
-                            newTab.setContent(loader.load());
-                        } catch (IOException ex) {
-                            ex.printStackTrace();
-                        }
-                    } else {
-                        tabPane.getSelectionModel().select(tabsOpened.get(friendName));
-                    }
-
-                }
-            });
-        });
-    }
-
+    
     public void updatePageInfo() {
         User user = clinetView.getUserInformation();
         homeLabel.setText(user.getUsername());
@@ -351,7 +216,7 @@ public class ChatSceneController implements Initializable {
                                         updateFriendsRequests();
 
                                         //update list of friends
-                                        updateContactsList();
+                                        loadAccordionData();
                                     } else {
                                         clinetView.showError("Error", "you can't add friend right now \n"
                                                 + "please try again later ..", "");
@@ -396,22 +261,26 @@ public class ChatSceneController implements Initializable {
                     break;
                 case Notification.FRIEND_OFFLINE:
                     showNotifaction("Friend Become offline", message, new Image(getClass().getResource("../resouces/add-contact.png").openStream()));
-                    updateContactsList();
+                    //updateContactsList();
+                    loadAccordionData();
                     break;
                 case Notification.FRIEND_ONLINE:
                     showNotifaction("Friend Become online", message, new Image(getClass().getResource("../resouces/add-contact.png").openStream()));
-                    updateContactsList();
+                    //updateContactsList();
+                    loadAccordionData();
                     break;
                 case Notification.ACCEPT_FRIEND_REQUEST:
                     showNotifaction("Accept Request", message, new Image(getClass().getResource("../resouces/add-contact.png").openStream()));
-                    updateContactsList();
+                    //updateContactsList();
+                    loadAccordionData();
                     break;
                 case Notification.SERVER_MESSAGE:
                     showNotifaction("New Announcement", message, new Image(getClass().getResource("../resouces/add-contact.png").openStream()));
                     break;
                 case Notification.FRIEND_BUSY:
                     // showNotifaction("Friend Become busy", message, new Image(getClass().getResource("../resouces/add-contact.png").openStream()));      
-                    updateContactsList();
+                    //updateContactsList();
+                    loadAccordionData();
 
             }
 
@@ -439,10 +308,11 @@ public class ChatSceneController implements Initializable {
         clinetView.changeStatus(comboBoxStatus.getValue().toString());
         System.out.println(comboBoxStatus.getValue().toString());
     }
-    
+
     /**
      * get message from clientView and open existing tab or create new tab and
      * load new chatBoxScene on it
+     *
      * @param message
      * @throws java.io.IOException
      */
@@ -546,7 +416,7 @@ public class ChatSceneController implements Initializable {
             }
         });
     }
-    
+
     public String getSaveLocation(String sender) {
         System.out.println("GET SAVE LOCATION");
         try {
@@ -581,11 +451,11 @@ public class ChatSceneController implements Initializable {
         }
         return null;
     }
-    
-    public void loadErrorServer(){
+
+    public void loadErrorServer() {
         //----- close this scene -----
-        friendsListview.getScene().getWindow().hide();
-        
+        requestsListview.getScene().getWindow().hide();
+
         try {
             Parent parent = FXMLLoader.load(getClass().getResource("OutOfServiceScene.fxml"));
             Stage stage = new Stage();
@@ -598,10 +468,10 @@ public class ChatSceneController implements Initializable {
             ex.printStackTrace();
         }
     }
-    
+
     @FXML
     void iconAddNewFriendAction(MouseEvent event) {
-        
+
         ObservableList<String> options
                 = FXCollections.observableArrayList(
                         "Family",
@@ -670,4 +540,202 @@ public class ChatSceneController implements Initializable {
 
         });
     }
+
+    //--- merna ---
+     /**
+     * update friends contact list
+     */
+    void loadAccordionData() {
+        Platform.runLater(() -> {
+
+            ArrayList<utilitez.Pair> allContact = clinetView.getContactsWithType();
+
+            ObservableList<User> friendType = FXCollections.observableArrayList();
+            ObservableList<User> familyType = FXCollections.observableArrayList();
+
+            if (allContact != null) {
+
+                for (utilitez.Pair contact : allContact) {
+                    if (contact.getSecond().equals("Family")) {
+                        familyType.add((User) contact.getFirst());
+                    } else {
+                        friendType.add((User) contact.getFirst());
+                    }
+
+                }
+
+            }
+            
+            if(friendType.isEmpty()){
+                System.out.println("friendType list is empty");
+                try {
+                    Node node =FXMLLoader.load(getClass().getResource("EmptyList.fxml"));
+                    titlePaneFriends.setContent(node);
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }else if (friendType.size() == 1) {
+                System.out.println("friendType list = 1");
+                titlePaneFriends.setContent(aListViewFriends);
+                aListViewFriends.setItems(friendType);
+            }else{
+                System.out.println("friendType list more than 1");
+                aListViewFriends.setItems(friendType);
+            }
+
+            aListViewFriends.setCellFactory(listView -> new ListCell<User>() {
+
+                @Override
+                public void updateItem(User friend, boolean empty) {
+                    super.updateItem(friend, empty);
+                    if (empty || friend == null) {
+                        setText(null);
+                        setGraphic(null);
+                    } else {
+                        setGraphic(loadCell(friend));
+                    }
+                }
+
+            });
+            aListViewFriends.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    String friendName = aListViewFriends.getSelectionModel().getSelectedItem().getUsername();
+                    cellClickAction(friendName);
+                }
+
+            });
+
+             if(familyType.isEmpty()){
+                System.out.println("familyType list is empty");
+                try {
+                    Node node =FXMLLoader.load(getClass().getResource("EmptyList.fxml"));
+                    titlePaneFamily.setContent(node);
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }else if (familyType.size() == 1) {
+                System.out.println("familyType list = 1");
+                titlePaneFamily.setContent(aListViewFamily);
+                aListViewFamily.setItems(familyType);
+            }else{
+                System.out.println("familyType list more than 1");
+                aListViewFamily.setItems(familyType);
+            }
+
+            aListViewFamily.setCellFactory(listView -> new ListCell<User>() {
+
+                @Override
+                public void updateItem(User friend, boolean empty) {
+                    super.updateItem(friend, empty);
+                    if (empty || friend == null) {
+                        setText(null);
+                        setGraphic(null);
+                    } else {
+                        setGraphic(loadCell(friend));
+                    }
+                }
+
+            });
+            aListViewFamily.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    String friendName = aListViewFamily.getSelectionModel().getSelectedItem().getUsername();
+                    cellClickAction(friendName);
+                }
+
+            });
+        });
+    }
+
+    Node loadCell(User friend) {
+        ImageView imageView = new ImageView();
+        ImageView imageViewStatus = new ImageView();
+
+        FlowPane flow = new FlowPane();
+        flow.setHgap(4);
+        flow.setPrefWidth(1);
+
+        Label friendName = new Label();
+
+        friendName.setText(friend.getUsername());
+
+        Image image;
+
+        if (friend.getGender().equals("Female")) {
+            image = new Image("/resouces/female.png", true);
+        } else {
+            image = new Image("/resouces/user.png", true);
+        }
+
+        Image statusImg = null;
+
+        //change status image                        
+        switch (friend.getStatus()) {
+            case "offline":
+                statusImg = new Image("/resouces/circle.png", true);
+                break;
+            case "online":
+                statusImg = new Image("/resouces/online.png", true);
+                break;
+            case "busy":
+                statusImg = new Image("/resouces/busy.png", true);
+                break;
+        }
+
+        imageView.setImage(image);
+        imageView.setFitWidth(35);
+        imageView.setFitHeight(35);
+
+        imageViewStatus.setImage(statusImg);
+        imageViewStatus.setFitWidth(6);
+        imageViewStatus.setFitHeight(6);
+
+        flow.getChildren().addAll(imageView, friendName, imageViewStatus);
+
+        return flow;
+    }
+
+    void cellClickAction(String friendName) {
+        if (!tabsOpened.containsKey(friendName)) {
+            try {
+
+                System.out.println("clicked on " + friendName);
+                Tab newTab = new Tab();
+
+                newTab.setId(friendName);
+                newTab.setText(friendName);
+
+                newTab.setClosable(true);
+                newTab.setOnCloseRequest(new EventHandler<Event>() {
+                    @Override
+                    public void handle(Event event) {
+                        System.out.println("?>>" + newTab.getId());
+                        tabsOpened.remove(newTab.getId());
+                        tabsControllers.remove(newTab.getId());
+                    }
+                });
+
+                tabPane.getTabs().add(newTab);
+                tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.ALL_TABS);
+
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("ChatBox.fxml"));
+                ChatBoxController chatBoxController = new ChatBoxController(friendName); //receiver
+                loader.setController(chatBoxController);
+
+                tabsOpened.put(friendName, newTab);
+                tabsControllers.put(friendName, chatBoxController);
+
+                newTab.setContent(loader.load());
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        } else {
+            tabPane.getSelectionModel().select(tabsOpened.get(friendName));
+        }
+    }
+    //-- end merna ---
+    
+    //  friendsPane.getChildren().clear();
+    //  friendsPane.getChildren().add(FXMLLoader.load(getClass().getResource("EmptyList.fxml")));
 }

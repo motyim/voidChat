@@ -27,7 +27,7 @@
       <Button fx:id="btnSignup" layoutX="105.0" layoutY="338.0" mnemonicParsing="false" onAction="#btnSignupAction" prefHeight="27.0" prefWidth="173.0" text="Sign up" />
             <ImageView fx:id="btnBack" fitHeight="27.0" fitWidth="24.0" layoutX="13.0" layoutY="15.0" onMouseClicked="#btnBackAction" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../resouces/back.png" />
+            <Image url="@/resouces/back.png" />
          </image>
       </ImageView>
    </children>

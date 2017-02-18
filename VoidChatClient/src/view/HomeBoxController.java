@@ -57,7 +57,7 @@ public class HomeBoxController implements Initializable {
         try {
             updatePageInfo();
             //set sponser
-            sponser.setImage(new Image(getClass().getResource("..//resouces//Voidlogo.png").openStream()));
+            sponser.setImage(new Image(getClass().getResource("/resouces/Voidlogo.png").openStream()));
             sponser.maxWidth(150);
         sponser.maxHeight(150);
         } catch (IOException ex) {

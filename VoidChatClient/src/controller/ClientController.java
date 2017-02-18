@@ -114,7 +114,7 @@ public class ClientController implements ClientControllerInt {
         try {
             System.out.println("bl");
             if (!serverModelInt.register(username, obj)) {
-                throw new Exception("User already Login");
+                throw new RuntimeException("User already Login");
             }
             System.out.println("blabla");
         } catch (RemoteException ex) {

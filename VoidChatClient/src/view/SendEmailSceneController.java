@@ -38,7 +38,7 @@ public class SendEmailSceneController implements Initializable {
     String from,to;
 
     public SendEmailSceneController(String from , String to) {
-        clientView.getInstance();
+        clientView = ClientView.getInstance();
         this.from=from;
         this.to=to;
     }
@@ -56,7 +56,12 @@ public class SendEmailSceneController implements Initializable {
     
     @FXML
     void btnSendAction(ActionEvent event) {
-
+        String body = "<B>"+txtFieldSubject.getText()+"</B><br/>"+txtAreaEmail.getText();
+        if(clientView.sendMail(to, body)){
+            clientView.showSuccess("Done", "Send Successfully", "mail sended");
+        }else{
+            clientView.showError("Error", "Can't Send Email", "an problem occure please try again later");
+        }
     }
     
 }

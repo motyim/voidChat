@@ -26,7 +26,7 @@
                             <Insets left="15.0" top="10.0" />
                         </HBox.margin>
                         <image>
-                            <Image url="@../resouces/user.png" />
+                            <Image url="@/resouces/user.png" />
                         </image>
                     </ImageView>
                     <VBox prefHeight="62.0" prefWidth="135.0" BorderPane.alignment="CENTER">
@@ -64,7 +64,7 @@
                     <children>
                   <ImageView fx:id="iconAddNewFriend" fitHeight="29.0" fitWidth="30.0" onMouseClicked="#iconAddNewFriendAction" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../resouces/addFriend.png" />
+                        <Image url="@/resouces/addFriend.png" />
                      </image>
                      <HBox.margin>
                         <Insets right="15.0" />
@@ -72,7 +72,7 @@
                   </ImageView>
                         <ImageView fx:id="iconCreateGroup" fitHeight="29.0" fitWidth="30.0" onMouseClicked="#iconCreateGroupAction" pickOnBounds="true" preserveRatio="true">
                             <image>
-                                <Image url="@../resouces/group.png" />
+                                <Image url="@/resouces/group.png" />
                             </image>
                             <HBox.margin>
                                 <Insets right="15.0" />
@@ -80,7 +80,7 @@
                         </ImageView>
                         <ImageView fx:id="iconLogout" fitHeight="29.0" fitWidth="28.0" onMouseClicked="#iconLogoutAction" pickOnBounds="true" preserveRatio="true">
                             <image>
-                                <Image url="@../resouces/logout.png" />
+                                <Image url="@/resouces/logout.png" />
                             </image>
                      <HBox.margin>
                         <Insets right="15.0" />

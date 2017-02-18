@@ -15,7 +15,7 @@
          <children>
             <ImageView fitHeight="23.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../resouces/smile.png" />
+                  <Image url="@/resouces/smile.png" />
                </image>
                <HBox.margin>
                   <Insets left="10.0" top="6.0" />
@@ -23,7 +23,7 @@
             </ImageView>
             <ImageView fitHeight="18.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../resouces/font.png" />
+                  <Image url="@/resouces/font.png" />
                </image>
                <HBox.margin>
                   <Insets left="10.0" top="8.0" />

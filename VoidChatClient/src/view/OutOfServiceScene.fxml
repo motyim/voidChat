@@ -11,7 +11,7 @@
    <children>
       <ImageView fitHeight="337.0" fitWidth="576.0" layoutX="16.0" layoutY="34.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../resouces/error.png" />
+            <Image url="@/resouces/error.png" />
          </image>
       </ImageView>
       <Text fill="#e4e4e4" layoutX="37.0" layoutY="219.0" strokeType="OUTSIDE" strokeWidth="0.0" text="SORRY,">

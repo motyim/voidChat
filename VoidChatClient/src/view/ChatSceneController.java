@@ -390,23 +390,23 @@ public class ChatSceneController implements Initializable {
 
             switch (type) {
                 case Notification.FRIEND_REQUSET:
-                    showNotifaction("Friend Request", message, new Image(getClass().getResource("../resouces/add-contact.png").openStream()));
+                    showNotifaction("Friend Request", message, new Image(getClass().getResource("/resouces/add-contact.png").openStream()));
                     updateFriendsRequests();
                     break;
                 case Notification.FRIEND_OFFLINE:
-                    showNotifaction("Friend Become offline", message, new Image(getClass().getResource("../resouces/closed.png").openStream()));
+                    showNotifaction("Friend Become offline", message, new Image(getClass().getResource("/resouces/closed.png").openStream()));
                     updateContactsList();
                     break;
                 case Notification.FRIEND_ONLINE:
-                    showNotifaction("Friend Become online", message, new Image(getClass().getResource("../resouces/open.png").openStream()));
+                    showNotifaction("Friend Become online", message, new Image(getClass().getResource("/resouces/open.png").openStream()));
                     updateContactsList();
                     break;
                 case Notification.ACCEPT_FRIEND_REQUEST:
-                    showNotifaction("Accept Request", message, new Image(getClass().getResource("../resouces/accept.png").openStream()));
+                    showNotifaction("Accept Request", message, new Image(getClass().getResource("/resouces/accept.png").openStream()));
                     updateContactsList();
                     break;
                 case Notification.SERVER_MESSAGE:
-                    showNotifaction("New Announcement", message, new Image(getClass().getResource("../resouces/megaphone.png").openStream()));
+                    showNotifaction("New Announcement", message, new Image(getClass().getResource("/resouces/megaphone.png").openStream()));
                     break;
                 case Notification.FRIEND_BUSY:
                     // showNotifaction("Friend Become busy", message, new Image(getClass().getResource("../resouces/add-contact.png").openStream()));      

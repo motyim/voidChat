@@ -1,5 +1,7 @@
 package utilitez;
 
+import java.io.Serializable;
+
 /**
  * ClassName : notification.java
  *
@@ -7,7 +9,7 @@ package utilitez;
  * @version 1.0
  * @since 9-2-2017
  */
-public interface Notification {
+public interface Notification extends Serializable {
 
     public final static int ACCEPT_FRIEND_REQUEST = 0;
     public final static int FRIEND_ONLINE = 1;

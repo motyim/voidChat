@@ -68,7 +68,7 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
     }
 
     @Override
-    public boolean signup(User user) throws RemoteException {
+    public synchronized boolean signup(User user) throws RemoteException {
         try {
             getConnection();
             query = "select * from UserTable where username = '" + user.getUsername() + "'";
@@ -97,7 +97,7 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
     }
 
     @Override
-    public User signin(String username, String password) throws RemoteException {
+    public synchronized User signin(String username, String password) throws RemoteException {
         User user = null;
         System.out.println("sign in server model ");
         try {
@@ -127,18 +127,18 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
     }
 
     @Override
-    public boolean register(String username, ClientModelInt obj) throws RemoteException {
+    public synchronized boolean register(String username, ClientModelInt obj) throws RemoteException {
         return controller.register(username, obj);
     }
 
     @Override
-    public void unregister(String username) throws RemoteException {
+    public synchronized void unregister(String username) throws RemoteException {
         //System.out.println(username);
         controller.unregister(username);
     }
 
     @Override
-    public ArrayList<String> checkRequest(String username) throws RemoteException {
+    public synchronized ArrayList<String> checkRequest(String username) throws RemoteException {
         ArrayList<String> friendsNames = null;
         try {
             getConnection();
@@ -160,7 +160,7 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
     }
 
     @Override
-    public boolean acceptRequest(String senderName, String reciverName) throws RemoteException {
+    public synchronized boolean acceptRequest(String senderName, String reciverName) throws RemoteException {
         try {
             String type = null;
             getConnection();
@@ -190,13 +190,13 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
 
     @Override
     //hna zawdt
-    public void notify(String reciver, String message, int type) throws RemoteException {
+    public synchronized void notify(String reciver, String message, int type) throws RemoteException {
         controller.notify(reciver, message, type);
         System.out.println("in notify in server model");
     }
 
     @Override
-    public void changeStatus(String username, String status) throws RemoteException {
+    public synchronized void changeStatus(String username, String status) throws RemoteException {
         System.out.println("change status in server model");
         try {
             getConnection();
@@ -223,7 +223,7 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
     }
 
     @Override
-    public void sendMsg(Message message) {
+    public synchronized void sendMsg(Message message) {
         System.out.println("in Server Model send message");
         if (!message.getTo().contains("##")) {
             insertMessage(message);
@@ -236,12 +236,12 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
         return controller.sendMsg(reciver, msg);
     }*/
     @Override
-    public void groupMsg(String msg, ArrayList<String> groupChatUsers) throws RemoteException {
+    public synchronized void groupMsg(String msg, ArrayList<String> groupChatUsers) throws RemoteException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public ArrayList<User> getContacts(String userName) throws RemoteException {
+    public synchronized ArrayList<User> getContacts(String userName) throws RemoteException {
         System.out.println("in get contacts");
         ArrayList<User> friendsObjects = new ArrayList<User>();
         ArrayList<String> friendsNames = new ArrayList<String>();
@@ -284,7 +284,7 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
     }
 
     @Override
-    public int sendRequest(String senderName, String reciverName, String type) throws RemoteException {
+    public synchronized int sendRequest(String senderName, String reciverName, String type) throws RemoteException {
         if (senderName.equals(reciverName)) {
             return Constant.SAME_NAME;
         }
@@ -332,7 +332,7 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
     }
 
     @Override
-    public void ignoreRequest(String senderName, String reciverName) {
+    public synchronized void ignoreRequest(String senderName, String reciverName) {
         try {
             getConnection();
             query = "delete from Requests where sender='" + senderName + "' and receiver='" + reciverName + "'";
@@ -344,7 +344,7 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
         closeResources();
     }
 
-    public ArrayList<Integer> getStatistics() {
+    public synchronized ArrayList<Integer> getStatistics() {
         int countUsers = 0;
         ArrayList<Integer> users = new ArrayList<Integer>();
         try {
@@ -360,10 +360,10 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
             countUsers = 0;
 
             query = "select * from UserTable where status='offline'";
-            resultSet = statement.executeQuery(query);
-            while (resultSet.next()) {
+            ResultSet resultSet2 = statement.executeQuery(query);
+            while (resultSet2.next()) {
                 countUsers++;
-               // System.out.println("in while2");
+                // System.out.println("in while2");
             }
             users.add(countUsers);
 
@@ -371,11 +371,11 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
             ex.printStackTrace();
         }
         closeResources();
-       // System.out.println(users.get(0) + "<---->" + users.get(1));
+        // System.out.println(users.get(0) + "<---->" + users.get(1));
         return users;
     }
 
-    public ArrayList<Pair> getGender() {
+    public synchronized ArrayList<Pair> getGender() {
         int count = 0;
         ArrayList<Pair> users = new ArrayList<Pair>();
         Pair user = new Pair();
@@ -406,7 +406,7 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
         return users;
     }
 
-    public ArrayList<Pair> getCountries() {
+    public synchronized ArrayList<Pair> getCountries() {
         int count = 0;
         String country = null;
         ArrayList<String> distinctCountries = new ArrayList<String>();
@@ -442,16 +442,16 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
     }
 
     @Override
-    public ClientModelInt getConnection(String Client) {
+    public synchronized ClientModelInt getConnection(String Client) {
         return controller.getConnection(Client);
     }
 
     @Override
-    public void createGroup(String groupName, ArrayList<String> groupMembers) {
+    public synchronized void createGroup(String groupName, ArrayList<String> groupMembers) {
         controller.createGroup(groupName, groupMembers);
     }
 
-    public void insertMessage(Message message) {
+    public synchronized void insertMessage(Message message) {
         try {
             System.out.println("insert msg");
             getConnection();
@@ -469,7 +469,7 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
 
     }
 
-    public ArrayList<Message> getHistory(String sender, String receiver) {
+    public synchronized ArrayList<Message> getHistory(String sender, String receiver) {
         ArrayList<Message> messages = new ArrayList<Message>();
         try {
             getConnection();
@@ -517,7 +517,7 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
     }
 
     @Override
-    public ArrayList<Pair> getContactsWithType(String userName) throws RemoteException {
+    public synchronized ArrayList<Pair> getContactsWithType(String userName) throws RemoteException {
         ArrayList<String> friendsNames = new ArrayList<String>();
         ArrayList<String> type = new ArrayList<String>();
         ArrayList<Pair> friendPair = new ArrayList<Pair>();
@@ -564,11 +564,11 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
     }
 
     @Override
-    public boolean sendMail(String to, String subject, String emailBody) throws RemoteException {
+    public synchronized boolean sendMail(String to, String subject, String emailBody) throws RemoteException {
         return controller.sendMail(to, subject, emailBody);
     }
 
-    public ArrayList<User> getAllUsers() {
+    public synchronized ArrayList<User> getAllUsers() {
         ArrayList<User> users = new ArrayList<User>();
         try {
             getConnection();
@@ -595,7 +595,7 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
         return users.size() == 0 ? null : users;
     }
 
-    public void updateUser(User user) {
+    public synchronized void updateUser(User user) {
         try {
             getConnection();
             String query = "update UserTable set fname='" + user.getFname()
@@ -610,87 +610,82 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
         closeResources();
     }
 
-    public void GenerateUserFX(User user) {
+    public synchronized void GenerateUserFX(User user) {
         UserFx userFx = new UserFx(user.getUsername(), user.getEmail(), user.getFname(), user.getLname(), user.getGender(), user.getCountry());
 
         controller.GenerateUserFX(userFx);
     }
 
     //-------------- Merna ------------------
-
     //-------------- End Merna ------------------
     //-------------- Roma ------------------
     //-------------- End roma ------------------
     //-------------- Motyim ------------------
-
     @Override
-    public boolean isOnline() throws RemoteException {
-        return true ; 
+    public synchronized boolean isOnline() throws RemoteException {
+        return true;
     }
-    
-    public void setAllUserOffline() {
+
+    public synchronized void setAllUserOffline() {
         try {
             getConnection();
             query = "update UserTable set status='offline'";
             statement = connection.createStatement();
             statement.executeUpdate(query);
 
-       } catch (SQLException ex) {
+        } catch (SQLException ex) {
             ex.printStackTrace();
         }
         closeResources();
     }
 
     @Override
-    public String getGender(String username) {
+    public synchronized String getGender(String username) {
         String gender = null;
         try {
             getConnection();
-            query = "select * from UserTable where username='"+username+"'";
+            query = "select * from UserTable where username='" + username + "'";
             statement = connection.createStatement();
-            resultSet=statement.executeQuery(query);
-            if(resultSet.next()){
-               gender=resultSet.getString("gender");
-            }         
+            resultSet = statement.executeQuery(query);
+            if (resultSet.next()) {
+                gender = resultSet.getString("gender");
+            }
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
         closeResources();
         return gender;
     }
-     public User getUser(String userName){
+
+    public synchronized User getUser(String userName) {
         User user = null;
         try {
             getConnection();
-            query = "select * from UserTable where username='"+userName+"'";
+            query = "select * from UserTable where username='" + userName + "'";
             statement = connection.createStatement();
-            resultSet=statement.executeQuery(query);
+            resultSet = statement.executeQuery(query);
             while (resultSet.next()) {
                 String username = resultSet.getString("username");
                 String email = resultSet.getString("email");
                 String fname = resultSet.getString("fname");
                 String lname = resultSet.getString("lname");
-                String password ="";
+                String password = "";
                 String gender = resultSet.getString("gender");
                 String status = resultSet.getString("status");
                 String country = resultSet.getString("country");
                 user = new User(username, email, fname, lname, password, gender, country, status);
-                System.out.println("emailll:"+user.getEmail());
-            }       
+                System.out.println("emailll:" + user.getEmail());
+            }
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
         closeResources();
-        return user; 
+        return user;
     }
     //-------------- End Merna ------------------
 
     //-------------- Roma ------------------
     //-------------- End roma ------------------
     //-------------- Motyim ------------------
-
     //-------------- End motyim ------------------
-
-   
-
 }

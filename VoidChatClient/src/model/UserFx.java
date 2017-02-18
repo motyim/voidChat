@@ -24,12 +24,11 @@ public class UserFx implements Serializable{
     private SimpleStringProperty country;
     private SimpleStringProperty status;
 
-    public UserFx(String username, String email, String fname, String lname, String password, String gender, String country) {
+    public UserFx(String username, String email, String fname, String lname, String gender, String country) {
         this.username = new SimpleStringProperty(username);
         this.email = new SimpleStringProperty(email);
         this.fname = new SimpleStringProperty(fname);
         this.lname = new SimpleStringProperty(lname);
-        this.password = new SimpleStringProperty(password);
         this.gender = new SimpleStringProperty(gender);
         this.country = new SimpleStringProperty(country);
     }
@@ -100,7 +99,7 @@ public class UserFx implements Serializable{
     }
 
     public void setGender(String gender) {
-        this.gender.get();
+        this.gender.set(gender);
     }
 
     public String getCountry() {

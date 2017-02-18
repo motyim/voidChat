@@ -156,7 +156,7 @@ public class ServerViewController implements Initializable {
 
         try {
             //set sponser
-            sponser.setImage(new Image(getClass().getResource("..//resources//Voidlogo.png").openStream()));
+            sponser.setImage(new Image(getClass().getResource("/Voidlogo.png").openStream()));
         } catch (IOException ex) {
             Logger.getLogger(ServerViewController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -388,7 +388,9 @@ public class ServerViewController implements Initializable {
         bc.setTitle("Online Status");
         yAxis.setLabel("User");
         yAxis.setLowerBound(0);
-        yAxis.setUpperBound(serverView.getStatistics().get(0) + serverView.getStatistics().get(1));
+        if (!serverView.getStatistics().isEmpty()) {
+            yAxis.setUpperBound(serverView.getStatistics().get(0) + serverView.getStatistics().get(1));
+        }
         bc.setPrefSize(250, 200);
 
         XYChart.Series series1 = new XYChart.Series();
@@ -422,6 +424,7 @@ public class ServerViewController implements Initializable {
         gender.setTitle("gender Status");
         genderxAxis.setLabel("Value");
         genderyAxis.setLowerBound(0);
+        if(!serverView.getStatistics().isEmpty())
         genderyAxis.setUpperBound(serverView.getStatistics().get(0) + serverView.getStatistics().get(1));
         genderyAxis.setLabel("User");
         gender.setPrefSize(250, 200);

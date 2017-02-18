@@ -262,17 +262,17 @@ public class ChatSceneController implements Initializable {
                     updateFriendsRequests();
                     break;
                 case Notification.FRIEND_OFFLINE:
-                    showNotifaction("Friend Become offline", message, new Image(getClass().getResource("../resouces/add-contact.png").openStream()));
+                    showNotifaction("Friend Become offline", message, new Image(getClass().getResource("/resouces/closed.png").openStream()));
                     //updateContactsList();
                     loadAccordionData();
                     break;
                 case Notification.FRIEND_ONLINE:
-                    showNotifaction("Friend Become online", message, new Image(getClass().getResource("../resouces/add-contact.png").openStream()));
+                    showNotifaction("Friend Become online", message, new Image(getClass().getResource("/resouces/open.png").openStream()));
                     //updateContactsList();
                     loadAccordionData();
                     break;
                 case Notification.ACCEPT_FRIEND_REQUEST:
-                    showNotifaction("Accept Request", message, new Image(getClass().getResource("../resouces/add-contact.png").openStream()));
+                    showNotifaction("Accept Request", message, new Image(getClass().getResource("/resouces/accept.png").openStream()));
                     //updateContactsList();
                     loadAccordionData();
                     break;
@@ -372,7 +372,7 @@ public class ChatSceneController implements Initializable {
                     } else {
                         // tab already exist so open it and pass msg to its controller
 
-                        tabPane.getSelectionModel().select(tabsOpened.get(message.getFrom()));
+                        tabPane.getSelectionModel().select(tabsOpened.get(tabName));
                         tabsControllers.get(tabName).reciveMsg(message);
                     }
                 } catch (IOException ex) {
@@ -700,12 +700,15 @@ public class ChatSceneController implements Initializable {
         //change status image                        
         switch (friend.getStatus()) {
             case "offline":
+                System.out.println("--online");
                 statusImg = new Image("/resouces/circle.png", true);
                 break;
             case "online":
                 statusImg = new Image("/resouces/online.png", true);
+                System.out.println("--offline");
                 break;
             case "busy":
+                System.out.println("--busy");
                 statusImg = new Image("/resouces/busy.png", true);
                 break;
         }

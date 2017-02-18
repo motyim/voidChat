@@ -95,6 +95,9 @@ public class ChatBoxController implements Initializable {
     @FXML
     private ComboBox<String> fontSizeComboBox;
 
+    @FXML
+    private Button btnSendEmail;
+
     ClientView clientView;
     String receiver;
     Message message;
@@ -139,17 +142,19 @@ public class ChatBoxController implements Initializable {
         if ((message != null && message.getTo().contains("##")) || (receiver != null && receiver.contains("##"))) {
             btnSendAttach.setDisable(true);
             saveBtn.setDisable(true);
+            btnSendEmail.setDisable(true);
+
         }
         if (clientView.getHistory(receiver) != null) {
             System.out.println("");
             loadHistory(clientView.getHistory(receiver));
         }
-        
-        btnSendAttach.setTooltip(new Tooltip("Send attachment"));
+
+        btnSendAttach.setTooltip(new Tooltip("Send Attachment"));
         saveBtn.setTooltip(new Tooltip("Save Message"));
+        btnSendEmail.setTooltip(new Tooltip("Send Email"));
     }
 
- 
     @FXML
     void saveBtnAction(ActionEvent event) {
         Platform.runLater(() -> {
@@ -199,7 +204,7 @@ public class ChatBoxController implements Initializable {
                 FileInputStream in = null;
 
                 //get path to save file on other user
-                String path = peer.getSaveLocation(clientView.getUserInformation().getUsername() ,file.getName());
+                String path = peer.getSaveLocation(clientView.getUserInformation().getUsername(), file.getName());
                 //other client refuse file transfare
                 if (path == null) {
 
@@ -213,12 +218,12 @@ public class ChatBoxController implements Initializable {
                 in = new FileInputStream(file);
                 byte[] data = new byte[1024 * 1024];
                 int dataLength = in.read(data);
-                boolean append = false ;
+                boolean append = false;
                 while (dataLength > 0) {
                     System.out.println("Send : " + dataLength);
-                    peer.reciveFile(path, file.getName(),append, data, dataLength);
+                    peer.reciveFile(path, file.getName(), append, data, dataLength);
                     dataLength = in.read(data);
-                    append = true ; 
+                    append = true;
                 }
 
             } catch (RemoteException ex) {
@@ -234,84 +239,87 @@ public class ChatBoxController implements Initializable {
     }
 
     private void sendMessageAction() {
-       if(!txtFieldMsg.getText().trim().equals(""))  {
-        sendMsgFlag = true;
+        if (!txtFieldMsg.getText().trim().equals("")) {
+            sendMsgFlag = true;
 
 //        String color = "#" + Integer.toHexString(colorPicker.getValue().hashCode());
-        String color = toRGBCode(colorPicker.getValue());
-        System.out.println(color);
-        String weight = (boldToggleBtn.isSelected()) ? "Bold" : "normal";
-        String size = fontSizeComboBox.getSelectionModel().getSelectedItem();
-        String style = (italicTogglebtn.isSelected()) ? "italic" : "normal";
-        String font = fontComboBox.getSelectionModel().getSelectedItem();
-        Boolean underline = lineToggleBtn.isSelected();
+            String color = toRGBCode(colorPicker.getValue());
+            System.out.println(color);
+            String weight = (boldToggleBtn.isSelected()) ? "Bold" : "normal";
+            String size = fontSizeComboBox.getSelectionModel().getSelectedItem();
+            String style = (italicTogglebtn.isSelected()) ? "italic" : "normal";
+            String font = fontComboBox.getSelectionModel().getSelectedItem();
+            Boolean underline = lineToggleBtn.isSelected();
 
-        Message msg = new Message();
-        msg.setFontsSize(Integer.parseInt(size));
-        msg.setFontColor(color);
-        msg.setBody(txtFieldMsg.getText());
-        msg.setFontWeight(weight);
-        msg.setFontFamily(font);
-        msg.setFrom(clientView.getUserInformation().getUsername());
-        msg.setFontStyle(style);
-        msg.setTo(receiver);
-        msg.setDate(getXMLGregorianCalendarNow());
-        msg.setUnderline(underline);
-        
-        clientView.sendMsg(msg);
+            Message msg = new Message();
+            msg.setFontsSize(Integer.parseInt(size));
+            msg.setFontColor(color);
+            msg.setBody(txtFieldMsg.getText());
+            msg.setFontWeight(weight);
+            msg.setFontFamily(font);
+            msg.setFrom(clientView.getUserInformation().getUsername());
+            msg.setFontStyle(style);
+            msg.setTo(receiver);
+            msg.setDate(getXMLGregorianCalendarNow());
+            msg.setUnderline(underline);
 
-        File f = new File("src/resouces/chatBoxStyle.css");
-        listviewChat.getStylesheets().add("file:///" + f.getAbsolutePath().replace("\\", "/"));
+            clientView.sendMsg(msg);
 
-        try {
+            File f = new File("src/resouces/chatBoxStyle.css");
+            listviewChat.getStylesheets().add("file:///" + f.getAbsolutePath().replace("\\", "/"));
 
-            HBox cell = new HBox();
-            VBox vbox = new VBox();
-            
-            ImageView img;
-            if(clientView.getUserInformation().getGender().equals("Female"))
-                img = new ImageView(new Image(getClass().getResource("/resouces/female_32.png").openStream()));
-            else
-                img = new ImageView(new Image(getClass().getResource("/resouces/user_32.png").openStream()));
+            try {
 
-            Label sendLabel = new Label(txtFieldMsg.getText());
-            sendLabel.setMaxWidth(300);
-            sendLabel.setWrapText(true);
-            sendLabel.setStyle("-fx-text-fill:" + color
-                    + ";-fx-font-weight:" + weight
-                    + ";-fx-font-size:" + size
-                    + ";-fx-font-style:" + style
-                    + ";-fx-font-family:\"" + font
-                    + "\";-fx-underline:" + underline
-                    + ";");
+                HBox cell = new HBox();
+                VBox vbox = new VBox();
 
-            if (recMsgFlag) {
-
-                sendLabel.getStyleClass().add("LabelSender");
+                ImageView img = new ImageView();
                 if (!receiver.contains("##")) {
-                    cell.getChildren().addAll(img, sendLabel);
+                    if (clientView.getUserInformation().getGender().equals("Female")) {
+                        img = new ImageView(new Image(getClass().getResource("/resouces/female_32.png").openStream()));
+                    } else {
+                        img = new ImageView(new Image(getClass().getResource("/resouces/user_32.png").openStream()));
+                    }
+                }
+
+                Label sendLabel = new Label(txtFieldMsg.getText());
+                sendLabel.setMaxWidth(300);
+                sendLabel.setWrapText(true);
+                sendLabel.setStyle("-fx-text-fill:" + color
+                        + ";-fx-font-weight:" + weight
+                        + ";-fx-font-size:" + size
+                        + ";-fx-font-style:" + style
+                        + ";-fx-font-family:\"" + font
+                        + "\";-fx-underline:" + underline
+                        + ";");
+
+                if (recMsgFlag) {
+
+                    sendLabel.getStyleClass().add("LabelSender");
+                    if (!receiver.contains("##")) {
+                        cell.getChildren().addAll(img, sendLabel);
+                    } else {
+                        cell.getChildren().addAll(sendLabel);
+                    }
+                    recMsgFlag = false;
                 } else {
-                    cell.getChildren().addAll(sendLabel);
+                    sendLabel.getStyleClass().add("LabelSenderSec");
+                    cell.getChildren().add(sendLabel);
+                    if (!receiver.contains("##")) {
+                        cell.setMargin(sendLabel, new Insets(0, 0, 0, 32));
+                    }
                 }
-                recMsgFlag = false;
-            } else {
-                sendLabel.getStyleClass().add("LabelSenderSec");
-                cell.getChildren().add(sendLabel);
-                if (!receiver.contains("##")) {
-                    cell.setMargin(sendLabel, new Insets(0, 0, 0, 32));
-                }
+
+                listviewChat.getItems().add(cell);
+                listviewChat.scrollTo(cell);
+                txtFieldMsg.setText(null);
+
+            } catch (IOException ex) {
+                ex.printStackTrace();
             }
-
-            listviewChat.getItems().add(cell);
-            listviewChat.scrollTo(cell);
-            txtFieldMsg.setText(null);
-
-        } catch (IOException ex) {
-            ex.printStackTrace();
+            System.out.println("btnSendMsg Action");
         }
-        System.out.println("btnSendMsg Action");
-       }
-       System.out.println("empty message");
+        System.out.println("empty message");
     }
 
     public void reciveMsg(Message message) throws IOException {
@@ -336,13 +344,16 @@ public class ChatBoxController implements Initializable {
         if (message != null) {
             HBox cell = new HBox();
             VBox vbox = new VBox();
-            
-           ImageView img;
-            //check here ,, need method get receiver object to know type ..
-           if(clientView.getGender(receiver).equals("Female"))
-                img = new ImageView(new Image(getClass().getResource("/resouces/female_32.png").openStream()));
-            else
-                img = new ImageView(new Image(getClass().getResource("/resouces/user_32.png").openStream()));
+
+            ImageView img = new ImageView();
+            if (!receiver.contains("##")) {
+                //check here ,, need method get receiver object to know type ..
+                if (clientView.getGender(receiver).equals("Female")) {
+                    img = new ImageView(new Image(getClass().getResource("/resouces/female_32.png").openStream()));
+                } else {
+                    img = new ImageView(new Image(getClass().getResource("/resouces/user_32.png").openStream()));
+                }
+            }
 
             Text recName = new Text(message.getFrom());
             recName.setStyle("-fx-font: 10 arial;");
@@ -402,13 +413,13 @@ public class ChatBoxController implements Initializable {
             sendMessageAction();
         }
     }
-    
+
     @FXML
     void btnSendEmailAction(ActionEvent event) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("SendEmailScene.fxml"));
-            String to=clientView.getUser(receiver).getEmail();
-            loader.setController(new SendEmailSceneController(clientView.getUserInformation().getEmail(),to));
+            String to = clientView.getUser(receiver).getEmail();
+            loader.setController(new SendEmailSceneController(clientView.getUserInformation().getEmail(), to));
             Parent parent = loader.load();
             Stage stage = new Stage();
             Scene scene = new Scene(parent);
@@ -419,6 +430,7 @@ public class ChatBoxController implements Initializable {
             ex.printStackTrace();
         }
     }
+
     /*
      *customize Editor pane with styles  (bold,italic,font,size ..) 
      */
@@ -531,17 +543,16 @@ public class ChatBoxController implements Initializable {
             }
         }
     }
-    
-    public void sendMail(){
+
+    public void sendMail() {
         //TODO : edit this one 
         clientView.sendMail(receiver, receiver);
     }
-    
-    public static String toRGBCode( Color color )
-    {
-        return String.format( "#%02X%02X%02X",
-            (int)( color.getRed() * 255 ),
-            (int)( color.getGreen() * 255 ),
-            (int)( color.getBlue() * 255 ) );
+
+    public static String toRGBCode(Color color) {
+        return String.format("#%02X%02X%02X",
+                (int) (color.getRed() * 255),
+                (int) (color.getGreen() * 255),
+                (int) (color.getBlue() * 255));
     }
 }

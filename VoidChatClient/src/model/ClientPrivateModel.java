@@ -13,6 +13,7 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -78,12 +79,17 @@ public class ClientPrivateModel {
             FileOutputStream fileOutputStream = new FileOutputStream(file);
             marsh.marshal(createHistory,fileOutputStream );
             fileOutputStream.close();
-            System.out.println("Done XXXXXXXXXXXXXXXXXXMLLLLLLLLLLLLLLLLLL");
+            
 
-            //-------------- create XSLT file ------------------
-            copyFile(new File("src//XML//history.xsl"), file);
-            //-------------- create XSD file ------------------
-            copyFile(new File("src//XML//history.xsd"), file);
+//            //-------------- create XSLT file ------------------
+//            copyFile(new File("src//XML//history.xsl"), file);
+//            //-------------- create XSD file ------------------
+//            copyFile(new File("src//XML//history.xsd"), file);
+            
+    
+              copyFile(new File("/XML/history.xsl"), file);
+              copyFile(new File("/XML/history.xsd"), file);
+            
 
         } catch (JAXBException | FileNotFoundException ex) {
             Logger.getLogger(ClientController.class.getName()).log(Level.SEVERE, null, ex);

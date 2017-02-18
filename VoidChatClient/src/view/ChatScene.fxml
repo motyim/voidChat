@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Accordion?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -101,15 +103,28 @@
                     <children>
                         <TabPane prefHeight="386.0" prefWidth="194.0" stylesheets="@../resouces/styles.css" tabClosingPolicy="UNAVAILABLE">
                             <tabs>
-                                <Tab text="Friends">
-                                    <content>
-                                        <AnchorPane fx:id="friendsPane" minHeight="0.0" minWidth="0.0" prefWidth="194.0">
-                                            <children>
-                                                <ListView fx:id="friendsListview" layoutX="-5.0" layoutY="1.0" prefHeight="351.0" prefWidth="211.0" stylesheets="@../resouces/styles.css" />
-                                            </children>
-                                        </AnchorPane>
-                                    </content>
-                                </Tab>
+                        <Tab fx:id="contactListTab" text="Friends">
+                          <content>
+                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                 <children>
+                                    <Accordion fx:id="accordion" prefHeight="349.0" prefWidth="195.0">
+                                      <panes>
+                                        <TitledPane fx:id="titlePaneFriends" animated="false" prefHeight="154.0" prefWidth="195.0" text="Friends">
+                                             <content>
+                                                <ListView fx:id="aListViewFriends" prefHeight="200.0" prefWidth="200.0" />
+                                             </content>
+                                        </TitledPane>
+                                        <TitledPane fx:id="titlePaneFamily" animated="false" text="Family">
+                                             <content>
+                                                <ListView fx:id="aListViewFamily" prefHeight="200.0" prefWidth="200.0" />
+                                             </content>
+                                        </TitledPane>
+                                      </panes>
+                                    </Accordion>
+                                 </children>
+                              </AnchorPane>
+                          </content>
+                        </Tab>
                                 <Tab fx:id="requestsTab" text="Requests">
                                     <content>
                                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="170.0" prefWidth="198.0">

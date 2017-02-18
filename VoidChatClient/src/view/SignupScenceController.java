@@ -101,23 +101,23 @@ public class SignupScenceController implements Initializable {
 
         //validate data
         if (!Checks.checkName(fName)) {
-            errorMsg += "> Invalid First Name Must be alphabtic only min 3 at max 10\n";
+            errorMsg += "> invalid first name it must be alphabtic and minimum 3 and maximum 10\n";
         }
 
         if (!Checks.checkName(lName)) {
-            errorMsg += "> Invalid Last Name Must be alphabtic only min 3 at max 10\n";
+            errorMsg += "> invalid last name it must be alphabtic and minimum 3 and maximum 10\n";
         }
 
         if (!Checks.checkUserName(username)) {
-            errorMsg += "> Invalid Username Must Start by char \nand can containe _. (3,20)char\n";
+            errorMsg += "> invalid username it must start by characters \nand can contain _ . and from 3 upto 20 characters\n";
         }
 
         if (!Checks.checkEmail(email)) {
-            errorMsg += "> Invalid Email Address\n";
+            errorMsg += "> invalid email address\n";
         }
 
         if (!Checks.checkStringLength(password, 6, 50)) {
-            errorMsg += "> Password must be at least 6 Character\n";
+            errorMsg += "> password must be at least 6 characters\n";
         }
 
         if (!errorMsg.equals("")) {
@@ -136,7 +136,10 @@ public class SignupScenceController implements Initializable {
         }
 
         if (!flag) {
-            clinetView.showError("Signup Error", "Signup Error", "Can't Signup right now ..\nplease try again later");
+         ////////
+            //clinetView.showError("Signup Error", "Signup Error", "Can't Signup right now ..\nplease try again later");
+            clinetView.showError("Signup Error", "Signup Error", "this user name is already taken");
+        /////
         } else {
             Alert alertSuccess = new Alert(AlertType.INFORMATION);
             alertSuccess.setTitle("Signup Successfully");

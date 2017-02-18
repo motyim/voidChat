@@ -170,7 +170,7 @@ public class ChatBoxController implements Initializable {
             //Show save file dialog
             File file = fileChooser.showSaveDialog(st);
 
-            if (file != null && !file.isFile()) {
+            if (file != null) {
                 ArrayList<Message> history = clientView.getHistory(receiver);
                 clientView.saveXMLFile(file, history);
             }
@@ -193,10 +193,6 @@ public class ChatBoxController implements Initializable {
             return;
         }
 
-        String[] split = file.getName().split("\\.(?=[^\\.]+$)");
-
-        String extension = "." + split[1];
-
         //  make connection with peer client 
         ClientModelInt peer = clientView.getConnection(receiver);
 
@@ -211,7 +207,7 @@ public class ChatBoxController implements Initializable {
                 FileInputStream in = null;
 
                 //get path to save file on other user
-                String path = peer.getSaveLocation(clientView.getUserInformation().getUsername());
+                String path = peer.getSaveLocation(clientView.getUserInformation().getUsername() ,file.getName());
                 //other client refuse file transfare
                 if (path == null) {
 
@@ -222,15 +218,15 @@ public class ChatBoxController implements Initializable {
                 }
 
                 System.out.println(path);
-
                 in = new FileInputStream(file);
                 byte[] data = new byte[1024 * 1024];
                 int dataLength = in.read(data);
-
+                boolean append = false ;
                 while (dataLength > 0) {
                     System.out.println("Send : " + dataLength);
-                    peer.reciveFile(path, extension, data, dataLength);
+                    peer.reciveFile(path, file.getName(),append, data, dataLength);
                     dataLength = in.read(data);
+                    append = true ; 
                 }
 
             } catch (RemoteException ex) {

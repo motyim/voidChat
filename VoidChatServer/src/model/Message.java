@@ -4,8 +4,8 @@ import java.io.Serializable;
 import javax.xml.datatype.XMLGregorianCalendar;
 
 /**
- * ClassName : Message.java Description : class to represent message in chat
- *
+ * ClassName : Message.java 
+ * Description : class to represent message in chat
  * @author MotYim
  * @since 11-02-2017
  */
@@ -23,6 +23,7 @@ public class Message implements Serializable {
     protected Boolean underline;
 
     public Message() {
+
     }
 
     public Message(int fontsSize, String from, String to, XMLGregorianCalendar date, String fontColor, String fontFamily, String fontStyle, String body, String fontWeight, Boolean underline) {
@@ -35,7 +36,7 @@ public class Message implements Serializable {
         this.fontStyle = fontStyle;
         this.body = body;
         this.fontWeight = fontWeight;
-        this.underline = this.underline;
+        this.underline = underline;
     }
 
     public int getFontsSize() {

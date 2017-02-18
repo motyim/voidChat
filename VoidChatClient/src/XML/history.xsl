@@ -318,7 +318,9 @@
                                     color:{color};
                                     font-size: {size}px;
                                     font-family: {family};
-                                    text-decoration: {style};">
+                                    text-decoration: {decoration};
+                                    font-weight: {weight};
+                                    font-style: {style};">
                                             <xsl:value-of select="body"/>
                                         </p>
                                         <time>
@@ -337,7 +339,9 @@
                                     color:{color};
                                     font-size: {size}px;
                                     font-family: {family};
-                                    text-decoration: {style};">
+                                    text-decoration: {decoration};
+                                    font-weight: {weight};
+                                    font-style: {style};">
                                             <xsl:value-of select="body"/>
                                         </p>
                                         <time>

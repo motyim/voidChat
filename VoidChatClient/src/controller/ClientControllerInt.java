@@ -135,10 +135,11 @@ public interface ClientControllerInt {
 
     /**
      *
+     * @param sender
+     * @param filename
      * @return url location or null if not file choosen
-     * @throws RemoteException
      */
-    String getSaveLocation(String sender);
+    String getSaveLocation(String sender,String filename);
     
 
 

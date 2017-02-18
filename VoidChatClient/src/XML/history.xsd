@@ -20,6 +20,8 @@
             <xs:element name="size" type="fontSize"/>
             <xs:element name="family" type="fontFamily"/>
             <xs:element name="style" type="xs:string"/>
+            <xs:element name="weight" type="xs:string"/>
+            <xs:element name="decoration" type="xs:string"/>
             <xs:element name="body" type="xs:string"/>
         </xs:sequence>
     </xs:complexType>

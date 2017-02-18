@@ -26,6 +26,7 @@ public class ClientController implements ClientControllerInt {
     private ClientPrivateModel pmodel;
     private ServerModelInt serverModelInt;
     private User loginUser;
+    private Thread checkServerStatus ;
 
     public ClientController(ClientView view) {
 
@@ -88,6 +89,13 @@ public class ClientController implements ClientControllerInt {
                 registerToServer(loginUser.getUsername(), model);
                 System.out.println(">><<>>" + loginUser.getUsername());
             }
+            //check server status 
+            checkServerStatus = new Thread(()->{
+                while(true)
+                checkServerStatus();
+            });
+            checkServerStatus.start();
+            
         } catch (RemoteException | NullPointerException ex) {
             ex.printStackTrace();
             throw new Exception("Server not working now");
@@ -151,6 +159,7 @@ public class ClientController implements ClientControllerInt {
         try {
             //System.out.println(userName);
             serverModelInt.unregister(loginUser.getUsername());
+            checkServerStatus.stop();
         } catch (RemoteException ex) {
             ex.printStackTrace();
         }
@@ -263,8 +272,8 @@ public class ClientController implements ClientControllerInt {
     }
 
     @Override
-    public String getSaveLocation(String sender) {
-        return view.getSaveLocation(sender);
+    public String getSaveLocation(String sender,String filename) {
+        return view.getSaveLocation(sender,filename);
     }
 
     @Override
@@ -316,5 +325,19 @@ public class ClientController implements ClientControllerInt {
             return false;
         }
     }
+    
+    private void checkServerStatus(){
+        
+        try {
+            System.out.println("Start Check------------------");
+            Thread.sleep(5000);
+            serverModelInt.isOnline();
+            System.out.println("End Check------------------");
+        } catch (InterruptedException | RemoteException ex) {
+            ex.printStackTrace();
+            loadErrorServer();
+            checkServerStatus.stop();
+        }
+     }
 
 }

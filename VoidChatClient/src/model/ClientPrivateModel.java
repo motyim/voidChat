@@ -47,7 +47,7 @@ public class ClientPrivateModel {
             history.setOwner(user.getUsername());
 
             List<MessageType> messagesXML = history.getMessage();
-
+            
             //-------------- parse object message ot messageType ------------------
             for (Message message : messages) {
                 MessageType messageType = factory.createMessageType();
@@ -59,6 +59,9 @@ public class ClientPrivateModel {
                 messageType.setStyle(message.getFontStyle());
                 messageType.setTo(message.getTo());
                 messageType.setSize(message.getFontsSize());
+                messageType.setWeight(message.getFontWeight());
+                String decoration = (message.getUnderline())?"underline":"none";
+                messageType.setDecoration(decoration);
 
                 messagesXML.add(messageType);
             }
@@ -71,8 +74,11 @@ public class ClientPrivateModel {
             //-------------- set XLST ------------------
             marsh.setProperty("com.sun.xml.internal.bind.xmlHeaders",
                     "<?xml-stylesheet type='text/xsl' href='history.xsl'?>");
-
-            marsh.marshal(createHistory, new FileOutputStream(file));
+            
+            FileOutputStream fileOutputStream = new FileOutputStream(file);
+            marsh.marshal(createHistory,fileOutputStream );
+            fileOutputStream.close();
+            System.out.println("Done XXXXXXXXXXXXXXXXXXMLLLLLLLLLLLLLLLLLL");
 
             //-------------- create XSLT file ------------------
             copyFile(new File("src//XML//history.xsl"), file);
@@ -111,6 +117,7 @@ public class ClientPrivateModel {
             } catch (IOException ex) {
                 Logger.getLogger(ClientPrivateModel.class.getName()).log(Level.SEVERE, null, ex);
             }
+            
         }
         );
         

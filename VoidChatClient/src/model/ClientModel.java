@@ -54,19 +54,32 @@ public class ClientModel extends UnicastRemoteObject implements ClientModelInt, 
     }
 
     @Override
-    public String getSaveLocation(String sender) {
-        return controller.getSaveLocation(sender);
+    public String getSaveLocation(String sender,String filename) {
+        return controller.getSaveLocation(sender,filename);
     }
 
     @Override
-    public void reciveFile(String path, String extension, byte[] data, int dataLength) {
+    public void reciveFile(String path, String filename,boolean append, byte[] data, int dataLength) {
         System.out.println("reciving");
 
         try {
-            File f = new File(path + extension);
-            System.out.println("PAATH : " + path + extension);
+            File f  ; 
+            
+            String [] split = path.split("\\.(?=[^\\.]+$)");
+            //handle not write extesion 
+            if(split.length <2){
+                split = filename.split("\\.(?=[^\\.]+$)");
+                String extension = "."+split[1];
+                f = new File(path+extension);
+            }else{
+                f = new File(path);
+            }
+            
+            
+            
+            System.out.println("PAATH : " + path);
             f.createNewFile();
-            FileOutputStream out = new FileOutputStream(f, true);
+            FileOutputStream out = new FileOutputStream(f, append);
             out.write(data, 0, dataLength);
             out.flush();
             out.close();

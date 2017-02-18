@@ -18,10 +18,15 @@
                 <Font size="21.0" />
             </font>
         </Text>
-        <Text id="lbEmail" fx:id="txtEmail" layoutX="142.0" layoutY="64.0" strokeType="OUTSIDE" strokeWidth="0.0" text="email@email.com" wrappingWidth="126.13671875" />
-        <Text id="lbFullName" fx:id="txtFullName" layoutX="142.0" layoutY="92.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Full name " wrappingWidth="109.13671875" />
-        <Text id="lbCountry" fx:id="txtCountry" layoutX="142.0" layoutY="122.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Egypt" />
-        <Text id="lbGender" fx:id="txtGender" layoutX="141.0" layoutY="153.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Female" />
-        <Text id="lbStatus" fx:id="txtStatus" layoutX="143.0" layoutY="182.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Online" />
+        <Text id="lbEmail" fx:id="txtEmail" layoutX="220.0" layoutY="68.0" strokeType="OUTSIDE" strokeWidth="0.0" text="email@email.com" wrappingWidth="190.13671635836363" />
+        <Text id="lbFullName" fx:id="txtFullName" layoutX="219.0" layoutY="90.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Full name " wrappingWidth="190.13671875" />
+        <Text id="lbCountry" fx:id="txtCountry" layoutX="219.0" layoutY="113.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Egypt" />
+        <Text id="lbGender" fx:id="txtGender" layoutX="219.0" layoutY="136.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Female" />
+        <Text id="lbStatus" fx:id="txtStatus" layoutX="220.0" layoutY="159.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Online" />
+      <Text layoutX="145.0" layoutY="66.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Email" />
+      <Text layoutX="145.0" layoutY="89.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name" />
+      <Text layoutX="145.0" layoutY="112.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Country" />
+      <Text layoutX="145.0" layoutY="137.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Gender" />
+      <Text layoutX="145.0" layoutY="160.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Status" />
     </children>
 </Pane>

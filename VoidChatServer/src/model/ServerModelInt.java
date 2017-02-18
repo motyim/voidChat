@@ -154,5 +154,11 @@ public interface ServerModelInt extends Remote , Notification {
     
     //-------------- Motyim ------------------
     
+    /**
+     * check server status 
+     * @return true if is server is online 
+     * @throws RemoteException 
+     */
+     boolean isOnline() throws RemoteException;
     //-------------- End motyim ------------------
 }

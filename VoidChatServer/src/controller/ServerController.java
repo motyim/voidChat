@@ -22,7 +22,7 @@ import view.ServerView;
 public class ServerController implements ServerControllerInt {
 
     private HashMap<String, ClientModelInt> onlineUsers = new HashMap<>();
-    private HashMap<String, ArrayList<String>> groups = new HashMap<String, ArrayList<String>>();
+    private HashMap<String, ArrayList<String>> groups = new HashMap<>();
 
     private ServerModel model;
     private ServerView view;
@@ -33,6 +33,8 @@ public class ServerController implements ServerControllerInt {
 
     private byte[] sponserImage;
     private String serverNotifaction;
+    
+    private Thread checkOnline ;
 
     public ServerController(ServerView view) {
         try {
@@ -50,13 +52,6 @@ public class ServerController implements ServerControllerInt {
             
             serverNotifaction = "Void Chat Team Yor7b bekom :) ";
             
-            //method to check online users 
-            Thread tr = new Thread(()->{
-                while(true)
-                    checkOnlines();
-            });
-            tr.start();
-            
         } catch (RemoteException ex) {
             ex.printStackTrace();
         }
@@ -66,16 +61,26 @@ public class ServerController implements ServerControllerInt {
         System.out.println("Server controller");
         try {
             reg.rebind("voidChatServer", model);
-
+            
+            //method to check online users 
+            checkOnline = new Thread(()->{
+                while(true)
+                    checkOnlines();
+            });
+            checkOnline.start();
+            //set all user offline 
+            model.setAllUserOffline();
         } catch (RemoteException ex) {
             ex.printStackTrace();
         }
     }
 
+    @Override
     public void stopServer() {
         try {
             System.out.println("Server controller stop server");
             reg.unbind("voidChatServer");
+            checkOnline.stop();
         } catch (RemoteException ex) {
             ex.printStackTrace();
         } catch (NotBoundException ex) {

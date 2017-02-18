@@ -109,7 +109,6 @@ public class ChatSceneController implements Initializable {
     private SplitPane splitPane;
     @FXML
     private VBox leftPane;
-    
 
     Map<String, Tab> tabsOpened = new HashMap<>();
     Map<String, ChatBoxController> tabsControllers = new HashMap<>();
@@ -196,7 +195,6 @@ public class ChatSceneController implements Initializable {
 
             //check not empty contact list
             if (contacts != null) {
-                System.out.println(">>><<<<" + contacts.size());
                 ObservableList<User> data = FXCollections.observableArrayList(contacts);
                 friendsListview.setItems(data);
             } else {
@@ -243,7 +241,7 @@ public class ChatSceneController implements Initializable {
                                 break;
                             case "busy":
                                 statusImg = new Image("/resouces/busy.png", true);
-                                break;
+                                break;    
                         }
 
                         imageView.setImage(image);
@@ -407,19 +405,19 @@ public class ChatSceneController implements Initializable {
                     updateFriendsRequests();
                     break;
                 case Notification.FRIEND_OFFLINE:
-                    showNotifaction("Friend Become offline", message, new Image(getClass().getResource("../resouces/add-contact.png").openStream()));
+                    showNotifaction("Friend Become offline", message, new Image(getClass().getResource("../resouces/closed.png").openStream()));
                     updateContactsList();
                     break;
                 case Notification.FRIEND_ONLINE:
-                    showNotifaction("Friend Become online", message, new Image(getClass().getResource("../resouces/add-contact.png").openStream()));
+                    showNotifaction("Friend Become online", message, new Image(getClass().getResource("../resouces/open.png").openStream()));
                     updateContactsList();
                     break;
                 case Notification.ACCEPT_FRIEND_REQUEST:
-                    showNotifaction("Accept Request", message, new Image(getClass().getResource("../resouces/add-contact.png").openStream()));
+                    showNotifaction("Accept Request", message, new Image(getClass().getResource("../resouces/accept.png").openStream()));
                     updateContactsList();
                     break;
                 case Notification.SERVER_MESSAGE:
-                    showNotifaction("New Announcement", message, new Image(getClass().getResource("../resouces/add-contact.png").openStream()));
+                    showNotifaction("New Announcement", message, new Image(getClass().getResource("../resouces/megaphone.png").openStream()));
                     break;
                 case Notification.FRIEND_BUSY:
                     // showNotifaction("Friend Become busy", message, new Image(getClass().getResource("../resouces/add-contact.png").openStream()));      
@@ -560,7 +558,7 @@ public class ChatSceneController implements Initializable {
         });
     }
 
-    public String getSaveLocation(String sender) {
+    public String getSaveLocation(String sender ,String filename) {
         System.out.println("GET SAVE LOCATION");
         try {
 
@@ -574,6 +572,7 @@ public class ChatSceneController implements Initializable {
                 Optional<ButtonType> result = alert.showAndWait();
                 if (result.get() == ButtonType.OK) {
                     FileChooser fileChooser = new FileChooser();
+                    fileChooser.setInitialFileName(filename);
                     //Show save file dialog
                     File file = fileChooser.showSaveDialog(null);
 
@@ -610,6 +609,11 @@ public class ChatSceneController implements Initializable {
                     stage.setResizable(false);
                     stage.setTitle(" ");
                     stage.show();
+                    stage.setOnCloseRequest((WindowEvent ew) -> {
+                        Platform.exit();
+                        //TODO : why not close
+                        System.exit(0);
+                    });
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 }
@@ -617,10 +621,10 @@ public class ChatSceneController implements Initializable {
         });
 
     }
-    
+
     @FXML
     void iconAddNewFriendAction(MouseEvent event) {
-        
+
         ObservableList<String> options
                 = FXCollections.observableArrayList(
                         "Family",
@@ -684,6 +688,9 @@ public class ChatSceneController implements Initializable {
                     break;
                 case Constant.SENDED:
                     clinetView.showSuccess("Sccuess", "Requset Sended", "You send request to " + emailCategory.getKey());
+                    break;
+                case Constant.SAME_NAME:
+                    clinetView.showError("Error", "Can't  Send Requset", "you can't add your self");
                     break;
             }
 

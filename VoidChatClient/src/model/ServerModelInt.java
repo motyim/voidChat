@@ -142,4 +142,23 @@ public interface ServerModelInt extends Remote , Notification {
      * @throws RemoteException 
      */
     boolean sendMail(String to , String subject , String emailBody)throws RemoteException;
+    
+    
+    //-------------- Merna ------------------
+    
+    //-------------- End Merna ------------------
+    
+    //-------------- Roma ------------------
+    
+    //-------------- End roma ------------------
+    
+    //-------------- Motyim ------------------
+    
+    /**
+     * check server status 
+     * @return true if is server is online 
+     * @throws RemoteException 
+     */
+     boolean isOnline() throws RemoteException;
+    //-------------- End motyim ------------------
 }

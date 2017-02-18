@@ -629,7 +629,23 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
     //-------------- End roma ------------------
     
     //-------------- Motyim ------------------
+    @Override
+    public boolean isOnline() throws RemoteException {
+        return true ; 
+    }
     
+    public void setAllUserOffline() {
+        try {
+            getConnection();
+            query = "update UserTable set status='offline'";
+            statement = connection.createStatement();
+            statement.executeUpdate(query);
+
+       } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        closeResources();
+    }
     //-------------- End motyim ------------------
 
 }

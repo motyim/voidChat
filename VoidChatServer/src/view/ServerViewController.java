@@ -156,7 +156,7 @@ public class ServerViewController implements Initializable {
 
         try {
             //set sponser
-            sponser.setImage(new Image(getClass().getResource("/Voidlogo.png").openStream()));
+            sponser.setImage(new Image(getClass().getResource("/resources/Voidlogo.png").openStream()));
         } catch (IOException ex) {
             Logger.getLogger(ServerViewController.class.getName()).log(Level.SEVERE, null, ex);
         }

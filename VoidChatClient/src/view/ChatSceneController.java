@@ -102,6 +102,7 @@ public class ChatSceneController implements Initializable {
     private ListView<User> aListViewFamily;
     //------end merna----
 
+    private static boolean falg = false;
 
     Map<String, Tab> tabsOpened = new HashMap<>();
     Map<String, ChatBoxController> tabsControllers = new HashMap<>();
@@ -320,7 +321,7 @@ public class ChatSceneController implements Initializable {
     public void reciveMsg(Message message) throws IOException {
 
         String tabName;
-        String[] groupName=message.getTo().split("##");;
+        String[] groupName = message.getTo().split("##");;
         // message sent to group? open tab (group name) :  open tab(sender name)
         if (message.getTo().contains("##")) {
             ////////////////////
@@ -338,12 +339,13 @@ public class ChatSceneController implements Initializable {
                         // create new tab
                         Tab newTab = new Tab();
                         newTab.setId(tabName);
-                        
-                        if (message.getTo().contains("##"))
+
+                        if (message.getTo().contains("##")) {
                             newTab.setText(groupName[2]);
-                        else
+                        } else {
                             newTab.setText(tabName);
-                        
+                        }
+
                         newTab.setOnCloseRequest(new EventHandler<Event>() {
                             @Override
                             public void handle(Event event) {
@@ -424,8 +426,7 @@ public class ChatSceneController implements Initializable {
         });
     }
 
-
-    public String getSaveLocation(String sender ,String filename) {
+    public String getSaveLocation(String sender, String filename) {
         System.out.println("GET SAVE LOCATION");
         try {
 
@@ -463,19 +464,34 @@ public class ChatSceneController implements Initializable {
 
     public void loadErrorServer() {
         //----- close this scene -----
-        requestsListview.getScene().getWindow().hide();
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                //requestsListview.getScene().getWindow().hide();
+                if (!falg) {
+                    homeLabel.getScene().getWindow().hide();
+                    System.out.println("Clled here");
+                    try {
+                        Parent parent = FXMLLoader.load(getClass().getResource("OutOfServiceScene.fxml"));
+                        Stage stage = new Stage();
+                        Scene scene = new Scene(parent);
+                        stage.setScene(scene);
+                        stage.setResizable(false);
+                        stage.setTitle(" ");
+                        stage.show();
+                        stage.setOnCloseRequest((WindowEvent ew) -> {
+                            Platform.exit();
+                            //TODO : why not close
+                            System.exit(0);
+                        });
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    }
+                    falg = true;
+                }
+            }
+        });
 
-        try {
-            Parent parent = FXMLLoader.load(getClass().getResource("OutOfServiceScene.fxml"));
-            Stage stage = new Stage();
-            Scene scene = new Scene(parent);
-            stage.setScene(scene);
-            stage.setResizable(false);
-            stage.setTitle(" ");
-            stage.show();
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
     }
 
     @FXML
@@ -484,8 +500,7 @@ public class ChatSceneController implements Initializable {
         ObservableList<String> options
                 = FXCollections.observableArrayList(
                         "Family",
-                        "Friends",
-                        "Block"
+                        "Friends"
                 );
 
         Dialog<Pair<String, String>> dialog = new Dialog<>();
@@ -554,7 +569,7 @@ public class ChatSceneController implements Initializable {
     }
 
     //--- merna ---
-     /**
+    /**
      * update friends contact list
      */
     void loadAccordionData() {
@@ -577,20 +592,20 @@ public class ChatSceneController implements Initializable {
                 }
 
             }
-            
-            if(friendType.isEmpty()){
+
+            if (friendType.isEmpty()) {
                 System.out.println("friendType list is empty");
                 try {
-                    Node node =FXMLLoader.load(getClass().getResource("EmptyList.fxml"));
+                    Node node = FXMLLoader.load(getClass().getResource("EmptyList.fxml"));
                     titlePaneFriends.setContent(node);
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 }
-            }else if (friendType.size() == 1) {
+            } else if (friendType.size() == 1) {
                 System.out.println("friendType list = 1");
                 titlePaneFriends.setContent(aListViewFriends);
                 aListViewFriends.setItems(friendType);
-            }else{
+            } else {
                 System.out.println("friendType list more than 1");
                 aListViewFriends.setItems(friendType);
             }
@@ -618,19 +633,19 @@ public class ChatSceneController implements Initializable {
 
             });
 
-             if(familyType.isEmpty()){
+            if (familyType.isEmpty()) {
                 System.out.println("familyType list is empty");
                 try {
-                    Node node =FXMLLoader.load(getClass().getResource("EmptyList.fxml"));
+                    Node node = FXMLLoader.load(getClass().getResource("EmptyList.fxml"));
                     titlePaneFamily.setContent(node);
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 }
-            }else if (familyType.size() == 1) {
+            } else if (familyType.size() == 1) {
                 System.out.println("familyType list = 1");
                 titlePaneFamily.setContent(aListViewFamily);
                 aListViewFamily.setItems(familyType);
-            }else{
+            } else {
                 System.out.println("familyType list more than 1");
                 aListViewFamily.setItems(familyType);
             }
@@ -747,7 +762,7 @@ public class ChatSceneController implements Initializable {
         }
     }
     //-- end merna ---
-    
+
     //  friendsPane.getChildren().clear();
     //  friendsPane.getChildren().add(FXMLLoader.load(getClass().getResource("EmptyList.fxml")));
 }

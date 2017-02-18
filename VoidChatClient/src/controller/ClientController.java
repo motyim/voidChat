@@ -308,6 +308,7 @@ public class ClientController implements ClientControllerInt {
 
     @Override
     public void loadErrorServer() {
+        System.out.println("~!!!!!!!!!!!!!!!!!!!~");
         view.loadErrorServer();
     }
 
@@ -336,6 +337,7 @@ public class ClientController implements ClientControllerInt {
         } catch (InterruptedException | RemoteException ex) {
             ex.printStackTrace();
             loadErrorServer();
+            System.out.println("~~~~~~~~~~~~~~~~~~~~~~~");
             checkServerStatus.stop();
         }
      }

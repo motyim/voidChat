@@ -57,7 +57,6 @@ public class ClientController implements ClientControllerInt {
             Registry reg = LocateRegistry.getRegistry(host, 1050);
 
             serverModelInt = (ServerModelInt) reg.lookup("voidChatServer");
-            System.out.println("Conncet to Server");
             return true;
         } catch (RemoteException | NotBoundException ex) {
             ex.printStackTrace();
@@ -87,7 +86,6 @@ public class ClientController implements ClientControllerInt {
             //register client to server
             if (loginUser != null) {
                 registerToServer(loginUser.getUsername(), model);
-                System.out.println(">><<>>" + loginUser.getUsername());
             }
             //check server status 
             checkServerStatus = new Thread(()->{
@@ -104,19 +102,14 @@ public class ClientController implements ClientControllerInt {
 
     }
 
-    @Override
-    public void loadHomePage(User client) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+  
 
     @Override
     public void registerToServer(String username, ClientModelInt obj) throws Exception {
         try {
-            System.out.println("bl");
             if (!serverModelInt.register(username, obj)) {
                 throw new RuntimeException("User already Login");
             }
-            System.out.println("blabla");
         } catch (RemoteException ex) {
             ex.printStackTrace();
         }
@@ -157,7 +150,6 @@ public class ClientController implements ClientControllerInt {
     @Override
     public void logout() {
         try {
-            //System.out.println(userName);
             serverModelInt.unregister(loginUser.getUsername());
             checkServerStatus.stop();
         } catch (RemoteException ex) {
@@ -167,12 +159,9 @@ public class ClientController implements ClientControllerInt {
 
     @Override
     public int sendRequest(String reciverName, String category) {
-        System.out.println("in client Controller " + reciverName + " " + category);
         try {
-            System.out.println("my name is " + loginUser.getUsername());
             return serverModelInt.sendRequest(loginUser.getUsername(), reciverName, category);
         } catch (RemoteException ex) {
-            System.out.println("Exception in client controller");
             ex.printStackTrace();
             return 0;
         }
@@ -182,7 +171,6 @@ public class ClientController implements ClientControllerInt {
     @Override
     public void notify(String message, int type) {
         view.notify(message, type);
-        System.out.println("notify in client controller");
     }
 
     @Override
@@ -195,50 +183,24 @@ public class ClientController implements ClientControllerInt {
         }
     }
 
-    @Override
-    public void notifyStatus(String username, String status) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+    
 
     @Override
     public void sendMsg(Message message) {
         try {
-            System.out.println("in client controller send msg");
             serverModelInt.sendMsg(message);
         } catch (RemoteException ex) {
             ex.printStackTrace();
         }
     }
 
-    /*    public void sendMsg(String friendName,String message) {
-        try {
-            System.out.println("send Message in client controller "+friendName+" "+message);
-            serverModelInt.sendMsg(friendName, message);
-        } catch (RemoteException ex) {
-           ex.printStackTrace();
-        }
-    }*/
     @Override
     public void reciveMsg(Message message) {
         view.reciveMsg(message);
     }
 
-    /*  public void reciveMsg(String msg) {
-         view.reciveMsg(msg);
-    }*/
-    @Override
-    public void groupMsg(String msg, ArrayList<String> groupChatUsers) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void reciveMsgGroup(String msg, ArrayList<String> groupChatUsers) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
     @Override
     public User getUserInformation() {
-        System.out.println("here" + this.loginUser);
         return this.loginUser;
     }
 
@@ -308,7 +270,6 @@ public class ClientController implements ClientControllerInt {
 
     @Override
     public void loadErrorServer() {
-        System.out.println("~!!!!!!!!!!!!!!!!!!!~");
         view.loadErrorServer();
     }
 
@@ -330,14 +291,11 @@ public class ClientController implements ClientControllerInt {
     private void checkServerStatus(){
         
         try {
-            System.out.println("Start Check------------------");
             Thread.sleep(5000);
             serverModelInt.isOnline();
-            System.out.println("End Check------------------");
         } catch (InterruptedException | RemoteException ex) {
             ex.printStackTrace();
             loadErrorServer();
-            System.out.println("~~~~~~~~~~~~~~~~~~~~~~~");
             checkServerStatus.stop();
         }
      }

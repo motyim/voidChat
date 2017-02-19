@@ -27,7 +27,6 @@ public interface ServerControllerInt extends Notification{
     @Override
     void notify(String reciver , String message , int type);
 
-    void notifyStatus(String username , String status ,ArrayList<String> friends);
     
       /**
      * if false handel disable send btn 
@@ -38,14 +37,8 @@ public interface ServerControllerInt extends Notification{
      */
    // boolean sendMsg(String reciver , String msg);
     void recieveMsg(Message message);
-    /**
-     * check for user group online user and send Msg 
-     * for them .. fokkak mn offline now 
-     * @param msg
-     * @param groupChatUsers 
-     */
-    //TODO : handle when user left group
-    void groupMsg(String msg , ArrayList<String> groupChatUsers);
+    
+    
     void startServer();
     void stopServer();
     

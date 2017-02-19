@@ -210,15 +210,14 @@ public class ServerViewController implements Initializable {
 
     @FXML
     private void ToggleButtonAction(ActionEvent event) {
-        System.out.println("serverViewController");
-
+        
         if (start.isSelected()) {
-            System.out.println("serverViewController start");
+            
             start.setText("Stop");
             serverView.startServer();
         } else {
             start.setText("Start");
-            System.out.println("serverViewController stop");
+            
             serverView.stopServer();
             serverView.loadErrorServer();
         }
@@ -337,7 +336,6 @@ public class ServerViewController implements Initializable {
         genderCol.setOnEditCommit((TableColumn.CellEditEvent<UserFx, String> event) -> {
             UserFx user = ((UserFx) event.getTableView().getItems().get(event.getTablePosition().getRow()));
             user.setGender(event.getNewValue());
-            System.out.println("gender -->>" + event.getNewValue() + ",from obj-->>" + user.getGender());
             serverView.updateUser(new User(user.getUsername(), user.getFname(),
                     user.getLname(), user.getGender(), user.getCountry()));
         });

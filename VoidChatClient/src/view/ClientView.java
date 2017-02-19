@@ -86,10 +86,6 @@ public class ClientView extends Application implements ClientViewInt {
         return controller.signin(username, password);
     }
 
-    @Override
-    public void loadHomePage() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
 /////////////////////////////////////////////////////////////////////
 
     @Override
@@ -112,7 +108,7 @@ public class ClientView extends Application implements ClientViewInt {
     @Override
     public void notify(String message, int type) {
         chatSceneController.notify(message, type);
-        System.out.println("notify in client view");
+        
     }
 
     @Override
@@ -121,13 +117,8 @@ public class ClientView extends Application implements ClientViewInt {
     }
 
     @Override
-    public void notifyStatus(String username, String status) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
     public void sendMsg(Message message) {
-        System.out.println("in client view sendMsg");
+        
         controller.sendMsg(message);
     }
 
@@ -139,21 +130,11 @@ public class ClientView extends Application implements ClientViewInt {
     @Override
     public void reciveMsg(Message message) {
         try {
-            System.out.println("recieve msg in client view" + message.getBody());
+            
             chatSceneController.reciveMsg(message);
         } catch (IOException ex) {
             ex.printStackTrace();
         }
-    }
-
-    @Override
-    public void groupMsg() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void reciveMsgGroup(String msg, ArrayList<String> groupChatUsers) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     /**

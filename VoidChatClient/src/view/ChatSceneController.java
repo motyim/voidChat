@@ -114,7 +114,6 @@ public class ChatSceneController implements Initializable {
     public ChatSceneController() {
         //get instance form view
         clinetView = ClientView.getInstance();
-        System.out.println("chat connect Client view");
         clinetView.setChatSceneController(this);
     }
 
@@ -208,7 +207,6 @@ public class ChatSceneController implements Initializable {
                             btnAccept.setOnAction(new EventHandler<ActionEvent>() {
                                 @Override
                                 public void handle(ActionEvent event) {
-                                    System.out.println("Accept :" + getItem());
                                     if (clinetView.acceptRequest(getItem())) {
                                         clinetView.showSuccess("Operation Sccuess",
                                                 "Friend Added Successfuly",
@@ -229,7 +227,6 @@ public class ChatSceneController implements Initializable {
                             btnIgnore.setOnAction(new EventHandler<ActionEvent>() {
                                 @Override
                                 public void handle(ActionEvent event) {
-                                    System.out.println("Ignore :" + getItem());
                                     clinetView.ignoreRequest(getItem());
                                     updateFriendsRequests();
                                 }
@@ -253,7 +250,6 @@ public class ChatSceneController implements Initializable {
     }
 
     public void notify(String message, int type) {
-        System.out.println("notify in chat controller");
         try {
 
             switch (type) {
@@ -306,9 +302,7 @@ public class ChatSceneController implements Initializable {
     }
 
     public void changeStatus() {
-        System.out.println("change status button in chatScene Controller");
         clinetView.changeStatus(comboBoxStatus.getValue().toString());
-        System.out.println(comboBoxStatus.getValue().toString());
     }
 
     /**
@@ -349,7 +343,7 @@ public class ChatSceneController implements Initializable {
                         newTab.setOnCloseRequest(new EventHandler<Event>() {
                             @Override
                             public void handle(Event event) {
-                                System.out.println("?>>" + newTab.getId());
+                              
                                 tabsOpened.remove(newTab.getId());
                                 tabsControllers.remove(newTab.getId());
                             }
@@ -399,7 +393,7 @@ public class ChatSceneController implements Initializable {
                         newTab.setOnCloseRequest(new EventHandler<Event>() {
                             @Override
                             public void handle(Event event) {
-                                System.out.println("?>>" + newTab.getId());
+                                
                                 tabsOpened.remove(newTab.getId());
                                 tabsControllers.remove(newTab.getId());
                             }
@@ -427,7 +421,6 @@ public class ChatSceneController implements Initializable {
     }
 
     public String getSaveLocation(String sender, String filename) {
-        System.out.println("GET SAVE LOCATION");
         try {
 
             FutureTask saveLocation = new FutureTask(() -> {
@@ -470,7 +463,7 @@ public class ChatSceneController implements Initializable {
                 //requestsListview.getScene().getWindow().hide();
                 if (!falg) {
                     homeLabel.getScene().getWindow().hide();
-                    System.out.println("Clled here");
+                    
                     try {
                         Parent parent = FXMLLoader.load(getClass().getResource("OutOfServiceScene.fxml"));
                         Stage stage = new Stage();
@@ -500,7 +493,8 @@ public class ChatSceneController implements Initializable {
         ObservableList<String> options
                 = FXCollections.observableArrayList(
                         "Family",
-                        "Friends"
+                        "Friends",
+                        "Block"
                 );
 
         Dialog<Pair<String, String>> dialog = new Dialog<>();
@@ -542,14 +536,20 @@ public class ChatSceneController implements Initializable {
         //Hna H3mal Insert LL Code Bta3e (Send Request)
         Optional<Pair<String, String>> result = dialog.showAndWait();
         result.ifPresent(emailCategory -> {
-            System.out.println("user=" + emailCategory.getKey() + ", category=" + emailCategory.getValue());
+            
+            if(emailCategory.getValue().equals("Block")){
+                clinetView.sendRequest(emailCategory.getKey(), emailCategory.getValue());
+                clinetView.showSuccess("Sccuess", "Blocked", "You block user " + emailCategory.getKey());
+                return ;
+            }
+            
             switch (clinetView.sendRequest(emailCategory.getKey(), emailCategory.getValue())) {
                 case Constant.ALREADY_FRIENDS:
                     clinetView.showError("Error", "Can't  Send Requset", "User Already Friend to you..");
                     break;
                 case Constant.REQUEST_ALREADY_EXIST:
                     clinetView.showError("Error", "Can't  Send Requset", "you Already send request before "
-                            + "\nor have request from this person");
+                            + "\nor have request from this person\nor there is a block relation :( ");
                     break;
                 case Constant.USER_NOT_EXIST:
                     clinetView.showError("Error", "Can't  Send Requset", "User Not Exsist in our System");
@@ -594,7 +594,7 @@ public class ChatSceneController implements Initializable {
             }
 
             if (friendType.isEmpty()) {
-                System.out.println("friendType list is empty");
+                
                 try {
                     Node node = FXMLLoader.load(getClass().getResource("EmptyList.fxml"));
                     titlePaneFriends.setContent(node);
@@ -602,11 +602,11 @@ public class ChatSceneController implements Initializable {
                     ex.printStackTrace();
                 }
             } else if (friendType.size() == 1) {
-                System.out.println("friendType list = 1");
+                
                 titlePaneFriends.setContent(aListViewFriends);
                 aListViewFriends.setItems(friendType);
             } else {
-                System.out.println("friendType list more than 1");
+                
                 aListViewFriends.setItems(friendType);
             }
 
@@ -627,14 +627,17 @@ public class ChatSceneController implements Initializable {
             aListViewFriends.setOnMouseClicked(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent event) {
-                    String friendName = aListViewFriends.getSelectionModel().getSelectedItem().getUsername();
-                    cellClickAction(friendName);
+                    try{
+                        String friendName = aListViewFriends.getSelectionModel().getSelectedItem().getUsername();
+                        cellClickAction(friendName);
+                    }catch(NullPointerException ex){}
+                    
                 }
 
             });
 
             if (familyType.isEmpty()) {
-                System.out.println("familyType list is empty");
+                
                 try {
                     Node node = FXMLLoader.load(getClass().getResource("EmptyList.fxml"));
                     titlePaneFamily.setContent(node);
@@ -642,11 +645,11 @@ public class ChatSceneController implements Initializable {
                     ex.printStackTrace();
                 }
             } else if (familyType.size() == 1) {
-                System.out.println("familyType list = 1");
+                
                 titlePaneFamily.setContent(aListViewFamily);
                 aListViewFamily.setItems(familyType);
             } else {
-                System.out.println("familyType list more than 1");
+                
                 aListViewFamily.setItems(familyType);
             }
 
@@ -667,8 +670,11 @@ public class ChatSceneController implements Initializable {
             aListViewFamily.setOnMouseClicked(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent event) {
-                    String friendName = aListViewFamily.getSelectionModel().getSelectedItem().getUsername();
-                    cellClickAction(friendName);
+                    try{
+                        String friendName = aListViewFamily.getSelectionModel().getSelectedItem().getUsername();
+                        cellClickAction(friendName);
+                    }catch(NullPointerException ex){}
+                    
                 }
 
             });
@@ -700,15 +706,15 @@ public class ChatSceneController implements Initializable {
         //change status image                        
         switch (friend.getStatus()) {
             case "offline":
-                System.out.println("--online");
+                
                 statusImg = new Image("/resouces/circle.png", true);
                 break;
             case "online":
                 statusImg = new Image("/resouces/online.png", true);
-                System.out.println("--offline");
+                
                 break;
             case "busy":
-                System.out.println("--busy");
+                
                 statusImg = new Image("/resouces/busy.png", true);
                 break;
         }
@@ -730,7 +736,7 @@ public class ChatSceneController implements Initializable {
         if (!tabsOpened.containsKey(friendName)) {
             try {
 
-                System.out.println("clicked on " + friendName);
+                
                 Tab newTab = new Tab();
 
                 newTab.setId(friendName);
@@ -740,7 +746,7 @@ public class ChatSceneController implements Initializable {
                 newTab.setOnCloseRequest(new EventHandler<Event>() {
                     @Override
                     public void handle(Event event) {
-                        System.out.println("?>>" + newTab.getId());
+                        
                         tabsOpened.remove(newTab.getId());
                         tabsControllers.remove(newTab.getId());
                     }

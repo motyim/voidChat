@@ -24,7 +24,6 @@ public interface ClientViewInt {
 
     User signin(String username, String password) throws Exception;
 
-    void loadHomePage();
 
     void changeStatus(String status);
 
@@ -36,17 +35,11 @@ public interface ClientViewInt {
 
     boolean acceptRequest(String friend);
 
-    void notifyStatus(String username, String status);
-
     //void sendMsg(String friendName,String message);
     void sendMsg(Message message);
 
     //  void reciveMsg(String msg);
     void reciveMsg(Message message);
-
-    void groupMsg();
-
-    void reciveMsgGroup(String msg, ArrayList<String> groupChatUsers);
 
     ArrayList<User> getContacts();
 

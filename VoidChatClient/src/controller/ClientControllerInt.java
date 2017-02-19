@@ -37,12 +37,7 @@ public interface ClientControllerInt {
      */
     User signin(String username, String password) throws Exception;
 
-    /**
-     * call loadhomepage in client view
-     *
-     * @param client
-     */
-    void loadHomePage(User client);
+    
 
     /**
      * call register in SM
@@ -85,7 +80,7 @@ public interface ClientControllerInt {
 
     boolean acceptRequest(String friendName);
 
-    void notifyStatus(String username, String status);
+    
 
     //void sendMsg(String reciver, String Msg);
     void sendMsg(Message message);
@@ -93,9 +88,7 @@ public interface ClientControllerInt {
     //void reciveMsg(String msg);
     void reciveMsg(Message message);
 
-    void groupMsg(String msg, ArrayList<String> groupChatUsers);
-
-    void reciveMsgGroup(String msg, ArrayList<String> groupChatUsers);
+    
 
     /**
      * get login user info 

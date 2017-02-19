@@ -146,7 +146,6 @@ public class ChatBoxController implements Initializable {
 
         }
         if (clientView.getHistory(receiver) != null) {
-            System.out.println("");
             loadHistory(clientView.getHistory(receiver));
         }
 
@@ -178,7 +177,6 @@ public class ChatBoxController implements Initializable {
     @FXML
     private void btnSendAttachAction(ActionEvent event) {
 
-        System.out.println("Start sending File..");
         Stage st = (Stage) ((Node) event.getSource()).getScene().getWindow();
         FileChooser fileChooser = new FileChooser();
 
@@ -214,13 +212,11 @@ public class ChatBoxController implements Initializable {
                     return;
                 }
 
-                System.out.println(path);
                 in = new FileInputStream(file);
                 byte[] data = new byte[1024 * 1024];
                 int dataLength = in.read(data);
                 boolean append = false;
                 while (dataLength > 0) {
-                    System.out.println("Send : " + dataLength);
                     peer.reciveFile(path, file.getName(), append, data, dataLength);
                     dataLength = in.read(data);
                     append = true;
@@ -244,7 +240,6 @@ public class ChatBoxController implements Initializable {
 
 //        String color = "#" + Integer.toHexString(colorPicker.getValue().hashCode());
             String color = toRGBCode(colorPicker.getValue());
-            System.out.println(color);
             String weight = (boldToggleBtn.isSelected()) ? "Bold" : "normal";
             String size = fontSizeComboBox.getSelectionModel().getSelectedItem();
             String style = (italicTogglebtn.isSelected()) ? "italic" : "normal";
@@ -317,9 +312,7 @@ public class ChatBoxController implements Initializable {
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
-            System.out.println("btnSendMsg Action");
         }
-        System.out.println("empty message");
     }
 
     public void reciveMsg(Message message) throws IOException {
@@ -334,7 +327,6 @@ public class ChatBoxController implements Initializable {
         // hey there is new received msg, you will send the next msg with image 
         recMsgFlag = true;
         if (message.getTo().contains("##")) {
-            System.out.println("test rec group >>" + message.getTo());
             receiver = message.getTo();
             groupFlag = true;
         } else {
@@ -464,7 +456,6 @@ public class ChatBoxController implements Initializable {
         Boolean otherFlag = true;
 
         for (Message message : messages) {
-            System.out.println("from:" + message.getFrom() + " " + message.getBody());
             if (message.getFrom().equals(clientView.getUserInformation().getUsername())) {
                 myFlag = true;
                 try {

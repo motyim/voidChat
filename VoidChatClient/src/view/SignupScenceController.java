@@ -84,7 +84,7 @@ public class SignupScenceController implements Initializable {
     public SignupScenceController() {
         //get instance form view
         clinetView = ClientView.getInstance();
-        System.out.println("singup connect Client view");
+       
     }
 
     @FXML
@@ -172,7 +172,6 @@ public class SignupScenceController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        System.out.println("signup intialize ..");
         comboboxGender.setItems(genderList);
         comboboxCountry.setItems(counrtyList);
         btnSignup.setDefaultButton(true);

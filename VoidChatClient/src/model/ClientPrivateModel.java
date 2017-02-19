@@ -5,15 +5,12 @@ import XMLModle.FontFamily;
 import XMLModle.HistoryType;
 import XMLModle.MessageType;
 import XMLModle.ObjectFactory;
-import controller.ClientController;
 import controller.ClientControllerInt;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.net.URISyntaxException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -85,16 +82,15 @@ public class ClientPrivateModel {
 //            copyFile(new File("src//XML//history.xsl"), file);
 //            //-------------- create XSD file ------------------
 //            copyFile(new File("src//XML//history.xsd"), file);
-            
-    
-              copyFile(new File("/XML/history.xsl"), file);
-              copyFile(new File("/XML/history.xsd"), file);
+
+            copyFile(getClass().getResource("/XML/history.xsl").openStream(), file.getParent() +"/history.xsl");
+            copyFile(getClass().getResource("/XML/history.xsd").openStream(), file.getParent() +"/history.xsd");
             
 
         } catch (JAXBException | FileNotFoundException ex) {
-            Logger.getLogger(ClientController.class.getName()).log(Level.SEVERE, null, ex);
+            ex.printStackTrace();
         } catch (IOException ex) {
-            Logger.getLogger(ClientPrivateModel.class.getName()).log(Level.SEVERE, null, ex);
+            ex.printStackTrace();
         }
     }
 
@@ -103,26 +99,34 @@ public class ClientPrivateModel {
      * @param file
      * @param path
      */
-    private void copyFile(File file, File path) {
+    private void copyFile(InputStream is, String path) {
 
         Thread th = new Thread(() -> {
 
-            String newFile = path.getParent() + "\\" + file.getName();
-            System.out.println(newFile);
-
-            try (FileReader fr = new FileReader(file);
-                    FileWriter fw = new FileWriter(newFile)) {
-
-                int readByte;
-                while ((readByte = fr.read()) != -1) {
-                    fw.write(readByte);
+            FileOutputStream os = null;
+            try {
+                File newFile = new File(path);
+                os = new FileOutputStream(newFile);
+                int readByte ; 
+                while((readByte=is.read())!= -1){
+                    os.write(readByte);
                 }
-
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(ClientPrivateModel.class.getName()).log(Level.SEVERE, null, ex);
             } catch (IOException ex) {
                 Logger.getLogger(ClientPrivateModel.class.getName()).log(Level.SEVERE, null, ex);
+            } finally {
+                try {
+                    os.close();
+                } catch (IOException ex) {
+                    Logger.getLogger(ClientPrivateModel.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
+             
+
+              
+
+            
             
         }
         );

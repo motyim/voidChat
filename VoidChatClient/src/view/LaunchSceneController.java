@@ -50,7 +50,7 @@ public class LaunchSceneController implements Initializable {
     @FXML
     void btnConnectAction(ActionEvent event) {
 
-        System.out.println("IP: " + txtFieldHostIP.getText());
+        
         String ip = txtFieldHostIP.getText();
 
         if (!ip.equals("localhost") && !Checks.checkIP(ip)) {

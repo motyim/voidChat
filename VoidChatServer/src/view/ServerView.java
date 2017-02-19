@@ -61,12 +61,12 @@ public class ServerView extends Application implements ServerViewInt {
     }
 
     public void startServer() {
-        System.out.println("ServerView");
+
         controller.startServer();
     }
 
     public void stopServer() {
-        System.out.println("ServerView closeServer");
+
         controller.stopServer();
     }
 
@@ -97,11 +97,7 @@ public class ServerView extends Application implements ServerViewInt {
     }
 
     public void GenerateUserFX(UserFx user) {
-        if(user == null ) System.out.println("WHYYYYYYYYYYYYYYYYYYYYYYYYYYYY");
         serverViewController.data.add(user);
-        for (UserFx u : serverViewController.data) {
-            System.out.println(u.getUsername());
-        }
     }
 
 

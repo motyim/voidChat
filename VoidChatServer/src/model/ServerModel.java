@@ -84,7 +84,7 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
                 statement.executeUpdate(query);
                 //add in table
                 GenerateUserFX(user);
-                System.out.println("Done");
+
 
                 closeResources();
                 controller.sendWelcomeMail(user.getEmail(), user.getUsername(), user.getPassword());
@@ -99,14 +99,14 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
     @Override
     public synchronized User signin(String username, String password) throws RemoteException {
         User user = null;
-        System.out.println("sign in server model ");
+
         try {
             getConnection();
             query = "select * from UserTable where username = '" + username + "'and password='" + SHA.encrypt(password) + "'";
             statement = connection.createStatement();
             resultSet = statement.executeQuery(query);
             if (resultSet.next()) {
-                System.out.println("is statement");
+
                 String name = resultSet.getString("username");
                 String email = resultSet.getString("email");
                 String fname = resultSet.getString("fname");
@@ -133,7 +133,6 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
 
     @Override
     public synchronized void unregister(String username) throws RemoteException {
-        //System.out.println(username);
         controller.unregister(username);
     }
 
@@ -142,7 +141,7 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
         ArrayList<String> friendsNames = null;
         try {
             getConnection();
-            query = "select sender from Requests where receiver = '" + username + "'";
+            query = "select sender from Requests where receiver = '" + username + "' And type <> 'Block'";
             statement = connection.createStatement();
             resultSet = statement.executeQuery(query);
             if (resultSet.next()) {
@@ -192,12 +191,10 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
     //hna zawdt
     public synchronized void notify(String reciver, String message, int type) throws RemoteException {
         controller.notify(reciver, message, type);
-        System.out.println("in notify in server model");
     }
 
     @Override
     public synchronized void changeStatus(String username, String status) throws RemoteException {
-        System.out.println("change status in server model");
         try {
             getConnection();
             query = "update UserTable set status='" + status + "' where username= '" + username + "'";
@@ -224,25 +221,14 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
 
     @Override
     public synchronized void sendMsg(Message message) {
-        System.out.println("in Server Model send message");
         if (!message.getTo().contains("##")) {
             insertMessage(message);
         }
         controller.recieveMsg(message);
     }
 
-    /* public boolean sendMsg(String reciver, String msg) throws RemoteException {
-        System.out.println("sendMsg in server model");
-        return controller.sendMsg(reciver, msg);
-    }*/
-    @Override
-    public synchronized void groupMsg(String msg, ArrayList<String> groupChatUsers) throws RemoteException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
     @Override
     public synchronized ArrayList<User> getContacts(String userName) throws RemoteException {
-        System.out.println("in get contacts");
         ArrayList<User> friendsObjects = new ArrayList<User>();
         ArrayList<String> friendsNames = new ArrayList<String>();
         try {
@@ -318,7 +304,8 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
             statement.executeUpdate(query);
 
             //zwat hna
-            notify(reciverName, senderName + " Want to be your Friend", Notification.FRIEND_REQUSET); //notify if sccuess only
+            if(!type.equals("Block"))
+                notify(reciverName, senderName + " Want to be your Friend", Notification.FRIEND_REQUSET); //notify if sccuess only
 
             return Constant.SENDED;
 
@@ -354,7 +341,6 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
             resultSet = statement.executeQuery(query);
             while (resultSet.next()) {
                 countUsers++;
-                //System.out.println("in while");
             }
             users.add(countUsers);
             countUsers = 0;
@@ -363,7 +349,7 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
             ResultSet resultSet2 = statement.executeQuery(query);
             while (resultSet2.next()) {
                 countUsers++;
-                // System.out.println("in while2");
+
             }
             users.add(countUsers);
 
@@ -371,7 +357,6 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
             ex.printStackTrace();
         }
         closeResources();
-        // System.out.println(users.get(0) + "<---->" + users.get(1));
         return users;
     }
 
@@ -453,7 +438,6 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
 
     public synchronized void insertMessage(Message message) {
         try {
-            System.out.println("insert msg");
             getConnection();
             query = "insert into Message(fontSize,`from`,`to`,date,fontColor,fontFamily,fontStyle,body,fontWeight,underLine)values (" + message.getFontsSize() + ",'" + message.getFrom() + "','"
                     + message.getTo() + "','" + message.getDate() + "','" + message.getFontColor() + "','" + message.getFontFamily() + "','"
@@ -463,7 +447,6 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
             statement.executeUpdate(query);
             closeResources();
         } catch (SQLException ex) {
-            System.out.println("exception");
             ex.printStackTrace();
         }
 
@@ -475,7 +458,6 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
             getConnection();
             query = "select * from Message where (`from` = '" + sender + "' and `to`='" + receiver + "') or"
                     + " (`to`='" + sender + "'and `from`='" + receiver + "')";
-            System.out.println(query);
             statement = connection.createStatement();
             resultSet = statement.executeQuery(query);
             while (resultSet.next()) {
@@ -600,7 +582,6 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
             getConnection();
             String query = "update UserTable set fname='" + user.getFname()
                     + "',lname='" + user.getLname() + "',gender='" + user.getGender() + "',country='" + user.getCountry() + "' where username= '" + user.getUsername() + "'";
-            System.out.println(query);
             statement = connection.createStatement();
             statement.executeUpdate(query);
 
@@ -674,7 +655,6 @@ public class ServerModel extends UnicastRemoteObject implements ServerModelInt {
                 String status = resultSet.getString("status");
                 String country = resultSet.getString("country");
                 user = new User(username, email, fname, lname, password, gender, country, status);
-                System.out.println("emailll:" + user.getEmail());
             }
         } catch (SQLException ex) {
             ex.printStackTrace();

@@ -76,7 +76,7 @@ public class HomeBoxController implements Initializable {
      }
      
      public void reciveSponser(byte[] data, int dataLength){
-         System.out.println("hzhzhzhzh");
+         
          InputStream myInputStream = new ByteArrayInputStream(data); 
          sponser.setImage(new Image(myInputStream));
      }

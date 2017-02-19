@@ -1,38 +1,70 @@
-## Welcome to Void Chat
+
+Void Chat is a small application which use JavaFX for a GUI chat application.
+### Client Features:
+- Signin or signup as a first time user
+- Add friends.
+- Showing Online/offline status of clients on the contacts list.
+- User notification when another user become online.
+- Ability to set status (online- offline- busy)
+- Accept and ignore Friend request.
+- Ability to conduct ont to one chat or chat group.
+- Ability to save a chat session.
+- Ability to transfer files.
+- Provide a feature to categorize the names under ategories (friends and family)*.
+- Provide a facility for offline test message*.
+- Allow clients to send email to each other*.
+- Allow the user to block certain clients*.
+- Signout.
+
+### Server Freatures:
+- Ability to start / stop  the server.
+- Allow users to signup and store their information.
+- Accept connections and store information about client's status.
+- Ability to send an annoucement message to all online users.
+- show some statistics about users (status, genders)
+- Show all client's info from the DB  in a tabulation form with updating option*.
 
 
-You can use the [editor on GitHub](https://github.com/motyim/voidChat/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
+### How To Run Void Chat:
+1. Run VoidChatServer.jar.
+2. Open Control tab and Click on Start button to start server.
+    ![Image](http://imgur.com/T4YSnj4.png)
+3. Run VoidChatClient.jar.
+4. Connect to the server Using IP Address of the server machine .
+    ![Image](http://imgur.com/GgV4nJF.png)
+5. then Create an account or login if you have already account.
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
 
-### Markdown
+----
+### Demo
+- **NOW** you can create an account
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+    ![Image](http://imgur.com/u1daV1A.png)
 
-```markdown
-Syntax highlighted code block
+-   login with your user name and password
 
-# Header 1
-## Header 2
-### Header 3
+    ![Image](http://imgur.com/O6uB8pa.png)
 
-- Bulleted
-- List
+- Home Page
 
-1. Numbered
-2. List
+	![Image](http://imgur.com/SideV8U.png)
 
-**Bold** and _Italic_ and `Code` text
+- create new group
 
-[Link](url) and ![Image](src)
-```
+  ![Image](http://imgur.com/5c71eda.png)
+- one to one chat
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+     ![Image](http://imgur.com/D2OK5q3.png)
+- send email
 
-### Jekyll Themes
+    ![Image](http://imgur.com/qCNywZ3.png)
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/motyim/voidChat/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+- notfication
 
-### Support or Contact
+    ![Image](http://imgur.com/nph89lj.png)
 
-Having trouble with Pages? Check out our [documentation](https://help.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+---------
+
+### Technology we used in our Application :
+
+**javaSE** - **javaFX** - **RMI** - **XML** - **JAXBAPI** - **XSLT** - **HTML\CSS** - **TrayNotificationAPI** - **SQLite DataBase** - **java mail API**

@@ -59,7 +59,7 @@ public class ServerController implements ServerControllerInt {
     }
 
     public void startServer() {
-        System.out.println("Server controller");
+
         try {
             reg.rebind("voidChatServer", model);
             
@@ -79,7 +79,7 @@ public class ServerController implements ServerControllerInt {
     @Override
     public void stopServer() {
         try {
-            System.out.println("Server controller stop server");
+            
             reg.unbind("voidChatServer");
             checkOnline.stop();
         } catch (RemoteException ex) {
@@ -96,9 +96,9 @@ public class ServerController implements ServerControllerInt {
 
     @Override
     public void notify(String reciver, String message, int type) {
-        System.out.println("in notify in server controller");
+
         if (onlineUsers.containsKey(reciver)) {
-            System.out.println("online user is " + reciver);
+
             ClientModelInt clientObject = onlineUsers.get(reciver);
             try {
                 clientObject.notify(message, type);
@@ -108,25 +108,21 @@ public class ServerController implements ServerControllerInt {
         }
     }
 
-    @Override
-    public void notifyStatus(String username, String status, ArrayList<String> friends) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
 
     @Override
     public void recieveMsg(Message message) {
-        System.out.println("receieve msg ");
+        
         String reciever = message.getTo();
-        System.out.println(reciever);
+        
         if ((reciever.contains("##"))) {
             if (groups.containsKey(reciever)) {
                 ArrayList<String> chatMembers = groups.get(reciever);
 
                 for (int i = 0; i < chatMembers.size(); i++) {
-                   // System.out.println(chatMembers.get(i));
+                  
                     if (!chatMembers.get(i).equals(message.getFrom())) {
                         if (onlineUsers.containsKey(chatMembers.get(i))) {
-                           // System.out.println(chatMembers.get(i) + " is online and group msg chat will send");
+                          
                             try {
 
                                 ClientModelInt clientObject = onlineUsers.get(chatMembers.get(i));
@@ -142,7 +138,7 @@ public class ServerController implements ServerControllerInt {
         } else if (onlineUsers.containsKey(reciever)) {
             ClientModelInt clientObject = onlineUsers.get(reciever);
             try {
-                System.out.println(reciever + " is online and meg is send");
+                
                 clientObject.reciveMsg(message);
             } catch (RemoteException ex) {
                 ex.printStackTrace();
@@ -150,10 +146,7 @@ public class ServerController implements ServerControllerInt {
         }
     }
 
-    @Override
-    public void groupMsg(String msg, ArrayList<String> groupChatUsers) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+   
 
     @Override
     public boolean register(String username, ClientModelInt obj) {
@@ -162,7 +155,7 @@ public class ServerController implements ServerControllerInt {
         }
         onlineUsers.put(username, obj);
         sendServerNotifcation(obj); //update message and sponcer in recently login user
-      //  System.out.println("-- user login --" + onlineUsers.size());
+      
         return true;
     }
 
@@ -190,9 +183,9 @@ public class ServerController implements ServerControllerInt {
 
     @Override
     public void unregister(String username) {
-       // System.out.println(onlineUsers.size());
+       
         onlineUsers.remove(username);
-       // System.out.println(onlineUsers.size());
+       
     }
 
     @Override

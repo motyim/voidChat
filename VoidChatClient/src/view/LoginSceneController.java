@@ -42,7 +42,7 @@ public class LoginSceneController implements Initializable {
     public LoginSceneController() {
         //get instance form view
         clinetView = ClientView.getInstance();
-        System.out.println("Login connect Client view");
+        
     }
 
     @FXML
@@ -111,7 +111,7 @@ public class LoginSceneController implements Initializable {
         try {
             Parent parent = FXMLLoader.load(getClass().getResource("SignupScence.fxml"));
             Stage stage = clinetView.getMainStage();
-            System.out.println("stage >>" + stage);
+            
             Scene scene = new Scene(parent);
             stage.setScene(scene);
             stage.setTitle("Create an account");
